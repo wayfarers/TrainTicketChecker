@@ -14,11 +14,9 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 
 public class TrainTicketChecker {
 	public static final String URL = "http://booking.uz.gov.ua/purchase/search/";
@@ -31,8 +29,10 @@ public class TrainTicketChecker {
 	
 	public String checkTickets() {
 		String jsonResp = null;
+		TicketsResponse response = null;
 		try {
 			jsonResp = sendPost();
+			response = new ObjectMapper().readValue(jsonResp, TicketsResponse.class);
 		} catch (HttpException e) {
 			e.printStackTrace();
 		} catch (SocketTimeoutException e) {
@@ -42,21 +42,10 @@ public class TrainTicketChecker {
 			e.printStackTrace();
 		}
 		
-		JsonParser parser = new JsonParser();
-	    JsonObject mainObject = parser.parse(jsonResp).getAsJsonObject();
-	    JsonArray pItem = mainObject.getAsJsonArray("value");
-	    for (JsonElement user : pItem) {
-	        JsonObject userObject = user.getAsJsonObject();
-	        if (userObject.get("num").getAsString().contains("292")) {
-	        	System.out.println("Train# " + userObject.get("num").getAsString());
-	        	JsonArray places = userObject.getAsJsonArray("types");
-	        	for (JsonElement item : places) {
-					System.out.print(item.getAsJsonObject().get("title").getAsString());
-					System.out.println(" - " + item.getAsJsonObject().get("places").getAsString());
-				}
-//	            return null;
-	        }
-	    }
+		for (Train train : response.trains) {
+			System.out.println(train.num);
+			System.out.println("\t" + train.from.station + " - " + train.till.station);
+		}
 		
 		return jsonResp;
 	}
@@ -83,13 +72,6 @@ public class TrainTicketChecker {
 		
 		String html = "";
 		GetMethod get = new GetMethod(url2);
-//		get.setRequestHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-//		get.setRequestHeader("Accept-Encoding", "gzip, deflate");
-//		get.setRequestHeader("Accept-Language", "uk,ru;q=0.8,en-US;q=0.5,en;q=0.3");
-//		get.setRequestHeader("Cache-Control", "max-age=0");
-//		get.setRequestHeader("Connection", "keep-alive");
-//		get.setRequestHeader("Host", "booking.uz.gov.ua");
-//		get.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0");
 		client.executeMethod(get);
 		
 		
@@ -101,7 +83,6 @@ public class TrainTicketChecker {
 			html = get.getResponseBodyAsString();
 		}
 		parseToken(html);
-//		System.out.println(token);
 		
 		client.getHttpConnectionManager().getParams().setSoTimeout(10000);
 		PostMethod post = new PostMethod(URL);
@@ -124,7 +105,7 @@ public class TrainTicketChecker {
 		post.addRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0");
 		
 		post.addParameter("another_ec", "0");
-		post.addParameter("date_dep", "24.08.2015");
+		post.addParameter("date_dep", "24.09.2015");
 		post.addParameter("search", "");
 		post.addParameter("station_from", "Львів");
 		post.addParameter("station_id_from", "2218000");
