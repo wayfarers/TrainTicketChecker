@@ -15,7 +15,7 @@ public class Train {
 	Station from;
 	Station till;
 	@JsonProperty("types")
-	List<PlaceType> places = new ArrayList<>();
+	List<Place> places = new ArrayList<>();
 	
 	
 	public String getNum() {
@@ -48,10 +48,10 @@ public class Train {
 	public void setTill(Station till) {
 		this.till = till;
 	}
-	public List<PlaceType> getPlaces() {
+	public List<Place> getPlaces() {
 		return places;
 	}
-	public void setPlaces(List<PlaceType> places) {
+	public void setPlaces(List<Place> places) {
 		this.places = places;
 	} 
 }

@@ -2,6 +2,7 @@ package org.genia.trainchecker;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,8 +15,6 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 public class TrainTicketChecker {
@@ -27,11 +26,11 @@ public class TrainTicketChecker {
 	public TrainTicketChecker() {
 	}
 	
-	public String checkTickets() {
+	public String checkTickets(TicketsRequest request) {
 		String jsonResp = null;
 		TicketsResponse response = null;
 		try {
-			jsonResp = sendPost();
+			jsonResp = sendPost(request);
 			response = new ObjectMapper().readValue(jsonResp, TicketsResponse.class);
 		} catch (HttpException e) {
 			e.printStackTrace();
@@ -68,7 +67,7 @@ public class TrainTicketChecker {
 	    }
 	}
 	
-	private String sendPost() throws HttpException, IOException {
+	private String sendPost(TicketsRequest request) throws HttpException, IOException {
 		
 		String html = "";
 		GetMethod get = new GetMethod(url2);
@@ -105,12 +104,12 @@ public class TrainTicketChecker {
 		post.addRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0");
 		
 		post.addParameter("another_ec", "0");
-		post.addParameter("date_dep", "24.09.2015");
+		post.addParameter("date_dep", new SimpleDateFormat("dd.MM.yyyy").format(request.date));
 		post.addParameter("search", "");
-		post.addParameter("station_from", "Львів");
-		post.addParameter("station_id_from", "2218000");
-		post.addParameter("station_id_till", "2200001");
-		post.addParameter("station_till", "Київ");
+		post.addParameter("station_from", request.from.station);
+		post.addParameter("station_id_from", request.from.station_id);
+		post.addParameter("station_id_till", request.till.station_id);
+		post.addParameter("station_till", request.till.station);
 		post.addParameter("time_dep", "00:00");
 		post.addParameter("time_dep_till", "");
 		
