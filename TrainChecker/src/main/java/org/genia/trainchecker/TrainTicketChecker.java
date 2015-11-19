@@ -3,6 +3,9 @@ package org.genia.trainchecker;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +18,7 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.util.URIUtil;
 import org.codehaus.jackson.map.ObjectMapper;
 
 public class TrainTicketChecker {
@@ -22,6 +26,8 @@ public class TrainTicketChecker {
 	String url2 = "http://booking.uz.gov.ua/";
 	private String token;
 	private HttpClient client = new HttpClient();
+	private Map<String, String> stations;
+	
 	
 	public TrainTicketChecker() {
 	}
@@ -120,5 +126,27 @@ public class TrainTicketChecker {
 		}
 		
 		return post.getResponseBodyAsString();
+	}
+	
+	public List<Station> getAllStations() throws HttpException, IOException {
+		String url = "http://booking.uz.gov.ua/purchase/station/";
+		GetMethod get = null;
+		String jsonResp = null;
+		int [] ukrChars = {1108, 1110, 1111, 1169}; 	//є, і, ї, ґ
+		List<Station> stations = new ArrayList<>();
+		
+		for (int i = 0; i < 32; i++) {
+			String currentUrl = URIUtil.encodeQuery(url + (char) (1072 + i));
+			get = new GetMethod(currentUrl);	//1072 - rus 'a' in ASCII
+			int statusCode = client.executeMethod(get);
+			if (statusCode != HttpStatus.SC_OK) {
+				System.out.println("Get method failed: " + get.getStatusLine());
+				return null;
+			}
+			jsonResp = get.getResponseBodyAsString();
+			StationJson resp = new ObjectMapper().readValue(jsonResp, StationJson.class);
+			stations.addAll(resp.getStations());
+		}
+		return stations;
 	}
 }

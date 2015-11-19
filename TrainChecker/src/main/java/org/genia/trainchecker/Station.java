@@ -1,7 +1,10 @@
 package org.genia.trainchecker;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 public class Station {
 	String station_id;
+	@JsonProperty("title")
 	String station;
 	long date;
 	String src_date;
