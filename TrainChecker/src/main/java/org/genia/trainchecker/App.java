@@ -2,7 +2,6 @@ package org.genia.trainchecker;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.commons.httpclient.HttpException;
@@ -13,7 +12,7 @@ public class App
     	TrainTicketChecker checker = new TrainTicketChecker();
     	List<Station> list = checker.getAllStations();
     	for (Station station : list) {
-			System.out.println(station.station + " - id: " + station.station_id);
+			System.out.println(station.getStation() + " - id: " + station.getStationId());
 		}
     	
 //    	TicketsRequest request = new TicketsRequest();

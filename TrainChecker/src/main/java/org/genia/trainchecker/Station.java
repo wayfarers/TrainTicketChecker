@@ -1,19 +1,24 @@
 package org.genia.trainchecker;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Station {
-	String station_id;
+	@JsonProperty("station_id")
+	private String stationId;
 	@JsonProperty("title")
-	String station;
-	long date;
-	String src_date;
+	private String station;
+	private long date;
+	private String src_date;
 	
-	public String getStation_id() {
-		return station_id;
+	public String getStationId() {
+		return stationId;
 	}
-	public void setStation_id(String station_id) {
-		this.station_id = station_id;
+	public void setStationId(String stationId) {
+		this.stationId = stationId;
 	}
 	public String getStation() {
 		return station;
@@ -34,5 +39,11 @@ public class Station {
 		this.src_date = src_date;
 	}
 	
-	
+	public static Map<String, String> listToMap(List<Station> list) {
+		Map<String, String> map = new HashMap<>();
+		for (Station station : list) {
+			map.put(station.getStation(), station.getStationId());
+		}
+		return map;
+	}
 }
