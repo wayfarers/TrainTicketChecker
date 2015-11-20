@@ -163,7 +163,7 @@ public class TrainTicketChecker {
 		return stations;
 	}
 	
-	public Map<String, String> getStationsAsMap() {
+	public Map<String, Station> getStationsAsMap() {
 		return Station.listToMap(stations);
 	}
 }

@@ -39,10 +39,10 @@ public class Station {
 		this.src_date = src_date;
 	}
 	
-	public static Map<String, String> listToMap(List<Station> list) {
-		Map<String, String> map = new HashMap<>();
+	public static Map<String, Station> listToMap(List<Station> list) {
+		Map<String, Station> map = new HashMap<>();
 		for (Station station : list) {
-			map.put(station.getStation(), station.getStationId());
+			map.put(station.getStation(), station);
 		}
 		return map;
 	}

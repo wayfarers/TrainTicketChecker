@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.google.gson.annotations.JsonAdapter;
-
 public class Train {
 	String num;
 	int model;
