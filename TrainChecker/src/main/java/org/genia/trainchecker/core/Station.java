@@ -1,5 +1,6 @@
 package org.genia.trainchecker.core;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,9 +11,9 @@ public class Station {
 	@JsonProperty("station_id")
 	private String stationId;
 	private String station;
-//	private String title;
 	private long date;
-	private String src_date;
+	@JsonProperty("src_date")
+	private Date srcDate;
 	
 	public String getStationId() {
 		return stationId;
@@ -32,11 +33,11 @@ public class Station {
 	public void setDate(long date) {
 		this.date = date;
 	}
-	public String getSrc_date() {
-		return src_date;
+	public Date getSrcDate() {
+		return srcDate;
 	}
-	public void setSrc_date(String src_date) {
-		this.src_date = src_date;
+	public void setSrcDate(Date srcDate) {
+		this.srcDate = srcDate;
 	}
 	
 	public static Map<String, Station> listToMap(List<Station> list) {

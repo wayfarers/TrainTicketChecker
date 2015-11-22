@@ -1,15 +1,11 @@
 package org.genia.trainchecker.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class TicketsResponse {
+public class TicketsResponseError {
 	boolean error;
 	String data;
 	@JsonProperty("value")
-	List<Train> trains = new ArrayList<>();
 	String errorDescription;
 	
 	
@@ -25,16 +21,12 @@ public class TicketsResponse {
 	public void setData(String data) {
 		this.data = data;
 	}
-	public List<Train> getTrains() {
-		return trains;
-	}
-	public void setTrains(List<Train> trains) {
-		this.trains = trains;
-	}
 	public String getErrorDescription() {
 		return errorDescription;
 	}
 	public void setErrorDescription(String errorDescription) {
 		this.errorDescription = errorDescription;
 	}
+	
+	
 }

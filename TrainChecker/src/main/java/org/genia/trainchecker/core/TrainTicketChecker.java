@@ -19,32 +19,47 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.util.URIUtil;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TrainTicketChecker {
+	final static Logger logger = LoggerFactory.getLogger(TrainTicketChecker.class);
 	public static final String URL = "http://booking.uz.gov.ua/purchase/search/";
-	String url2 = "http://booking.uz.gov.ua/";
+	private String url2 = "http://booking.uz.gov.ua/";
 	private String token;
 	private HttpClient client = new HttpClient();
 	private List<Station> stations = null;
 
 	public TrainTicketChecker() {
-		stations = getAllStations();
+		getAllStations();
 	}
 
 	public TicketsResponse checkTickets(TicketsRequest request) {
 		String jsonResp = null;
 		TicketsResponse response = null;
+		TicketsResponseError responseError = null;
 		try {
-			jsonResp = sendPost(request);
-			response = new ObjectMapper().readValue(jsonResp, TicketsResponse.class);
+			jsonResp = sendRequest(request);
+			try {
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+				response = mapper.readValue(jsonResp, TicketsResponse.class);
+			} catch (JsonMappingException e) {
+				responseError = new ObjectMapper().readValue(jsonResp, TicketsResponseError.class);
+				TicketsResponse invaildResponse = new TicketsResponse();
+				invaildResponse.setError(true);
+				invaildResponse.setErrorDescription(responseError.getErrorDescription());
+				return invaildResponse;
+			}
 		} catch (HttpException e) {
 			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		} catch (SocketTimeoutException e) {
-			System.out.println("Read timeout");
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 
 		return response;
@@ -56,19 +71,19 @@ public class TrainTicketChecker {
 		Matcher matcher = pattern.matcher(html);
 		if (matcher.find()) {
 			String obfuscated = matcher.group(0);
-			// System.out.println(obfuscated);
+			//logger.info(obfuscated);
 			ScriptEngineManager factory = new ScriptEngineManager();
 			ScriptEngine engine = factory.getEngineByName("JavaScript");
 			try {
 				engine.eval(adapter + obfuscated);
 			} catch (ScriptException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 			token = engine.get("token").toString();
 		}
 	}
 
-	private String sendPost(TicketsRequest request) throws HttpException, IOException {
+	private String sendRequest(TicketsRequest request) throws HttpException, IOException {
 
 		String html = "";
 		GetMethod get = new GetMethod(url2);
@@ -76,7 +91,7 @@ public class TrainTicketChecker {
 
 		int statusCodeInit = client.executeMethod(get);
 		if (statusCodeInit != HttpStatus.SC_OK) {
-			System.out.println("Get method failed: " + get.getStatusLine());
+			logger.error("sendRequest method failed. Get method failed: " + get.getStatusLine());
 			return null;
 		} else {
 			html = get.getResponseBodyAsString();
@@ -91,7 +106,7 @@ public class TrainTicketChecker {
 		post.addRequestHeader("Accept-Language", "uk,ru;q=0.8,en-US;q=0.5,en;q=0.3");
 		post.addRequestHeader("Cache-Control", "no-cache");
 		post.addRequestHeader("Connection", "keep-alive");
-		post.addRequestHeader("Content-Length", "202");
+		post.addRequestHeader("Content-Length", "196"); //202
 		post.addRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 		post.addRequestHeader("GV-Ajax", "1");
 		post.addRequestHeader("GV-Referer", "http://booking.uz.gov.ua/");
@@ -115,7 +130,7 @@ public class TrainTicketChecker {
 
 		int statusCode = client.executeMethod(post);
 		if (statusCode != HttpStatus.SC_OK) {
-			System.out.println("Post method failed: " + post.getStatusLine());
+			logger.error("sendRequest method failed. Post method failed: " + post.getStatusLine());
 			return null;
 		}
 
@@ -130,11 +145,15 @@ public class TrainTicketChecker {
 	 * @throws IOException
 	 */
 	public List<Station> getAllStations() {
+		if (stations != null && !stations.isEmpty()) {
+			return stations;
+		}
+		
 		String url = "http://booking.uz.gov.ua/purchase/station/";
 		char letter;
 		GetMethod get = null;
 		String jsonResp = null;
-		List<Station> stations = new ArrayList<>();
+		List<Station> myStations = new ArrayList<>();
 		
 		try {
 			for (int i = 0; i < 32; i++) {
@@ -143,22 +162,32 @@ public class TrainTicketChecker {
 				get = new GetMethod(currentUrl);	
 				int statusCode = client.executeMethod(get);
 				if (statusCode != HttpStatus.SC_OK) {
-					System.out.println("Get method failed: " + get.getStatusLine());
+					logger.error("getAllStations method failed. Get method failed: " + get.getStatusLine());
 					return null;
 				}
 				jsonResp = get.getResponseBodyAsString();
 				StationsListJson resp = new ObjectMapper().readValue(jsonResp, StationsListJson.class);
-				stations.addAll(resp.getStations());
+				myStations.addAll(resp.getStations());
 			}
 		} catch (HttpException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Could not retrieve stations", e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Could not retrieve stations", e);
 		}
-		return stations;
+		return stations = myStations;
 	}
 	
 	public Map<String, Station> getStationsAsMap() {
-		return Station.listToMap(stations);
+		return Station.listToMap(getAllStations());
+	}
+	
+	/**
+	 * Force update of station list from UzGovUa server.
+	 * @return List
+	 */
+	public List<Station> updateStationsList() {
+		stations = null;
+		stations = getAllStations();
+		return stations;
 	}
 }

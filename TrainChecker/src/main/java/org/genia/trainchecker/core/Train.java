@@ -9,12 +9,21 @@ public class Train {
 	String num;
 	int model;
 	int category;
+	@JsonProperty("reserve_error")
+	String reserveError;
 	
 	Station from;
 	Station till;
 	@JsonProperty("types")
 	List<Place> places = new ArrayList<>();
 	
+	public int getTotalPlaces() {
+		int total = 0;
+		for (Place place : places) {
+			total += place.places;
+		}
+		return total;
+	}
 	
 	public String getNum() {
 		return num;
@@ -52,4 +61,10 @@ public class Train {
 	public void setPlaces(List<Place> places) {
 		this.places = places;
 	} 
+	public String getReserveError() {
+		return reserveError;
+	}
+	public void setReserveError(String reserveError) {
+		this.reserveError = reserveError;
+	}
 }

@@ -25,8 +25,7 @@ public class App
     	TicketsResponse response = checker.checkTickets(request);
     	
     	for (Train train : response.trains) {
-			System.out.println(train.num);
-			System.out.println("\t" + train.from.getStation() + " - " + train.till.getStation());
+			System.out.printf("%s\t%s - %s, %d free places total%n", train.num, train.from.getStation(), train.till.getStation(), train.getTotalPlaces());
 		}
     	
     	
