@@ -170,8 +170,10 @@ public class TrainTicketChecker {
 				myStations.addAll(resp.getStations());
 			}
 		} catch (HttpException e) {
+			logger.error("Could not retrieve stations." + e.getMessage(), e);
 			throw new RuntimeException("Could not retrieve stations", e);
 		} catch (IOException e) {
+			logger.error("Could not retrieve stations." + e.getMessage(), e);
 			throw new RuntimeException("Could not retrieve stations", e);
 		}
 		return stations = myStations;
