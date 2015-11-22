@@ -1,4 +1,4 @@
-package org.genia.trainchecker;
+package org.genia.trainchecker.core;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -32,7 +32,7 @@ public class TrainTicketChecker {
 		stations = getAllStations();
 	}
 
-	public String checkTickets(TicketsRequest request) {
+	public TicketsResponse checkTickets(TicketsRequest request) {
 		String jsonResp = null;
 		TicketsResponse response = null;
 		try {
@@ -47,12 +47,7 @@ public class TrainTicketChecker {
 			e.printStackTrace();
 		}
 
-		for (Train train : response.trains) {
-			System.out.println(train.num);
-			System.out.println("\t" + train.from.getStation() + " - " + train.till.getStation());
-		}
-
-		return jsonResp;
+		return response;
 	}
 
 	private void parseToken(String html) {
@@ -152,7 +147,7 @@ public class TrainTicketChecker {
 					return null;
 				}
 				jsonResp = get.getResponseBodyAsString();
-				StationJson resp = new ObjectMapper().readValue(jsonResp, StationJson.class);
+				StationsListJson resp = new ObjectMapper().readValue(jsonResp, StationsListJson.class);
 				stations.addAll(resp.getStations());
 			}
 		} catch (HttpException e) {

@@ -1,4 +1,4 @@
-package org.genia.trainchecker;
+package org.genia.trainchecker.core;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class StationJson {
+public class StationsListJson {
 	boolean error;
 	@JsonProperty("value")
 	List<Station> stations = new ArrayList<>();

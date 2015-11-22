@@ -1,4 +1,4 @@
-package org.genia.trainchecker;
+package org.genia.trainchecker.core;
 
 import java.util.ArrayList;
 import java.util.List;

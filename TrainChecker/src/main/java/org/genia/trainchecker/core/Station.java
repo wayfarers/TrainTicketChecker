@@ -1,4 +1,4 @@
-package org.genia.trainchecker;
+package org.genia.trainchecker.core;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class Station {
 	@JsonProperty("station_id")
 	private String stationId;
-	@JsonProperty("title")
 	private String station;
+//	private String title;
 	private long date;
 	private String src_date;
 	
@@ -45,5 +45,13 @@ public class Station {
 			map.put(station.getStation(), station);
 		}
 		return map;
+	}
+	
+	/**
+	 * JSON setter for 'station' field. Needed due to different station presentation in different places on the server side.
+	 * @param title
+	 */
+	public void setTitle(String title) {
+		this.station = title;
 	}
 }
