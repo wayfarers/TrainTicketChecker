@@ -1,6 +1,6 @@
 package org.genia.trainchecker.core;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TicketsResponseError {
 	boolean error;

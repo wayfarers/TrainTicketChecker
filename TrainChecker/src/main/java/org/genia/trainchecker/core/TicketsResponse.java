@@ -3,7 +3,8 @@ package org.genia.trainchecker.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 public class TicketsResponse {
 	boolean error;

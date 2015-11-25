@@ -1,0 +1,16 @@
+- 2 JavaConfig files (app and web)
+- Velocity template renderer
+- index.html
+- SimpleController.java
+
+
+
+/index.html
+/stations.json
+
+return "index"
+return new ModelAndView(index, Map)
+
+@ResponseBody
+return new List<Station>
+// How to configure JSON? - Just add jackson as a dep.

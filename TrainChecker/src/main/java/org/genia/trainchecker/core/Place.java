@@ -1,10 +1,11 @@
 package org.genia.trainchecker.core;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonSetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class Place {
 	String title;
+	
 	@JsonProperty("letter")
 	PlaceType placeType;
 	int places;
