@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -177,6 +178,7 @@ public class TrainTicketChecker {
 			logger.error("Could not retrieve stations." + e.getMessage(), e);
 			throw new RuntimeException("Could not retrieve stations", e);
 		}
+		Collections.sort(myStations);
 		return stations = myStations;
 	}
 	

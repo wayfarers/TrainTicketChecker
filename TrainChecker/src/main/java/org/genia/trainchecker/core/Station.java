@@ -1,14 +1,16 @@
 package org.genia.trainchecker.core;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-public class Station {
+public class Station implements Comparable<Station>{
 	@JsonProperty("station_id")
 	private String stationId;
 	private String station;
@@ -42,7 +44,7 @@ public class Station {
 	}
 	
 	public static Map<String, Station> listToMap(List<Station> list) {
-		Map<String, Station> map = new HashMap<>();
+		Map<String, Station> map = new TreeMap<>();
 		for (Station station : list) {
 			map.put(station.getStation(), station);
 		}
@@ -55,5 +57,10 @@ public class Station {
 	 */
 	public void setTitle(String title) {
 		this.station = title;
+	}
+	
+	@Override
+	public int compareTo(Station o) {
+		return this.station.compareTo(o.station);
 	}
 }
