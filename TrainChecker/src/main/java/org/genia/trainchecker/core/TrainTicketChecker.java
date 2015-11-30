@@ -195,4 +195,13 @@ public class TrainTicketChecker {
 		stations = getAllStations();
 		return stations;
 	}
+	
+	public void init() {
+		stations = new ArrayList<>();
+		for(int i = 0; i < 10; i++) {
+			Station station = new Station();
+			station.setStation("station " + i);
+			stations.add(station);
+		}
+	}
 }

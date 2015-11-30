@@ -19,10 +19,24 @@ public class TrainController {
 	
 	@RequestMapping("/stationlist.json")
 	public @ResponseBody List<String> getAllStations() {
-		
+		if (checker.getAllStations() == null || checker.getAllStations().isEmpty()) {
+			checker.init();
+			System.out.println("Initiated");
+		}
 		 Set<String> set = checker.getStationsAsMap().keySet();
 		 return new ArrayList<>(set);
 	}
+	
+	@RequestMapping("/getStations")
+	public @ResponseBody List<String> getStations(String rq) {
+		List<String> list = new ArrayList<>();
+		for (String string : checker.getStationsAsMap().keySet()) {
+			if (string.startsWith(rq))
+				list.add(string);
+		}
+		return list;
+	}
+	
 	
 
 }
