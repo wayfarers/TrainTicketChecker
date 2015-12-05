@@ -1,14 +1,19 @@
 package org.genia.trainchecker.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.genia.trainchecker.core.TrainTicketChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.velocity.VelocityConfigurer;
 
 @Controller
 @RequestMapping("/stations")
@@ -37,6 +42,15 @@ public class TrainController {
 		return list;
 	}
 	
+	@RequestMapping("/home")
+	public ModelAndView getHomePage() {
+		Map<String, String> model = new HashMap<>();
+		model.put("username", "Genia");
+		return new ModelAndView("index", model);
+	}
 	
-
+	@RequestMapping("/layout")
+    public String getTrainPartialPage(ModelMap modelMap) {
+        return "stations/layout";
+    }
 }
