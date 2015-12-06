@@ -20,6 +20,7 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.util.URIUtil;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,7 +97,7 @@ public class TrainTicketChecker {
 			logger.error("sendRequest method failed. Get method failed: " + get.getStatusLine());
 			return null;
 		} else {
-			html = get.getResponseBodyAsString();
+			html = IOUtils.toString(get.getResponseBodyAsStream(), "UTF-8");
 		}
 		parseToken(html);
 
@@ -167,7 +168,7 @@ public class TrainTicketChecker {
 					logger.error("getAllStations method failed. Get method failed: " + get.getStatusLine());
 					return null;
 				}
-				jsonResp = get.getResponseBodyAsString();
+				jsonResp = IOUtils.toString(get.getResponseBodyAsStream(), "UTF-8"); //get.getResponseBodyAsString();
 				StationsListJson resp = new ObjectMapper().readValue(jsonResp, StationsListJson.class);
 				myStations.addAll(resp.getStations());
 			}

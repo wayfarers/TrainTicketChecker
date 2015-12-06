@@ -1,4 +1,39 @@
 <h3>Enter station name:</h3>
 <div>
-	<autocomplete ng-model="selectedStation" data="stations" on-type="updateStations"></autocomplete>
+	<!-- <autocomplete ng-model="fromStation" data="stations"
+		on-type="updateStations"></autocomplete>
+		<br>
+	<autocomplete ng-model="toStation" data="stations"
+		on-type="updateStations"></autocomplete>  -->
+
+	<input type="text" ng-model="fromStation" placeholder="From station"
+		uib-typeahead="s for s in getFilteredStations($viewValue)"
+		typeahead-min-length="2"
+		class="form-control">
+	<div>
+		<div class="row">
+			<div class="col-md-6">
+				<p class="input-group">
+					<input type="text" class="form-control"
+						uib-datepicker-popup="{{format}}" ng-model="dt"
+						is-open="status.opened" min-date="minDate" max-date="maxDate"
+						datepicker-options="dateOptions"
+						date-disabled="disabled(date, mode)" ng-required="true"
+						close-text="Close" /> <span class="input-group-btn">
+						<button type="button" class="btn btn-default"
+							ng-click="open($event)">
+							<i class="glyphicon glyphicon-calendar"></i>
+						</button>
+					</span>
+				</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<label>Format:</label> <select class="form-control"
+					ng-model="format" ng-options="f for f in formats"><option></option></select>
+			</div>
+		</div>
+
+	</div>
 </div>

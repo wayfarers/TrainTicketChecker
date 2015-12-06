@@ -3,6 +3,7 @@ package org.genia.trainchecker.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,8 +37,11 @@ public class TrainController {
 	public @ResponseBody List<String> getStations(String rq) {
 		List<String> list = new ArrayList<>();
 		for (String string : checker.getStationsAsMap().keySet()) {
-			if (string.startsWith(rq))
+			if (string.toLowerCase(Locale.ROOT).startsWith(rq.toLowerCase(Locale.ROOT))) {
 				list.add(string);
+				if(list.size() == 10)
+					return list;
+			}
 		}
 		return list;
 	}
