@@ -1,12 +1,18 @@
 package org.genia.trainchecker.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.genia.trainchecker.core.TicketsRequest;
+import org.genia.trainchecker.core.TicketsResponse;
+import org.genia.trainchecker.core.Train;
 import org.genia.trainchecker.core.TrainTicketChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +20,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.velocity.VelocityConfigurer;
 
 @Controller
 @RequestMapping("/stations")
@@ -57,4 +62,19 @@ public class TrainController {
     public String getTrainPartialPage(ModelMap modelMap) {
         return "stations/layout";
     }
+	
+	@RequestMapping("/sendRequest")
+	public @ResponseBody TicketsResponse sendRequest(String fromStation, String toStation, String dt) throws ParseException {
+		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dt.substring(0, 10));
+		TicketsRequest request = new TicketsRequest();
+		request.setFrom(checker.getStationsAsMap().get(fromStation));
+		request.setTill(checker.getStationsAsMap().get(toStation));
+		request.setDate(date);
+		TicketsResponse response = checker.checkTickets(request);
+		for (Train train : response.getTrains()) {
+			System.out.printf("%s\t%s - %s, %d free places total%n", train.getNum(), 
+					train.getFrom().getStation(), train.getTill().getStation(), train.getTotalPlaces());
+		}
+		return response;
+	}
 }

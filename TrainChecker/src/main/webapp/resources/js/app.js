@@ -2,7 +2,7 @@
 
 var TrainCheckerApp = {};
 
-var app = angular.module('TrainCheckerApp', ['TrainCheckerApp.filters', 'TrainCheckerApp.services', 'TrainCheckerApp.directives', 'autocomplete', 'ngRoute', 'ui.bootstrap']);
+var app = angular.module('TrainCheckerApp', ['TrainCheckerApp.filters', 'TrainCheckerApp.services', 'TrainCheckerApp.directives', 'ngRoute', 'ui.bootstrap']);
 
 // Declare app level module which depends on filters, and services
 app.config(['$routeProvider', function ($routeProvider) {

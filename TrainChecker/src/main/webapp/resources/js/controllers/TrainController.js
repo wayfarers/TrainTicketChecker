@@ -5,7 +5,7 @@
  * @constructor
  */
 var TrainController = function($scope, $http) {
-    $scope.stations = [];
+	$scope.trains = [];
     $scope.fromStation = '';
     $scope.toStation = '';
     
@@ -21,6 +21,13 @@ var TrainController = function($scope, $http) {
     };
     
     addDateTo($scope);
+    
+    $scope.sendRequest = function() {
+		$http.get('stations/sendRequest', 
+				{params: {fromStation: $scope.fromStation, 
+							toStation: $scope.toStation,
+							dt: $scope.dt}}).success(function(res) {$scope.trains = res.value});
+	};
     
     
     
