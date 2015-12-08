@@ -38,14 +38,18 @@
 			<tr>
 				<th style="text-align: center; width: 25px;">Train #</th>
 				<th style="text-align: center;">Direction</th>
-				<th style="text-align: center;">Total places</th>
+				<th style="text-align: center;">Places</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="train in trains">
-				<td style="width: 70px; text-align: center;">{{train.num}}</td>
-				<td>{{train.from.station}} - {{train.till.station}}</td>
-				<td style="width: 70px; text-align: center;">{{train.totalPlaces}}</td>
+				<td style="width: 70px; text-align: center; vertical-align: middle">{{train.num}}</td>
+				<td style="vertical-align: middle">{{train.from.station}} - {{train.till.station}}</td>
+				<td style="width: 200px;" >
+					<ul>
+						<li ng-repeat="place in train.types">{{place.title}} - {{place.places}}</li>
+					</ul>
+				</td>
 			</tr>
 		</tbody>
 	</table>
