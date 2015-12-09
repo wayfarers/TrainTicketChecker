@@ -13,5 +13,4 @@ public class ApplicationConfig {
 	public TrainTicketChecker trainTicketChecker() {
 		return new TrainTicketChecker();
 	}
-
 }
