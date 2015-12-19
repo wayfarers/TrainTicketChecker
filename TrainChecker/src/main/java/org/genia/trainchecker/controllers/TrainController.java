@@ -1,4 +1,4 @@
-package org.genia.trainchecker.controller;
+package org.genia.trainchecker.controllers;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
