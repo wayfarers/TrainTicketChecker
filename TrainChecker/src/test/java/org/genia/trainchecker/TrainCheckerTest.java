@@ -39,7 +39,7 @@ public class TrainCheckerTest {
 		List<Station> list = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
 			Station station = new Station();
-			station.setStation("Station " + i);
+			station.setName("Station " + i);
 			station.setStationId("" + i);
 			list.add(station);
 		}

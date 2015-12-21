@@ -10,10 +10,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import org.genia.trainchecker.core.TicketsRequest;
 import org.genia.trainchecker.core.TicketsResponse;
 import org.genia.trainchecker.core.Train;
 import org.genia.trainchecker.core.TrainTicketChecker;
+import org.genia.trainchecker.services.CronExecutor;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,6 +31,9 @@ public class TrainController {
 	
 	@Autowired
 	private TrainTicketChecker checker;
+	
+	@Inject
+	private CronExecutor cronExecotor;
 	
 	@RequestMapping("/stationlist.json")
 	public @ResponseBody List<String> getAllStations() {
@@ -73,8 +80,20 @@ public class TrainController {
 		TicketsResponse response = checker.checkTickets(request);
 		for (Train train : response.getTrains()) {
 			System.out.printf("%s\t%s - %s, %d free places total%n", train.getNum(), 
-					train.getFrom().getStation(), train.getTill().getStation(), train.getTotalPlaces());
+					train.getFrom().getName(), train.getTill().getName(), train.getTotalPlaces());
 		}
 		return response;
+	}
+	
+	@RequestMapping("/startJob")
+	public @ResponseBody void startJob() throws SchedulerException {
+		System.out.println("start");
+		cronExecotor.startJob();
+	}
+	
+	@RequestMapping("/stopJob")
+	public @ResponseBody void stopJob() throws SchedulerException {
+		System.out.println("stopped");
+		cronExecotor.stopJob();
 	}
 }

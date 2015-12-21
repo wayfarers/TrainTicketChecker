@@ -6,11 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Named
 @Entity
-@Table(name="Train")
 public class Train {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -19,8 +19,13 @@ public class Train {
 	private String trainNum;
 	private Integer model;
 	private Integer category;
-	private String from;
-	private String till;
+	
+	@ManyToOne
+	@JoinColumn(name = "fromStation")
+	private Station from;
+	@ManyToOne
+	@JoinColumn(name = "toStation")
+	private Station to;
 	
 	
 	public Integer getId() {
@@ -47,17 +52,17 @@ public class Train {
 	public void setCategory(Integer category) {
 		this.category = category;
 	}
-	public String getFrom() {
+	public Station getFrom() {
 		return from;
 	}
-	public void setFrom(String from) {
+	public void setFrom(Station from) {
 		this.from = from;
 	}
-	public String getTill() {
-		return till;
+	public Station getTo() {
+		return to;
 	}
-	public void setTill(String till) {
-		this.till = till;
+	public void setTo(Station till) {
+		this.to = till;
 	}
 	
 }

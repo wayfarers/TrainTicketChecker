@@ -16,16 +16,16 @@ public class App
 //		}
     	
     	TicketsRequest request = new TicketsRequest();
-    	request.from.setStation("Львів"); 
+    	request.from.setName("Львів"); 
     	request.from.setStationId("2218000"); 
-    	request.till.setStation("Київ");
+    	request.till.setName("Київ");
     	request.till.setStationId("2200001");
     	request.date = new SimpleDateFormat("dd.MM.yyyy").parse("25.12.2015");
     	
     	TicketsResponse response = checker.checkTickets(request);
     	
     	for (Train train : response.trains) {
-			System.out.printf("%s\t%s - %s, %d free places total%n", train.num, train.from.getStation(), train.till.getStation(), train.getTotalPlaces());
+			System.out.printf("%s\t%s - %s, %d free places total%n", train.num, train.from.getName(), train.till.getName(), train.getTotalPlaces());
 		}
     	
     	

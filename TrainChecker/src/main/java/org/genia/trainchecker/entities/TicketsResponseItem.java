@@ -1,8 +1,10 @@
 package org.genia.trainchecker.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Named;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,11 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Named
 @Entity
-@Table(name="TicketsResponseItem")
 public class TicketsResponseItem {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -31,8 +31,8 @@ public class TicketsResponseItem {
 	@JoinColumn(name = "ticketsResponseId")
 	private TicketsResponse ticketsResponse;
 	
-	@OneToMany(mappedBy = "ticketsResponse")
-	private List<Place> availablePlaces;
+	@OneToMany(mappedBy = "ticketsResponseItem", cascade = CascadeType.PERSIST)
+	private List<Place> availablePlaces = new ArrayList<>();
 
 	public Integer getId() {
 		return id;

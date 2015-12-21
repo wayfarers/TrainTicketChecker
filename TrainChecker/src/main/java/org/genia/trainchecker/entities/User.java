@@ -3,14 +3,14 @@ package org.genia.trainchecker.entities;
 import javax.inject.Named;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Named
 @Entity
-@Table(name="User")
 public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -19,6 +19,8 @@ public class User {
 	private String name;
 	private String password;
 	private String email;
+	
+	@Enumerated(EnumType.STRING)
 	private Role role;
 	
 	public User() {

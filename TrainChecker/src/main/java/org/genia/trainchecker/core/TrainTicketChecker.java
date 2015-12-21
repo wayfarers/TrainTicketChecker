@@ -124,10 +124,10 @@ public class TrainTicketChecker {
 		post.addParameter("another_ec", "0");
 		post.addParameter("date_dep", new SimpleDateFormat("dd.MM.yyyy").format(request.date));
 		post.addParameter("search", "");
-		post.addParameter("station_from", request.from.getStation());
+		post.addParameter("station_from", request.from.getName());
 		post.addParameter("station_id_from", request.from.getStationId());
 		post.addParameter("station_id_till", request.till.getStationId());
-		post.addParameter("station_till", request.till.getStation());
+		post.addParameter("station_till", request.till.getName());
 		post.addParameter("time_dep", "00:00");
 		post.addParameter("time_dep_till", "");
 
@@ -201,7 +201,7 @@ public class TrainTicketChecker {
 		stations = new ArrayList<>();
 		for(int i = 0; i < 10; i++) {
 			Station station = new Station();
-			station.setStation("station " + i);
+			station.setName("station " + i);
 			stations.add(station);
 		}
 	}
