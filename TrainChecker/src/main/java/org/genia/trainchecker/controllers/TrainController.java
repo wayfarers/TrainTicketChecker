@@ -58,18 +58,6 @@ public class TrainController {
 		return list;
 	}
 	
-	@RequestMapping("/home")
-	public ModelAndView getHomePage() {
-		Map<String, String> model = new HashMap<>();
-		model.put("username", "Genia");
-		return new ModelAndView("index", model);
-	}
-	
-	@RequestMapping("/layout")
-    public String getTrainPartialPage(ModelMap modelMap) {
-        return "stations/layout";
-    }
-	
 	@RequestMapping("/sendRequest")
 	public @ResponseBody TicketsResponse sendRequest(String fromStation, String toStation, String dt) throws ParseException {
 		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dt.substring(0, 10));

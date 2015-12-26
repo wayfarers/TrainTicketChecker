@@ -45,7 +45,7 @@ public class CronExecutor {
 		scheduler = new StdSchedulerFactory().getScheduler();
 		scheduler.clear();
 		scheduler.scheduleJob(job, trigger);
-		scheduler.start();
+//		scheduler.start();
 		
 	}
 	

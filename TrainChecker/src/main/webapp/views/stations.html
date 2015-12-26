@@ -1,4 +1,5 @@
 <div>
+	<h1 class="text-center">Search for tickets on UzGovUa</h1>
 	<!-- <autocomplete ng-model="fromStation" data="stations"
 		on-type="updateStations"></autocomplete>
 		<br>
@@ -32,6 +33,7 @@
 	</div>
 	
 	<button class="btn btn-info" ng-click="sendRequest()">Submit!</button>
+	<button class="btn btn-default" onclick="alert('Work in progress')">Create alert for this search</button>
 
 	<table class="table table-striped table-hover" ng-show="trains.length > 0">
 		<thead>
@@ -39,17 +41,19 @@
 				<th style="text-align: center; width: 25px;">Train #</th>
 				<th style="text-align: center;">Direction</th>
 				<th style="text-align: center;">Places</th>
+				<th style="text-align: center;"></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="train in trains">
-				<td style="width: 70px; text-align: center; vertical-align: middle">{{train.num}}</td>
-				<td style="vertical-align: middle">{{train.from.station}} - {{train.till.station}}</td>
-				<td style="width: 400px;" >
+				<td style="text-align: center; vertical-align: middle"  width="10%">{{train.num}}</td>
+				<td style="vertical-align: middle" width="50%">{{train.from.station}} - {{train.till.station}}</td>
+				<td style="white-space: nowrap;" >
 					<ul>
 						<li ng-repeat="place in train.types">{{place.title}} - {{place.places}}</li>
 					</ul>
 				</td>
+				<td><button class="btn btn-default" onclick="alert('Work in progress')">Create alert</button></td>
 			</tr>
 		</tbody>
 	</table>

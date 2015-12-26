@@ -22,7 +22,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	public VelocityConfigurer velocityConfig() {
 		VelocityConfigurer conf = new VelocityConfigurer();
 		conf.setResourceLoader(new FileSystemResourceLoader());
-		conf.setResourceLoaderPath("/html/");
+		conf.setResourceLoaderPath("/views/");
 		return conf;
 	}
 
@@ -40,6 +40,8 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+		registry.addResourceHandler("/views/**").addResourceLocations("/views/");
+		registry.addResourceHandler("/components/**").addResourceLocations("/resources/bower_components/");
 	}
 
 }
