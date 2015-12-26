@@ -13,6 +13,10 @@ public class Train {
 	@JsonProperty("reserve_error")
 	String reserveError;
 	
+	// Provided by UZ, but ignored so far.
+	@JsonProperty("travel_time")
+	String travelTime;
+	
 	Station from;
 	Station till;
 	@JsonProperty("types")

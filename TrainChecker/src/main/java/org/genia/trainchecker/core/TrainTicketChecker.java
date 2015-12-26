@@ -50,6 +50,7 @@ public class TrainTicketChecker {
 				mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
 				response = mapper.readValue(jsonResp, TicketsResponse.class);
 			} catch (JsonMappingException e) {
+				logger.error("Could not parse JSON, trying to parse an error. Original exception: ", e);
 				responseError = new ObjectMapper().readValue(jsonResp, TicketsResponseError.class);
 				TicketsResponse invaildResponse = new TicketsResponse();
 				invaildResponse.setError(true);
