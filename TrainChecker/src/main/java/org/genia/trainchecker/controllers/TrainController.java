@@ -33,7 +33,7 @@ public class TrainController {
 	
 	final static Logger logger = LoggerFactory.getLogger(TrainController.class);
 	
-	@Autowired
+	@Inject
 	private TrainTicketChecker checker;
 	
 	@Inject

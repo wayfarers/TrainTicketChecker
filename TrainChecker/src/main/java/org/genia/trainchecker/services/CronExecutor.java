@@ -22,6 +22,7 @@ import org.springframework.core.env.Environment;
 @PropertySource(value = "classpath:config.properties")
 @Scope("singleton")
 public class CronExecutor {
+	public static final int START_DELAY = 10;
 	JobDetail job;
 	Trigger trigger;
 	Scheduler scheduler;
@@ -55,7 +56,8 @@ public class CronExecutor {
 		scheduler = new StdSchedulerFactory().getScheduler();
 		scheduler.clear();
 		scheduler.scheduleJob(job, trigger);
-		scheduler.start();
+		scheduler.startDelayed(START_DELAY);
+//		scheduler.start();
 		
 	}
 	

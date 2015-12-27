@@ -16,11 +16,15 @@ public class App
 //		}
     	
     	TicketsRequest request = new TicketsRequest();
-    	request.from.setName("Львів"); 
-    	request.from.setStationId("2218000"); 
-    	request.till.setName("Київ");
-    	request.till.setStationId("2200001");
-    	request.date = new SimpleDateFormat("dd.MM.yyyy").parse("25.12.2015");
+//    	request.from.setName("Київ"); 
+//    	request.from.setStationId("2200001"); 
+//    	request.till.setName("Кам'янець-Подільський");
+//    	request.till.setStationId("2200260");
+    	request.from.setName("Київ"); 
+    	request.from.setStationId("2200001"); 
+    	request.till.setName("Львів");
+    	request.till.setStationId("2218000");
+    	request.date = new SimpleDateFormat("dd.MM.yyyy").parse("30.12.2015");
     	
     	TicketsResponse response = checker.checkTickets(request);
     	

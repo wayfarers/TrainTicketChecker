@@ -55,6 +55,7 @@ public class TrainTicketChecker {
 				TicketsResponse invaildResponse = new TicketsResponse();
 				invaildResponse.setError(true);
 				invaildResponse.setErrorDescription(responseError.getErrorDescription());
+				logger.error("UzGovUa error description: " + responseError.getErrorDescription());
 				return invaildResponse;
 			}
 		} catch (HttpException e) {
@@ -105,22 +106,23 @@ public class TrainTicketChecker {
 		client.getHttpConnectionManager().getParams().setSoTimeout(10000);
 		PostMethod post = new PostMethod(URL);
 
-		post.addRequestHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+		post.addRequestHeader("Accept", "*/*");
 		post.addRequestHeader("Accept-Encoding", "gzip, deflate");
 		post.addRequestHeader("Accept-Language", "uk,ru;q=0.8,en-US;q=0.5,en;q=0.3");
-		post.addRequestHeader("Cache-Control", "no-cache");
+//		post.addRequestHeader("Cache-Control", "no-cache");
 		post.addRequestHeader("Connection", "keep-alive");
-		post.addRequestHeader("Content-Length", "196"); //202
+//		post.addRequestHeader("Content-Length", "288"); //202. 196
 		post.addRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 		post.addRequestHeader("GV-Ajax", "1");
 		post.addRequestHeader("GV-Referer", "http://booking.uz.gov.ua/");
-		post.addRequestHeader("GV-Screen", "1680x1050");
-		post.addRequestHeader("GV-Token", token); // ?
+		post.addRequestHeader("GV-Screen", "1920x1080");
+		post.addRequestHeader("GV-Token", token);
 		post.addRequestHeader("GV-Unique-Host", "1");
 		post.addRequestHeader("Host", "booking.uz.gov.ua");
-		post.addRequestHeader("Pragma", "no-cache");
+//		post.addRequestHeader("Pragma", "no-cache");
+		post.addRequestHeader("Origin", "http://booking.uz.gov.ua");
 		post.addRequestHeader("Referer", "http://booking.uz.gov.ua/");
-		post.addRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0");
+		post.addRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:43.0) Gecko/20100101 Firefox/39.0");
 
 		post.addParameter("another_ec", "0");
 		post.addParameter("date_dep", new SimpleDateFormat("dd.MM.yyyy").format(request.date));

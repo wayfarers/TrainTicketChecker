@@ -52,7 +52,9 @@ public class Place {
 		case "С2":
 			placeType = PlaceType.SIT2;
 			break;
-
+		case "М":
+			placeType = PlaceType.SOFT;
+			break;
 		default:
 			break;
 		}
