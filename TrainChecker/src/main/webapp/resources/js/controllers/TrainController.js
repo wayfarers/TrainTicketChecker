@@ -28,9 +28,5 @@ var TrainController = function($scope, $http) {
 							toStation: $scope.toStation,
 							dt: $scope.dt}}).success(function(res) {$scope.trains = res.value});
 	};
-    
-    
-    
-   // $scope.fetchStationList();
 };
 

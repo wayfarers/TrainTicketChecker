@@ -5,37 +5,50 @@
 		<br>
 	<autocomplete ng-model="toStation" data="stations"
 		on-type="updateStations"></autocomplete>  -->
-	<h4>Origin:</h4>
-	<input type="text" ng-model="fromStation" placeholder="From station"
-		uib-typeahead="s for s in getFilteredStations($viewValue)"
-		typeahead-min-length="2" class="form-control" /> 
-	<h4>Destination:</h4>
-	<input
-		type="text" ng-model="toStation" placeholder="To station"
-		uib-typeahead="s for s in getFilteredStations($viewValue)"
-		typeahead-min-length="2" class="form-control" /> 
-	<h4>Trip date</h4>
-	<div class="row">
-		<div class="col-md-6">
-			<p class="input-group">
-				<input type="text" class="form-control"
-					uib-datepicker-popup="dd.MM.yyyy" ng-model="dt"
-					is-open="status.opened" min-date="minDate" max-date="maxDate"
-					datepicker-options="dateOptions" ng-required="true"
-					close-text="Close" /> <span class="input-group-btn">
-					<button type="button" class="btn btn-default"
-						ng-click="open($event)">
-						<i class="glyphicon glyphicon-calendar"></i>
-					</button>
-				</span>
-			</p>
+	<form class="form-horizontal" name="requestForm" ng-submit="sendRequest()" novalidate>
+		<h4>Origin:</h4>
+		<div class="form-group" ng-class="{ 'has-error' : requestForm.from.$error.required && !requestForm.from.$pristine }">
+			<input id="from" name="from" type="text" ng-model="fromStation" placeholder="From station"
+				uib-typeahead="s for s in getFilteredStations($viewValue)"
+				typeahead-min-length="2" class="form-control" required />
+			<span ng-show="requestForm.from.$error.required && !requestForm.from.$pristine"
+					class="help-block">Please, select station from dropdown list.</span>
 		</div>
-	</div>
-	
-	<button class="btn btn-info" ng-click="sendRequest()">Submit!</button>
-	<button class="btn btn-default" onclick="alert('Work in progress')">Create alert for this search</button>
+		<h4>Destination:</h4>
+		<div class="form-group" ng-class="{ 'has-error' : requestForm.to.$error.required && !requestForm.to.$pristine }">
+			<input id="to" name="to" type="text" ng-model="toStation" placeholder="To station"
+				uib-typeahead="s for s in getFilteredStations($viewValue)"
+				typeahead-min-length="2" class="form-control" required />
+			<span ng-show="requestForm.to.$error.required && !requestForm.to.$pristine"
+					class="help-block">Please, select station from dropdown list.</span>
+		</div>
+		
+		<h4>Trip date</h4>
+		<div class="row">
+			<div >
+				<p class="input-group">
+					<input type="text" class="form-control"
+						uib-datepicker-popup="dd.MM.yyyy" ng-model="dt"
+						is-open="status.opened" min-date="minDate" max-date="maxDate"
+						datepicker-options="dateOptions" ng-required="true"
+						close-text="Close" required /> 
+					<span class="input-group-btn">
+						<button type="button" class="btn btn-default"
+							ng-click="open($event)">
+							<i class="glyphicon glyphicon-calendar"></i>
+						</button>
+					</span>
+				</p>
+			</div>
+		</div>
 
-	<table class="table table-striped table-hover" ng-show="trains.length > 0">
+		<button class="btn btn-info" type="submit" ng-disabled="requestForm.$invalid">Submit!</button>
+		<button class="btn btn-default" onclick="alert('Work in progress')" ng-disabled="requestForm.$invalid">Create
+			alert for this search</button>
+	</form>
+
+	<table class="table table-striped table-hover"
+		ng-show="trains.length > 0">
 		<thead>
 			<tr>
 				<th style="text-align: center; width: 25px;">Train #</th>
@@ -46,14 +59,17 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="train in trains">
-				<td style="text-align: center; vertical-align: middle"  width="10%">{{train.num}}</td>
-				<td style="vertical-align: middle" width="50%">{{train.from.station}} - {{train.till.station}}</td>
-				<td style="white-space: nowrap;" >
+				<td style="text-align: center; vertical-align: middle" width="10%">{{train.num}}</td>
+				<td style="vertical-align: middle" width="50%">{{train.from.station}}
+					- {{train.till.station}}</td>
+				<td style="white-space: nowrap;">
 					<ul>
-						<li ng-repeat="place in train.types">{{place.title}} - {{place.places}}</li>
+						<li ng-repeat="place in train.types">{{place.title}} -
+							{{place.places}}</li>
 					</ul>
 				</td>
-				<td><button class="btn btn-default" onclick="alert('Work in progress')">Create alert</button></td>
+				<td><button class="btn btn-default"
+						onclick="alert('Work in progress')">Create alert</button></td>
 			</tr>
 		</tbody>
 	</table>

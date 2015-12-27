@@ -52,13 +52,7 @@ public class TrainController {
 	@RequestMapping("/getStations")
 	public @ResponseBody List<String> getStations(String rq) {
 		Locale russian = new Locale("RU");
-		
-		
-		
 		List<String> list = new ArrayList<>();
-		logger.info("Total stations: " + checker.getStationsAsMap().keySet().size());
-		logger.info("Starts test:" + rq.startsWith("Ки"));
-		logger.info("Starts test2:" + rq.toLowerCase(russian).startsWith("ки"));
 		for (String string : checker.getStationsAsMap().keySet()) {
 			if (string.toLowerCase(russian).startsWith(rq.toLowerCase(russian))) {
 				list.add(string);

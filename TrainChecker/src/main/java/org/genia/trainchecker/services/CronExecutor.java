@@ -14,20 +14,30 @@ import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.env.Environment;
 
 @Named
+@PropertySource(value = "classpath:config.properties")
 @Scope("singleton")
 public class CronExecutor {
 	JobDetail job;
 	Trigger trigger;
 	Scheduler scheduler;
+	Integer interval;
+	
+	@Inject
+	Environment env;
 	
 	@Inject
 	RequestService reqService;
 	
 	@PostConstruct
 	public void postConstruct() throws SchedulerException {
+		if ((interval = env.getProperty("request_interval", Integer.class)) == null) {
+			interval = 900;
+		}
 		// The job itself is not managed by Spring and cannot autowire fields.
 		// Therefore, we pass the service to the job via JobDataMap.
 		JobDataMap map = new JobDataMap();
@@ -40,12 +50,12 @@ public class CronExecutor {
 				.withIdentity("requestTrigger")
 				.withSchedule(
 					SimpleScheduleBuilder.simpleSchedule()
-						.withIntervalInSeconds(5).repeatForever())
+						.withIntervalInSeconds(interval).repeatForever())
 				.build();
 		scheduler = new StdSchedulerFactory().getScheduler();
 		scheduler.clear();
 		scheduler.scheduleJob(job, trigger);
-//		scheduler.start();
+		scheduler.start();
 		
 	}
 	
