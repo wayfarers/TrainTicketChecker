@@ -52,11 +52,14 @@ public class Place {
 		case "С2":
 			placeType = PlaceType.SIT2;
 			break;
+		case "С3":
+			placeType = PlaceType.SIT3;
+			break;
 		case "М":
 			placeType = PlaceType.SOFT;
 			break;
 		default:
-			break;
+			throw new RuntimeException("Unknown place type with letter " + type + "and title" + title + ".");
 		}
 	}
 }
