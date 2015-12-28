@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -57,6 +58,9 @@ public class RequestService {
 		}
 
 		for (org.genia.trainchecker.entities.TicketsRequest ticketsRequest : ticketsRequests) {
+			if (ticketsRequest.getTripDate().before(Calendar.getInstance(TimeZone.getTimeZone("Europe/Kiev")).getTime())) {
+				continue;
+			}
 			org.genia.trainchecker.core.TicketsResponse currentResponse = sendRequest(converter.toCore(ticketsRequest));
 			org.genia.trainchecker.entities.TicketsResponse response = converter.convertToEntity(currentResponse);
 			response.setTicketsRequest(ticketsRequest);
