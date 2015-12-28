@@ -77,7 +77,7 @@ public class TrainTicketChecker {
 		if (matcher.find()) {
 			String obfuscated = matcher.group(0);
 			//logger.info(obfuscated);
-			ScriptEngineManager factory = new ScriptEngineManager();
+			ScriptEngineManager factory = new ScriptEngineManager(null);
 			ScriptEngine engine = factory.getEngineByName("JavaScript");
 			try {
 				engine.eval(adapter + obfuscated);
