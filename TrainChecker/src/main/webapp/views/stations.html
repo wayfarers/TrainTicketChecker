@@ -46,6 +46,8 @@
 		<button class="btn btn-default" onclick="alert('Work in progress')" ng-disabled="requestForm.$invalid">Create
 			alert for this search</button>
 	</form>
+	<br/>
+	<div class="alert alert-info" role="alert" ng-show="errorMsg != null">{{errorMsg}}</div>
 
 	<table class="table table-striped table-hover"
 		ng-show="trains.length > 0">

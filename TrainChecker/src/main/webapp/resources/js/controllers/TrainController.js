@@ -26,7 +26,7 @@ var TrainController = function($scope, $http) {
 		$http.get('stations/sendRequest', 
 				{params: {fromStation: $scope.fromStation, 
 							toStation: $scope.toStation,
-							dt: $scope.dt}}).success(function(res) {$scope.trains = res.value});
+							dt: $scope.dt}}).success(function(res) {$scope.trains = res.value; $scope.errorMsg = res.errorDescription});
 	};
 };
 
