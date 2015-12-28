@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -58,7 +59,10 @@ public class TrainCheckerTest {
 		TicketsRequest request = new TicketsRequest();
 		request.setFrom(map.get("Київ"));
 		request.setTill(map.get("Київ"));
-		request.setDate(Calendar.getInstance(TimeZone.getTimeZone("Europe/Kiev")).getTime());
+		
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.add(Calendar.DATE, 1);
+		request.setDate(cal.getTime());
 		TicketsResponse response = checker.checkTickets(request);
 		assertTrue(response.isError());
 		assertEquals("Станції відправлення та призначення співпадають", response.getErrorDescription());
