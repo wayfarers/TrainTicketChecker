@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.genia.trainchecker.core.Station;
 import org.genia.trainchecker.core.TicketsRequest;
@@ -57,7 +58,7 @@ public class TrainCheckerTest {
 		TicketsRequest request = new TicketsRequest();
 		request.setFrom(map.get("Київ"));
 		request.setTill(map.get("Київ"));
-		request.setDate(Calendar.getInstance().getTime());
+		request.setDate(Calendar.getInstance(TimeZone.getTimeZone("Europe/Kiev")).getTime());
 		TicketsResponse response = checker.checkTickets(request);
 		assertTrue(response.isError());
 		assertEquals("Станції відправлення та призначення співпадають", response.getErrorDescription());
