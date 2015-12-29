@@ -31,11 +31,16 @@ public class DataBaseConfig {
 	@Inject
 	Environment env;
 
+	// TODO: Add c3p0 connection pool
 	@Bean
 	public DataSource getDataSource() {
 		BasicDataSource ds = new BasicDataSource();
 		ds.setDriverClassName("com.mysql.jdbc.Driver");
-		ds.setUrl(env.getProperty("jdbc.url"));
+		
+		String url = env.getProperty("jdbc.url");
+		url += (url.contains("?") ? "&" : "?") + "useUnicode=yes&characterEncoding=UTF-8";
+		
+		ds.setUrl(url);
 		ds.setUsername(env.getProperty("jdbc.username"));
 		ds.setPassword(env.getProperty("jdbc.password"));
 		return ds;
