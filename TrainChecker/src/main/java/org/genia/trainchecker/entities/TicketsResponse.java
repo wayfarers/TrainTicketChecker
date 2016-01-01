@@ -28,7 +28,7 @@ public class TicketsResponse {
 	private String errorDescription;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date time;
-	private Integer requestLatency;
+	private Long requestLatency;
 	
 	@ManyToOne
 	@JoinColumn(name = "ticketsRequestId")
@@ -62,10 +62,10 @@ public class TicketsResponse {
 	public void setTime(Date time) {
 		this.time = time;
 	}
-	public Integer getRequestLatency() {
+	public Long getRequestLatency() {
 		return requestLatency;
 	}
-	public void setRequestLatency(Integer requestLatency) {
+	public void setRequestLatency(Long requestLatency) {
 		this.requestLatency = requestLatency;
 	}
 	public TicketsRequest getTicketsRequest() {

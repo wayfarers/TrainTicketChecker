@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 
 @Named
-@PropertySource(value = "classpath:config.properties")
 @Scope("singleton")
 public class CronExecutor {
 	public static final int START_DELAY = 10;

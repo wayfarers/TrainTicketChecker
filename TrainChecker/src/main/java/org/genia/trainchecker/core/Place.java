@@ -9,7 +9,7 @@ public class Place {
 	@JsonProperty("letter")
 	PlaceType placeType;
 	int places;
-
+	
 	public String getTitle() {
 		return title;
 	}

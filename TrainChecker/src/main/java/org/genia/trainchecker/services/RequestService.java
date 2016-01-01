@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.TimeZone;
@@ -18,10 +19,14 @@ import org.genia.trainchecker.core.TrainTicketChecker;
 import org.genia.trainchecker.entities.UserRequest;
 import org.genia.trainchecker.repositories.TicketsResponseRepository;
 import org.genia.trainchecker.repositories.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RequestService {
+	
+	final static Logger logger = LoggerFactory.getLogger(RequestService.class);
 
 	@Inject
 	private TrainTicketChecker checker;
@@ -51,6 +56,7 @@ public class RequestService {
 	}
 
 	public void sendActiveRequests() {
+		logger.info("Sending active requests...");
 		List<UserRequest> userRequests = userRepository.findActive();
 		HashSet<org.genia.trainchecker.entities.TicketsRequest> ticketsRequests = new HashSet<>();
 		for (UserRequest userRequest : userRequests) {
@@ -58,24 +64,41 @@ public class RequestService {
 		}
 
 		for (org.genia.trainchecker.entities.TicketsRequest ticketsRequest : ticketsRequests) {
-			if (ticketsRequest.getTripDate().before(Calendar.getInstance(TimeZone.getTimeZone("Europe/Kiev")).getTime())) {
+			Date dateNow = Calendar.getInstance(TimeZone.getTimeZone("Europe/Kiev")).getTime();
+			if (ticketsRequest.getTripDate().before(makeMidnight(dateNow))) {
 				continue;
 			}
+			long time = System.currentTimeMillis();
 			org.genia.trainchecker.core.TicketsResponse currentResponse = sendRequest(converter.toCore(ticketsRequest));
+			long latency = System.currentTimeMillis() - time;
 			org.genia.trainchecker.entities.TicketsResponse response = converter.convertToEntity(currentResponse);
 			response.setTicketsRequest(ticketsRequest);
-			System.out.println("Response details:\n");
-			System.out.printf("Requested direction: %s - %s%n", ticketsRequest.getFrom().getStationName(),
+			logger.info("Response details:");
+			logger.info("Requested direction: {} - {}", ticketsRequest.getFrom().getStationName(),
 					ticketsRequest.getTo().getStationName());
 			if (currentResponse.isError()) {
-				System.out.println(currentResponse.getErrorDescription());
+				logger.info(currentResponse.getErrorDescription());
 			} else {
 				for (Train train : currentResponse.getTrains()) {
-					System.out.printf("%s\t%s - %s, %d free places total%n", train.getNum(), train.getFrom().getName(),
+					logger.info("{}\t{} - {}, {} free places total", train.getNum(), train.getFrom().getName(),
 							train.getTill().getName(), train.getTotalPlaces());
 				}
 			}
+			logger.info("\n");
+			response.setRequestLatency(latency);
 			responseRepository.save(response);
 		}
+		logger.info("Sending active requests complete.");
+	}
+	
+	public Date makeMidnight(Date date) {
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		
+		return cal.getTime();
 	}
 }

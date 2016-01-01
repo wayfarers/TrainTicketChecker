@@ -56,7 +56,6 @@ public class RequestConverter {
 		TicketsResponse response = new TicketsResponse();
 		response.setData(coreResponse.getData());
 		response.setErrorDescription(coreResponse.getErrorDescription());
-		response.setRequestLatency(0);										//TODO: implement latency
 		response.setTime(Calendar.getInstance().getTime());
 //		response.setTicketsRequest(ticketsRequest);
 		
