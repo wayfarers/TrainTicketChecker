@@ -4,10 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -17,15 +15,16 @@ import org.genia.trainchecker.core.TicketsResponse;
 import org.genia.trainchecker.core.Train;
 import org.genia.trainchecker.core.TrainTicketChecker;
 import org.genia.trainchecker.services.CronExecutor;
+import org.genia.trainchecker.services.RequestService;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 @RequestMapping("/stations")
@@ -35,9 +34,10 @@ public class TrainController {
 	
 	@Inject
 	private TrainTicketChecker checker;
-	
 	@Inject
 	private CronExecutor cronExecotor;
+	@Inject
+	public RequestService requestService;
 	
 	@RequestMapping("/stationlist.json")
 	public @ResponseBody List<String> getAllStations() {
@@ -76,6 +76,13 @@ public class TrainController {
 					train.getFrom().getName(), train.getTill().getName(), train.getTotalPlaces());
 		}
 		return response;
+	}
+	
+	@RequestMapping("/createAlert")
+	public @ResponseBody String createAlert(String fromStation, String toStation, String tripDate) throws ParseException, JsonProcessingException {
+		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(tripDate.substring(0, 10));
+		String msg = requestService.createAlert(fromStation, toStation, null, date);
+		return new ObjectMapper().writer().writeValueAsString(msg);
 	}
 	
 	@RequestMapping("/startJob")

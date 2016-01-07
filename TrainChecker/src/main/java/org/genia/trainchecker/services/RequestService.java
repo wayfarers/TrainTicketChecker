@@ -17,8 +17,11 @@ import org.genia.trainchecker.core.TicketsResponse;
 import org.genia.trainchecker.core.Train;
 import org.genia.trainchecker.core.TrainTicketChecker;
 import org.genia.trainchecker.entities.UserRequest;
+import org.genia.trainchecker.repositories.StationRepositoryCustom;
+import org.genia.trainchecker.repositories.TicketsRequestRepository;
 import org.genia.trainchecker.repositories.TicketsResponseRepository;
 import org.genia.trainchecker.repositories.UserRepository;
+import org.genia.trainchecker.repositories.UserRequestRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -33,9 +36,15 @@ public class RequestService {
 	@Inject
 	private UserRepository userRepository;
 	@Inject
+	private UserRequestRepository userRequestRepository;
+	@Inject
 	RequestConverter converter;
 	@Inject
 	private TicketsResponseRepository responseRepository;
+	@Inject
+	public StationRepositoryCustom stationRepo;
+	@Inject
+	public TicketsRequestRepository requestRepository;
 
 	public TicketsResponse sendRequest(String fromStation, String toStation, String dt) throws ParseException {
 		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dt.substring(0, 10));
@@ -100,5 +109,22 @@ public class RequestService {
 		cal.set(Calendar.MILLISECOND, 0);
 		
 		return cal.getTime();
+	}
+	
+	public String createAlert(String fromStation, String toStation, String trainNum, Date tripDate) {
+		org.genia.trainchecker.entities.TicketsRequest request = new org.genia.trainchecker.entities.TicketsRequest();
+		request.setFrom(stationRepo.getStation(fromStation));
+		request.setTo(stationRepo.getStation(toStation));
+		request.setTripDate(tripDate);
+		if (request.getFrom() == null || request.getTo() == null) {
+			return "Error: wrong stations selected. Please, check it again.";
+		}
+		requestRepository.save(request);
+		UserRequest userRequest = new UserRequest();
+		userRequest.setRequest(request);
+		userRequest.setUser(userRepository.findOne(1));		//TODO: hardcoded for now
+		userRequest.setActive(true);
+		userRequestRepository.save(userRequest);
+		return "Alert created!";
 	}
 }

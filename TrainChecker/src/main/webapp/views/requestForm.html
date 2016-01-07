@@ -1,0 +1,14 @@
+<style type="text/css">
+.form-control.short {width: 100px; display: inline;}
+</style>
+<div>
+	<h2>Create alert:</h2>
+	<p><b>Requested direction:</b> {{fromStation}} - {{toStation}} for {{tripDate | date: 'dd-MM-yyyy'}}</p>
+	Train #: <input class="form-control short" id="train" ng-model="trainNum" placeholder="ANY">
+	<button class="btn btn-default" ng-click="createAlert()">Create alert!</button>
+	<br />
+	<br />
+	<div class="alert alert-info" role="alert" ng-show="alertMsg != null">{{alertMsg}}</div>
+	<a href="#/wip">View 'My requests'</a>
+</div>
+

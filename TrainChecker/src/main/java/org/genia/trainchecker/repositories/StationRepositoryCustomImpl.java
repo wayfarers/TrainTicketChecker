@@ -38,4 +38,20 @@ public class StationRepositoryCustomImpl implements StationRepositoryCustom {
 		}
 		return station;
 	}
+
+	@Override
+	public Station getStation(String stationName) {
+		Station station = repository.getByStationName(stationName);
+		if (station == null) {
+			station = new Station();
+			station.setStationName(stationName);
+			org.genia.trainchecker.core.Station coreStationCorrect = checker.getStationsAsMap()
+					.get(stationName);
+			if (coreStationCorrect != null) {
+				station.setStationIdUz(coreStationCorrect.getStationId());
+			}
+			repository.save(station);
+		}
+		return station;
+	}
 }

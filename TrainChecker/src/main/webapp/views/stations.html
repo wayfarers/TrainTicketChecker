@@ -10,7 +10,7 @@
 		<div class="form-group" ng-class="{ 'has-error' : requestForm.from.$error.required && !requestForm.from.$pristine }">
 			<input id="from" name="from" type="text" ng-model="fromStation" placeholder="From station"
 				uib-typeahead="s for s in getFilteredStations($viewValue)"
-				typeahead-min-length="2" class="form-control" required />
+				typeahead-min-length="2" class="form-control" required autocomplete="off" />
 			<span ng-show="requestForm.from.$error.required && !requestForm.from.$pristine"
 					class="help-block">Please, select station from dropdown list.</span>
 		</div>
@@ -18,7 +18,7 @@
 		<div class="form-group" ng-class="{ 'has-error' : requestForm.to.$error.required && !requestForm.to.$pristine }">
 			<input id="to" name="to" type="text" ng-model="toStation" placeholder="To station"
 				uib-typeahead="s for s in getFilteredStations($viewValue)"
-				typeahead-min-length="2" class="form-control" required />
+				typeahead-min-length="2" class="form-control" required autocomplete="off" />
 			<span ng-show="requestForm.to.$error.required && !requestForm.to.$pristine"
 					class="help-block">Please, select station from dropdown list.</span>
 		</div>
@@ -43,8 +43,8 @@
 		</div>
 
 		<button class="btn btn-info" type="submit" ng-disabled="requestForm.$invalid">Submit!</button>
-		<button class="btn btn-default" onclick="alert('Work in progress')" ng-disabled="requestForm.$invalid">Create
-			alert for this search</button>
+		<a class="btn btn-default" role="button" ng-click="requestAlert()" ng-disabled="requestForm.$invalid">Create
+			alert for this search</a>
 	</form>
 	<br/>
 	<div class="alert alert-info" role="alert" ng-show="errorMsg != null">{{errorMsg}}</div>
