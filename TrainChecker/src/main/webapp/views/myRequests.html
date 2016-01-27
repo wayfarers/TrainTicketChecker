@@ -1,0 +1,43 @@
+<style type="text/css">
+.bordered {border: 1px solid #e1e1e8; border-radius: 4px; padding: 10px;}
+.red {color: red; font-size: 200%}
+.green {color: green; font-size: 200%}
+</style>
+
+<h3 class="text-center">My alerts</h3>
+<br />
+<div class="bordered">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th style="text-align: center;">ID</th>
+				<th style="text-align: center;">Direction</th>
+				<th style="text-align: center;">Train #</th>
+				<th style="text-align: center;">Trip date</th>
+				<th style="text-align: center;">Status</th>
+				<th style="text-align: center;"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="request in requests" >
+				<td>{{request.id}}</td>
+				<td style="text-align: center">{{request.request.from.stationName}} - {{request.request.to.stationName}}</td>
+				<td>{{request.trainNum}}</td>
+				<td>{{request.request.tripDate | date: 'dd-MM-yyyy'}}</td>
+				<td style="text-align: center;"><span ng-class="{'glyphicon glyphicon-ok green': request.active, 'glyphicon glyphicon-remove red': !request.active}" aria-hidden="true"></span> </td>
+				<td>
+					<button style="width: 100%" type="button" ng-click="changeStatus(request.id)" class="btn btn-success" ng-show="!request.active">
+						<span class="glyphicon glyphicon-refresh" aria-hidden="true" style="margin-right: 10px"></span>Activate
+					</button>
+					<button style="width: 100%" type="button" ng-click="changeStatus(request.id)" class="btn btn-danger" ng-show="request.active">
+						<span class="glyphicon glyphicon-flash" aria-hidden="true" style="margin-right: 10px"></span> Deactivate
+					</button>
+				</td>
+				
+			
+			</tr>
+		</tbody>
+	
+	</table>
+
+</div>
