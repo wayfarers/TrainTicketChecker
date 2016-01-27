@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Named
 @Entity
 public class UserRequest {
@@ -19,6 +21,7 @@ public class UserRequest {
 	private String trainNum;
 	private Boolean active;
 	
+//	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "userId")
 	private User user;

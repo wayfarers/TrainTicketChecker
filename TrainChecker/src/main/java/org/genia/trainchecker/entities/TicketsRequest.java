@@ -1,6 +1,8 @@
 package org.genia.trainchecker.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Named;
 import javax.persistence.Column;
@@ -12,8 +14,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
+import org.genia.trainchecker.config.JsonOptions;
 import org.genia.trainchecker.core.PlaceType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Named
 @Entity
@@ -34,6 +40,10 @@ public class TicketsRequest {
 	@ManyToOne
 	@JoinColumn(name = "toStation")
 	private Station to;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy="ticketsRequest")
+	private List<TicketsResponse> responses = new ArrayList<>();
 	
 	public Integer getId() {
 		return id;
@@ -65,7 +75,17 @@ public class TicketsRequest {
 	public void setTo(Station to) {
 		this.to = to;
 	}
-	
+	public List<TicketsResponse> getResponses() {
+		
+		if (!JsonOptions.isIgnored("needResponses")) {
+			return null;
+		}
+		
+		return responses;
+	}
+	public void setResponses(List<TicketsResponse> responses) {
+		this.responses = responses;
+	}
 	public void setFrom(org.genia.trainchecker.core.Station from) {
 		Station st = new Station();
 		st.setStationName(from.getName());
