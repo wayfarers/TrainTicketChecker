@@ -21,7 +21,7 @@ public class UserRequestController {
 	@RequestMapping("/getUserRequests")
 	public @ResponseBody List<UserRequest> getUserRequests() {
 		List<UserRequest> requests = requestRepository.findByUserId(1);
-		
+		//TODO: make request list according to current logged in user.
 		JsonOptions.ignore("needResponses");
 		
 		return requests;
@@ -34,5 +34,5 @@ public class UserRequestController {
 		request.setActive(!request.getActive());
 		requestRepository.save(request);
 	}
-
+	
 }

@@ -5,7 +5,7 @@ var TrainCheckerApp = {};
 var app = angular.module('TrainCheckerApp', ['ngRoute', 'ui.bootstrap', 'filters']);
 
 // Declare app level module which depends on filters, and services
-app.config(['$routeProvider', function ($routeProvider) {
+app.config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
     $routeProvider.when('/stations', {
         templateUrl: 'views/stations.html',
         controller: 'TrainController'
@@ -29,8 +29,23 @@ app.config(['$routeProvider', function ($routeProvider) {
         controller: 'UserRequestController'
     });
     
-    $routeProvider.otherwise({redirectTo: '/stations'});
+    $routeProvider.when('/login', {
+		templateUrl : 'views/login.html',
+		controller : 'navigation'
+	});
     
+    $routeProvider.when('/', {
+		templateUrl : 'views/home.html',
+		controller : 'navigation'
+	});
     
+    $routeProvider.when('/registration', {
+		templateUrl : 'views/registration.html',
+		controller : 'userController'
+	});
+    
+    $routeProvider.otherwise({redirectTo: '/'});
+    
+    $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 
 }]);

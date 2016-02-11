@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('TrainCheckerApp').controller('UserRequestController', ['$scope', '$http', function($scope, $http) {
-	$scope.requests = null;
 	
+	$scope.requests = null;
 	
 	$scope.getUserRequests = function() {
 		$http.get('userRequests/getUserRequests').success(function(res){

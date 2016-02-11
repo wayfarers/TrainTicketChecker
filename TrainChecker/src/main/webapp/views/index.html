@@ -4,33 +4,43 @@
     <meta charset="utf-8">
     <title>Service App</title>
     <link rel="stylesheet" href="resources/css/app.css"/>
-    <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css" />
+	
+	<script src="components/angular/angular.js"></script>
+	<script src="components/angular-route/angular-route.min.js"></script>
+	<script src="components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+	
+	<script src="resources/js/app.js"></script>
+	<script src="resources/js/filters.js"></script>
+	<script src="resources/js/controllers/navigation.js"></script>
 </head>
 <body>
-<nav class="navbar navbar-inverse" role="navigation">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a href="#"><img src="resources/images/uz_logo.png"></a>
+	<div ng-controller="navigation" ng-cloak>
+	<nav class="navbar navbar-inverse" role="navigation">
+  	<div class="container-fluid">
+    	<!-- Brand and toggle get grouped for better mobile display -->
+    	<div class="navbar-header">
+      		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+      		</button>
+      	<a href="#/"><img src="resources/images/uz_logo.png"></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-      <li><a href="#">Home</a></li>
-        <li> <a href="#">Search</a></li>
-        <li><a href="#/userRequests">My alerts</a></li>
+      <li><a href="#/">Home</a></li>
+        <li> <a href="#/stations">Search</a></li>
+        <li ng-if="authenticated"><a href="#/userRequests">My alerts</a></li>
         <li><a href="#/about">About</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-      <li><a href="#/wip">Profile</a></li>
-      <li><a href="#/wip">Login</a></li>
+      <li ng-show="authenticated"><a href="#/wip">Profile</a></li>
+      <li ng-show="!authenticated"><a href="#/login">Login</a></li>
+      <li ng-show="authenticated"><a href="" ng-click="logout()">Logout</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
@@ -39,18 +49,19 @@
     <div ng-view></div>
 </div>
 
-<script src="components/angular/angular.min.js"></script>
-<script src="components/angular-route/angular-route.min.js"></script>
-<script src="components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+	<div id="footer">Train Ticket Checker. :: Made by Wayfarer :: (c) 2016</div>
+	<br />
+</div>
 
-<script src="resources/js/app.js"></script>
-<script src="resources/js/filters.js"></script>
+
+
 <script src="resources/js/services/requestService.js"></script>
 <script src="resources/js/controllers/TrainController.js"></script>
 <script src="resources/js/controllers/AlertController.js"></script>
 <script src="resources/js/controllers/UserRequestController.js"></script>
-<script src="resources/js/datepicker.js"></script>
+<script src="resources/js/controllers/userController.js"></script>
 
+<script src="resources/js/datepicker.js"></script>
 
 </body>
 </html>

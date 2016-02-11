@@ -6,6 +6,19 @@
  */
 
 angular.module('TrainCheckerApp').controller('TrainController', ['$scope', '$http', '$location', 'requestService', function($scope, $http, $location, requestService) {
+	
+//	function checkAuthentication() {
+//		if ($rootScope.authenticated) {
+//			$location.path("/");
+//			$scope.error = false;
+//		} else {
+//			$location.path("/login");
+//			$scope.error = true;
+//		}
+//	}
+//	
+//	checkAuthentication();
+	
 	addDateTo($scope);
 	
 	$scope.trains = [];

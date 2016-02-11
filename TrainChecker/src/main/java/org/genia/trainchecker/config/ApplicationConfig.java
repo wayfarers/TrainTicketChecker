@@ -10,7 +10,7 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @ComponentScan(basePackages = {"org.genia.trainchecker"})
 @PropertySource(value = "classpath:config.properties")
-@Import(DataBaseConfig.class)
+@Import({DataBaseConfig.class, SecurityConfig.class})
 public class ApplicationConfig {
 	
 	@Bean

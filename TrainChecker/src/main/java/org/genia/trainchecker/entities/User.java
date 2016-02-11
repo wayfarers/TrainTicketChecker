@@ -19,6 +19,7 @@ public class User {
 	private String name;
 	private String password;
 	private String email;
+	private String login;
 	
 	@Enumerated(EnumType.STRING)
 	private Role role;
@@ -56,5 +57,13 @@ public class User {
 	}
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
 	}
 }
