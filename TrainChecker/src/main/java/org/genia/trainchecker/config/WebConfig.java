@@ -39,7 +39,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31556926);
 		registry.addResourceHandler("/views/**").addResourceLocations("/views/");
 		registry.addResourceHandler("/components/**").addResourceLocations("/resources/bower_components/");
 	}

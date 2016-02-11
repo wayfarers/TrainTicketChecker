@@ -26,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource)
+		/// Select name, password and 'enabled' flag
 		.usersByUsernameQuery(
 			"select name, password, 1 from User where name=?")
 		.authoritiesByUsernameQuery(
