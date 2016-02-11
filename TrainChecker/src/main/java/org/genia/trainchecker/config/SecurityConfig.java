@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 				.antMatchers("/views/stations.html", "/views/registration.html", "/views/index.html", "/login",
 						"/logout", "/register", "/views/home.html", "/", "/resources/**", "/stations/**", "/components/**",
-						"/views/about.html")
+						"/views/about.html", "/views/wip.html")
 				.permitAll().anyRequest().authenticated()
 		.and()
 			.csrf().csrfTokenRepository(csrfTokenRepository()).and()
