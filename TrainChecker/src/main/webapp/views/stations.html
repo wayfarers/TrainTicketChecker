@@ -1,10 +1,9 @@
 <div>
 	<h1 class="text-center">Search for tickets on UzGovUa</h1>
-	<!-- <autocomplete ng-model="fromStation" data="stations"
-		on-type="updateStations"></autocomplete>
-		<br>
-	<autocomplete ng-model="toStation" data="stations"
-		on-type="updateStations"></autocomplete>  -->
+	<div class="alert alert-info" style="vertical-align: middle;">
+		<!-- <span class=" glyphicon glyphicon-info-sign"  aria-hidden="true"></span> --> 
+		<img alt="Info" src="resources/images/info-sign.png" style="width: 5%; height: 5%; margin-right: 10px"> Please, enter station's names in <span style="color: red; font-weight: bold">Ukrainian</span> language.
+	</div>
 	<form class="form-horizontal" name="requestForm" ng-submit="sendRequest()" novalidate>
 		<h4>Origin:</h4>
 		<div class="form-group" ng-class="{ 'has-error' : requestForm.from.$error.required && !requestForm.from.$pristine }">
