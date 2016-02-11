@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.genia.trainchecker.config.JsonOptions;
 import org.genia.trainchecker.entities.UserRequest;
 import org.genia.trainchecker.repositories.UserRequestRepository;
+import org.genia.trainchecker.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,10 +18,12 @@ public class UserRequestController {
 	
 	@Inject
 	private UserRequestRepository requestRepository;
+	@Inject
+	private UserService userService;
 	
 	@RequestMapping("/getUserRequests")
 	public @ResponseBody List<UserRequest> getUserRequests() {
-		List<UserRequest> requests = requestRepository.findByUserId(1);
+		List<UserRequest> requests = requestRepository.findByUserId(userService.getCurrentLoggedInUser().getId());
 		//TODO: make request list according to current logged in user.
 		JsonOptions.ignore("needResponses");
 		

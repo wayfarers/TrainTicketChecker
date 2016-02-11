@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -42,8 +41,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 			.logout().logoutSuccessUrl("/logout")
 		.and()
-			.authorizeRequests().antMatchers("/views/registration.html", "/views/index.html", "/login", "/logout", "/register", "/views/home.html", "/", "/resources/**", "/components/**", "/views/about.html").permitAll()
-			.anyRequest().authenticated()
+			.authorizeRequests()
+				.antMatchers("/views/stations.html", "/views/registration.html", "/views/index.html", "/login",
+						"/logout", "/register", "/views/home.html", "/", "/resources/**", "/stations/**", "/components/**",
+						"/views/about.html")
+				.permitAll().anyRequest().authenticated()
 		.and()
 			.csrf().csrfTokenRepository(csrfTokenRepository()).and()
 		    .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);

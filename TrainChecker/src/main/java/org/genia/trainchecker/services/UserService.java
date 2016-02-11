@@ -6,6 +6,7 @@ import org.genia.trainchecker.entities.NewUser;
 import org.genia.trainchecker.entities.Role;
 import org.genia.trainchecker.entities.User;
 import org.genia.trainchecker.repositories.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,9 +27,8 @@ public class UserService {
 	}
 	
 	public User getCurrentLoggedInUser() {
-		
-		
-		
-		return null;
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		User user = userRepository.findByLogin(username);
+		return user;
 	}
 }

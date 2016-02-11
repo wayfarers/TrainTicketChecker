@@ -45,6 +45,8 @@ public class RequestService {
 	public StationRepositoryCustom stationRepo;
 	@Inject
 	public TicketsRequestRepository requestRepository;
+	@Inject
+	private UserService userService;
 
 	public TicketsResponse sendRequest(String fromStation, String toStation, String dt) throws ParseException {
 		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dt.substring(0, 10));
@@ -122,7 +124,8 @@ public class RequestService {
 		requestRepository.save(request);
 		UserRequest userRequest = new UserRequest();
 		userRequest.setRequest(request);
-		userRequest.setUser(userRepository.findOne(1));		//TODO: hardcoded for now
+//		userRequest.setUser(userRepository.findOne(1));		//TODO: hardcoded for now
+		userRequest.setUser(userService.getCurrentLoggedInUser());
 		userRequest.setActive(true);
 		userRequestRepository.save(userRequest);
 		return "Alert created!";
