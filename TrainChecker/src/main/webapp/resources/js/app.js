@@ -2,7 +2,7 @@
 
 var TrainCheckerApp = {};
 
-var app = angular.module('TrainCheckerApp', ['ngRoute', 'ui.bootstrap', 'filters']);
+var app = angular.module('TrainCheckerApp', ['ngRoute', 'ui.bootstrap', 'filters', 'ngLoadingSpinner']);
 
 // Declare app level module which depends on filters, and services
 app.config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {

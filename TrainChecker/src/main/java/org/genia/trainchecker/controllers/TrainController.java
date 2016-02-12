@@ -51,10 +51,22 @@ public class TrainController {
 	
 	@RequestMapping("/getStations")
 	public @ResponseBody List<String> getStations(String rq) {
+		List<String> majorStations = new ArrayList<>();
+		majorStations.add("Київ");
+		majorStations.add("Одеса");
+		majorStations.add("Львів");
+		majorStations.add("Харків");
 		Locale russian = new Locale("RU");
 		List<String> list = new ArrayList<>();
+		
+		for (String majorStation : majorStations) {
+			if (majorStation.toLowerCase(russian).startsWith(rq.toLowerCase(russian))) {
+				list.add(majorStation);
+			}
+		}
+		
 		for (String string : checker.getStationsAsMap().keySet()) {
-			if (string.toLowerCase(russian).startsWith(rq.toLowerCase(russian))) {
+			if (string.toLowerCase(russian).startsWith(rq.toLowerCase(russian)) && !list.contains(string)) {
 				list.add(string);
 				if(list.size() == 10)
 					return list;
