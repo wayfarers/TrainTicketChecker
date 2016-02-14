@@ -7,7 +7,7 @@
 <h3 class="text-center">My alerts</h3>
 <br />
 <div class="bordered">
-	<table class="table table-hover">
+	<table class="table table-hover" ng-show="requests != null && requests.length > 0">
 		<thead>
 			<tr>
 				<th style="text-align: center;">ID</th>
@@ -37,7 +37,8 @@
 			
 			</tr>
 		</tbody>
-	
 	</table>
-
+	<div style="text-align: center" ng-hide="requests != null && requests.length > 0">
+		You have no requests yet.
+	</div>
 </div>
