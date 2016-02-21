@@ -43,14 +43,16 @@ angular.module('TrainCheckerApp').controller('TrainController', ['$scope', '$htt
     };
     
     $scope.sendRequest = function() {
+    	console.log($scope.dt);
 		$http.get('stations/sendRequest', 
 				{params: {fromStation: $scope.fromStation, 
-							toStation: $scope.toStation,
-							dt: $scope.dt}}).success(function(res) {$scope.trains = res.value; $scope.errorMsg = res.errorDescription});
+							toStation: $scope.toStation, 
+							dt: $("#calendar").val()}}).success(function(res) {$scope.trains = res.value; $scope.errorMsg = res.errorDescription});
 	};
 	
 	$scope.requestAlert = function() {
-		requestService.setStations($scope.fromStation, $scope.toStation, $scope.dt);
-		 $location.path('/requestForm');
+		requestService.setStations($scope.fromStation, $scope.toStation, $("#calendar").val());
+//		requestService.setDateStr($("#calendar").val());
+		$location.path('/requestForm');
 	}
 }]);

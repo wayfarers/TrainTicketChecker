@@ -34,17 +34,22 @@ app.config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpPr
 		controller : 'navigation'
 	});
     
-    $routeProvider.when('/', {
-		templateUrl : 'views/home.html',
+    $routeProvider.when('/logout', {
+		templateUrl : 'views/logout.html',
 		controller : 'navigation'
 	});
+    
+//    $routeProvider.when('/', {
+//		templateUrl : 'views/home.html',
+//		controller : 'navigation'
+//	});
     
     $routeProvider.when('/registration', {
 		templateUrl : 'views/registration.html',
 		controller : 'userController'
 	});
     
-    $routeProvider.otherwise({redirectTo: '/'});
+    $routeProvider.otherwise({redirectTo: '/stations'});
     
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 

@@ -77,7 +77,7 @@ public class TrainController {
 	
 	@RequestMapping("/sendRequest")
 	public @ResponseBody TicketsResponse sendRequest(String fromStation, String toStation, String dt) throws ParseException {
-		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dt.substring(0, 10));
+		Date date = new SimpleDateFormat("dd.MM.yyyy").parse(dt);
 		TicketsRequest request = new TicketsRequest();
 		request.setFrom(checker.getStationsAsMap().get(fromStation));
 		request.setTill(checker.getStationsAsMap().get(toStation));
@@ -91,8 +91,8 @@ public class TrainController {
 	}
 	
 	@RequestMapping("/createAlert")
-	public @ResponseBody String createAlert(String fromStation, String toStation, String tripDate) throws ParseException, JsonProcessingException {
-		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(tripDate.substring(0, 10));
+	public @ResponseBody String createAlert(String fromStation, String toStation, String tripDate, String placeTypes) throws ParseException, JsonProcessingException {
+		Date date = new SimpleDateFormat("dd.MM.yyyy").parse(tripDate);
 		String msg = requestService.createAlert(fromStation, toStation, null, date);
 		return new ObjectMapper().writer().writeValueAsString(msg);
 	}

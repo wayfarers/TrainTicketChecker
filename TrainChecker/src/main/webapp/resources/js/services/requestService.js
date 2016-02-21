@@ -6,6 +6,7 @@ angular.module('TrainCheckerApp')
 		var toStation = null;
 		var trainNum = null;
 		var tripDate = null;
+		var tripDateStr = null;
 		
 		this.setStations = function(from, to, date){
 			fromStation = from;
@@ -23,5 +24,9 @@ angular.module('TrainCheckerApp')
 		
 		this.getTripDate = function(){
 			return tripDate;
+		}
+		
+		this.setDateStr = function(date) {
+			tripDateStr = date;
 		}
 	});

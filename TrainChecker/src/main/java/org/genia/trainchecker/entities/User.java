@@ -20,6 +20,7 @@ public class User {
 	private String password;
 	private String email;
 	private String login;
+	private Boolean enabled;
 	
 	@Enumerated(EnumType.STRING)
 	private Role role;
@@ -65,5 +66,13 @@ public class User {
 
 	public void setLogin(String login) {
 		this.login = login;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 }

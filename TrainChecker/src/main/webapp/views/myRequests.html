@@ -1,45 +1,82 @@
 <style type="text/css">
-.bordered {border: 1px solid #e1e1e8; border-radius: 4px; padding: 10px;}
-.red {color: red; font-size: 200%}
-.green {color: green; font-size: 200%}
+.bordered {
+	border: 1px solid #e1e1e8;
+	border-radius: 4px;
+	padding: 10px;
+}
+
+.red {
+	color: red;
+	font-size: 200%
+}
+
+.green {
+	color: green;
+	font-size: 200%
+}
 </style>
 
-<span us-spinner="{radius:30, width:8, length: 36}"></span>
-<h3 class="text-center">My alerts</h3>
-<br />
-<div class="bordered">
-	<table class="table table-hover" ng-show="requests != null && requests.length > 0">
-		<thead>
-			<tr>
-				<th style="text-align: center;">ID</th>
-				<th style="text-align: center;">Direction</th>
-				<th style="text-align: center;">Train #</th>
-				<th style="text-align: center;">Trip date</th>
-				<th style="text-align: center;">Status</th>
-				<th style="text-align: center;"></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="request in requests" >
-				<td>{{request.id}}</td>
-				<td style="text-align: center">{{request.request.from.stationName}} - {{request.request.to.stationName}}</td>
-				<td>{{request.trainNum}}</td>
-				<td>{{request.request.tripDate | date: 'dd-MM-yyyy'}}</td>
-				<td style="text-align: center;"><span ng-class="{'glyphicon glyphicon-ok green': request.active, 'glyphicon glyphicon-remove red': !request.active}" aria-hidden="true"></span> </td>
-				<td>
-					<button style="width: 100%" type="button" ng-click="changeStatus(request.id)" class="btn btn-success" ng-show="!request.active">
-						<span class="glyphicon glyphicon-refresh" aria-hidden="true" style="margin-right: 10px"></span>Activate
-					</button>
-					<button style="width: 100%" type="button" ng-click="changeStatus(request.id)" class="btn btn-danger" ng-show="request.active">
-						<span class="glyphicon glyphicon-flash" aria-hidden="true" style="margin-right: 10px"></span> Deactivate
-					</button>
-				</td>
-				
-			
-			</tr>
-		</tbody>
-	</table>
-	<div style="text-align: center" ng-hide="requests != null && requests.length > 0">
-		You have no requests yet.
+<div class="row">
+	<div class="col-md-6 col-md-offset-3">
+		<span us-spinner="{radius:30, width:8, length: 36}"></span>
+		<h3 class="text-center">My alerts</h3>
+		<br />
+		<div class="bordered">
+			<table class="table table-hover"
+				ng-show="requests != null && requests.length > 0">
+				<thead>
+					<tr>
+						<th style="text-align: center;">ID</th>
+						<th style="text-align: center;">Direction</th>
+						<th style="text-align: center;">Train #</th>
+						<th style="text-align: center;">Trip date</th>
+						<th style="text-align: center;">Status</th>
+						<th style="text-align: center;"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="request in requests">
+						<td>{{request.id}}</td>
+						<td style="text-align: center">{{request.request.from.stationName}}
+							- {{request.request.to.stationName}}</td>
+						<td>{{request.trainNum}}</td>
+						<td>{{request.request.tripDate | date: 'dd-MM-yyyy'}}</td>
+						<td style="text-align: center;"><span
+							ng-class="{'glyphicon glyphicon-ok green': request.active, 'glyphicon glyphicon-remove red': !request.active}"
+							aria-hidden="true"></span></td>
+						<td>
+							<button style="width: 100%" type="button"
+								ng-click="changeStatus(request.id)" class="btn btn-success"
+								ng-show="!request.active">
+								<span class="glyphicon glyphicon-refresh" aria-hidden="true"
+									style="margin-right: 10px"></span>Activate
+							</button>
+							<button style="width: 100%" type="button"
+								ng-click="changeStatus(request.id)" class="btn btn-danger"
+								ng-show="request.active">
+								<span class="glyphicon glyphicon-flash" aria-hidden="true"
+									style="margin-right: 10px"></span> Deactivate
+							</button>
+						</td>
+
+
+					</tr>
+				</tbody>
+			</table>
+			<div style="text-align: center"
+				ng-hide="requests != null && requests.length > 0">
+				You have no requests yet. <a href="#/stations">Click here to
+					search for trains and create an alert</a>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2 top-buffer">
+		<fieldset>
+		<legend>Note:</legend>
+			<p>If your request is active, you will receive notifications at
+				your email, used at registration.</p>
+			<p>Notifications will be send if new free places will appear
+				according to your request details.</p>
+		</fieldset>
 	</div>
 </div>

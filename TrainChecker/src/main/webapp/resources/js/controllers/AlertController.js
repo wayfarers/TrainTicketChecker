@@ -4,13 +4,16 @@ angular.module('TrainCheckerApp').controller('AlertController', ['$scope', '$htt
 	 $scope.fromStation = requestService.getFrom();
 	 $scope.toStation = requestService.getTo();
 	 $scope.tripDate = requestService.getTripDate();
-	
+	 $scope.placeTypes = [];
+	 
 	 $scope.createAlert = function() {
-			$scope.alertMsg = 'Sending data...';
-			$http.get('stations/createAlert', 
-					{params: {fromStation: $scope.fromStation, 
-								toStation: $scope.toStation,
-								tripDate: requestService.getTripDate()}})
-								.success(function(res) {$scope.alertMsg = res});
-		}
+		 $scope.alertMsg = 'Sending data...';
+		 $("[type=checkbox]:checked").each(function() {$scope.placeTypes.push($(this).val())})
+		 $http.get('stations/createAlert', 
+				 {params: {fromStation: $scope.fromStation, 
+					 		toStation: $scope.toStation,
+							tripDate: requestService.getTripDate(),
+							placeTypes: $scope.placeTypes}})
+							.success(function(res) {$scope.alertMsg = res});
+	 };
 }]);

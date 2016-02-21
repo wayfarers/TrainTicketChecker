@@ -20,6 +20,7 @@ public class UserRequest {
 	private Integer id;
 	private String trainNum;
 	private Boolean active;
+	private String placeTypes;
 	
 //	@JsonIgnore
 	@ManyToOne
@@ -69,6 +70,12 @@ public class UserRequest {
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
-	
-	
+
+	public String getPlaceTypes() {
+		return placeTypes;
+	}
+
+	public void setPlaceTypes(String placeTypes) {
+		this.placeTypes = placeTypes;
+	}
 }
