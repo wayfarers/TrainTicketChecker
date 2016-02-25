@@ -55,4 +55,10 @@ angular.module('TrainCheckerApp').controller('TrainController', ['$scope', '$htt
 //		requestService.setDateStr($("#calendar").val());
 		$location.path('/requestForm');
 	}
+	
+	$scope.swapStations = function() {
+		var tmp = $scope.fromStation;
+		$scope.fromStation = $scope.toStation;
+		$scope.toStation = tmp;
+	}
 }]);

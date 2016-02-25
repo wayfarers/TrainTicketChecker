@@ -91,9 +91,9 @@ public class TrainController {
 	}
 	
 	@RequestMapping("/createAlert")
-	public @ResponseBody String createAlert(String fromStation, String toStation, String tripDate, String placeTypes) throws ParseException, JsonProcessingException {
+	public @ResponseBody String createAlert(String fromStation, String toStation, String tripDate, String placeTypes, String trainNum) throws ParseException, JsonProcessingException {
 		Date date = new SimpleDateFormat("dd.MM.yyyy").parse(tripDate);
-		String msg = requestService.createAlert(fromStation, toStation, null, date);
+		String msg = requestService.createAlert(fromStation, toStation, trainNum, date, placeTypes);
 		return new ObjectMapper().writer().writeValueAsString(msg);
 	}
 	

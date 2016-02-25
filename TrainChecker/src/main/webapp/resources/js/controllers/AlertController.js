@@ -5,6 +5,7 @@ angular.module('TrainCheckerApp').controller('AlertController', ['$scope', '$htt
 	 $scope.toStation = requestService.getTo();
 	 $scope.tripDate = requestService.getTripDate();
 	 $scope.placeTypes = [];
+	 $scope.trainNum = null;
 	 
 	 $scope.createAlert = function() {
 		 $scope.alertMsg = 'Sending data...';
@@ -13,7 +14,8 @@ angular.module('TrainCheckerApp').controller('AlertController', ['$scope', '$htt
 				 {params: {fromStation: $scope.fromStation, 
 					 		toStation: $scope.toStation,
 							tripDate: requestService.getTripDate(),
-							placeTypes: $scope.placeTypes}})
+							placeTypes: $scope.placeTypes,
+							trainNum: $scope.trainNum}})
 							.success(function(res) {$scope.alertMsg = res});
 	 };
 }]);

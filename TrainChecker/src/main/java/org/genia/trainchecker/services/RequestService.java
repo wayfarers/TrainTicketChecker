@@ -113,7 +113,7 @@ public class RequestService {
 		return cal.getTime();
 	}
 	
-	public String createAlert(String fromStation, String toStation, String trainNum, Date tripDate) {
+	public String createAlert(String fromStation, String toStation, String trainNum, Date tripDate, String placeTypes) {
 		org.genia.trainchecker.entities.TicketsRequest request = new org.genia.trainchecker.entities.TicketsRequest();
 		request.setFrom(stationRepo.getStation(fromStation));
 		request.setTo(stationRepo.getStation(toStation));
@@ -124,6 +124,8 @@ public class RequestService {
 		requestRepository.save(request);
 		UserRequest userRequest = new UserRequest();
 		userRequest.setRequest(request);
+		userRequest.setTrainNum(trainNum);
+		userRequest.setPlaceTypes(placeTypes);
 //		userRequest.setUser(userRepository.findOne(1));		//TODO: hardcoded for now
 		userRequest.setUser(userService.getCurrentLoggedInUser());
 		userRequest.setActive(true);

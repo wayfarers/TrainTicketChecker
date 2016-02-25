@@ -15,7 +15,7 @@
 			<span ng-show="requestForm.from.$error.required && !requestForm.from.$pristine"
 					class="help-block">Please, select station from dropdown list.</span>
 		</div>
-		<h4>Destination:</h4>
+		<h4>Destination: <a class="btn btn-default" role="button" ng-click="swapStations()" ng-disabled="fromStation == null && toStation == null">Swap stations</a></h4>
 		<div class="form-group" ng-class="{ 'has-error' : requestForm.to.$error.required && !requestForm.to.$pristine }">
 			<input id="to" name="to" type="text" ng-model="toStation" placeholder="To station"
 				uib-typeahead="s for s in getFilteredStations($viewValue)"
@@ -43,7 +43,8 @@
 			</div>
 		</div>
 
-		<button class="btn btn-info" type="submit" ng-disabled="requestForm.$invalid">Submit!</button>
+		<button class="btn btn-info" type="submit" ng-disabled="requestForm.$invalid">Search!</button>
+		
 		<a class="btn btn-default" role="button" ng-click="requestAlert()" ng-disabled="requestForm.$invalid">Create
 			alert for this search</a>
 	</form>
