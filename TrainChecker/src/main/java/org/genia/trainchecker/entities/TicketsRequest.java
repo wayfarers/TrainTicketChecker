@@ -77,7 +77,7 @@ public class TicketsRequest {
 	}
 	public List<TicketsResponse> getResponses() {
 		
-		if (!JsonOptions.isIgnored("needResponses")) {
+		if (JsonOptions.isIgnored("needResponses")) {
 			return null;
 		}
 		

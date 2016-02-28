@@ -10,15 +10,26 @@
 	font-size: 200%
 }
 
+.grey {
+	color: grey;
+	font-size: 200%
+}
+
 .green {
 	color: green;
 	font-size: 200%
 }
+.bordered.pad-6 {
+	padding: 6px;
+}
+td {
+	vertical-align: middle
+}
 </style>
 
 <div class="row">
+<span us-spinner="{radius:30, width:8, length: 36}"></span>
 	<div class="col-md-6 col-md-offset-3">
-		<span us-spinner="{radius:30, width:8, length: 36}"></span>
 		<h3 class="text-center">My alerts</h3>
 		<br />
 		<div class="text-center">
@@ -28,12 +39,18 @@
 					according to your request details.</p>
 		</div>
 		<br />
-		<div class="bordered">
+		<label><input type="checkbox" ng-model="showExpired"> Show expired</label>
+		</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6 col-md-offset-3">
+		
+		<div class="bordered pad-6">
 			<table class="table table-hover"
 				ng-show="requests != null && requests.length > 0">
 				<thead>
 					<tr>
-						<th style="text-align: center;">ID</th>
 						<th style="text-align: center;">Direction</th>
 						<th style="text-align: center;">Train #</th>
 						<th style="text-align: center;">Trip date</th>
@@ -42,28 +59,36 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="request in requests">
-						<td>{{request.id}}</td>
+					<tr ng-repeat="request in requests" ng-click="showDetails(request)" ng-hide="!showExpired && request.expired">
 						<td style="text-align: center">{{request.request.from.stationName}}
 							- {{request.request.to.stationName}}</td>
-						<td>{{request.trainNum}}</td>
-						<td>{{request.request.tripDate | date: 'dd-MM-yyyy'}}</td>
+						<td style="text-align: center">{{request.trainNum}}</td>
+						<td style="text-align: center">{{request.request.tripDate | date: 'dd-MM-yyyy'}}</td>
 						<td style="text-align: center;"><span
-							ng-class="{'glyphicon glyphicon-ok green': request.active, 'glyphicon glyphicon-remove red': !request.active}"
+							ng-class="{'glyphicon glyphicon-ok green': request.active && !request.expired, 
+										'glyphicon glyphicon-remove red': !request.active && !request.expired, 
+										'glyphicon glyphicon-ban-circle grey': request.expired}"	
+											
 							aria-hidden="true"></span></td>
 						<td>
 							<button style="width: 100%" type="button"
 								ng-click="changeStatus(request.id)" class="btn btn-success"
-								ng-show="!request.active">
+								ng-show="!request.active && !request.expired">
 								<span class="glyphicon glyphicon-refresh" aria-hidden="true"
 									style="margin-right: 10px"></span>Activate
 							</button>
 							<button style="width: 100%" type="button"
 								ng-click="changeStatus(request.id)" class="btn btn-danger"
-								ng-show="request.active">
+								ng-show="request.active && !request.expired">
 								<span class="glyphicon glyphicon-flash" aria-hidden="true"
 									style="margin-right: 10px"></span> Deactivate
 							</button>
+							<div style="width: 100%" 
+								class="bordered pad-6 text-center"
+								ng-show="request.expired">
+								<span class="glyphicon glyphicon-remove-circle" aria-hidden="true"
+									style="margin-right: 10px"></span> Expired
+							</div>
 						</td>
 
 
@@ -76,5 +101,32 @@
 					search for trains and create an alert</a>
 			</div>
 		</div>
+	</div>
+	<div class="col-md-2 bordered" ng-show="requestDetails != null">
+		
+		<table class="table">
+			<tr>
+				<td style="text-align: right;">Requested train: </td>
+				<td>{{requestDetails.trainNum}}</td>
+			</tr>
+			<tr>
+				<td style="text-align: right;">Status: </td>
+				<td><span ng-hide="!request.expired">{{requestDetails.active | checkStatus}}</span><span ng-show="requestDetails.expired">Expired</span></td>
+			</tr>
+			<tr>
+				<td style="text-align: right;">Selected place types: </td>
+				<td>{{requestDetails.placeTypes}}</td>
+			</tr>
+			<tr>
+				<td style="text-align: right;">Last update: </td>
+				<!-- <td>{{requestDetails.lastResponse.time}}</td> -->
+				<td>(...to be done)</td>
+			</tr>
+			<tr>
+				<td style="text-align: right;">Last results: </td>
+				<td>(...to be done)</td>
+			</tr>
+		</table>
+		
 	</div>
 </div>

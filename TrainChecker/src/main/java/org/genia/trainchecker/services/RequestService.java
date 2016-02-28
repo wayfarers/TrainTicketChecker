@@ -102,7 +102,7 @@ public class RequestService {
 		logger.info("Sending active requests complete.");
 	}
 	
-	public Date makeMidnight(Date date) {
+	public static Date makeMidnight(Date date) {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(date);
 		cal.set(Calendar.HOUR, 0);

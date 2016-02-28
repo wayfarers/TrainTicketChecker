@@ -14,3 +14,12 @@
 }
 
 .top-buffer { margin-top:50px; }
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #ccf5ff;
+}
+
+.fix{
+  position:absolute;
+  top: 10em;
+}

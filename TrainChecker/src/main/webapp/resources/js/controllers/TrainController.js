@@ -61,4 +61,9 @@ angular.module('TrainCheckerApp').controller('TrainController', ['$scope', '$htt
 		$scope.fromStation = $scope.toStation;
 		$scope.toStation = tmp;
 	}
+	
+	$scope.testStations = function() {
+		$scope.fromStation = 'Київ';
+	    $scope.toStation = 'Львів';
+	}
 }]);

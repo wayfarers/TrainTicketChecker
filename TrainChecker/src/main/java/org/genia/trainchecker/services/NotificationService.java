@@ -42,6 +42,8 @@ public class NotificationService {
 			TicketsResponse last = userRequest.getRequest().getResponses().get(0);
 			
 			//TODO: implement compearing according to a filter.
+			
+			
 			if (getPlacesCount(last, userRequest) > getPlacesCount(previous, userRequest)) {
 				//TODO: send appropriate notification
 			}
@@ -57,9 +59,11 @@ public class NotificationService {
 		
 		for (TicketsResponseItem item : response.getItems()) {
 			if (StringUtils.isEmpty(userRequest.getTrainNum())
-					|| item.getTrain().getTrainNum().equalsIgnoreCase(userRequest.getTrainNum())) {
+					|| StringUtils.containsIgnoreCase(item.getTrain().getTrainNum(), userRequest.getTrainNum())) {
 				for (Place place : item.getAvailablePlaces()) {
-					totalPlaces += place.getPlacesAvailable();
+					if (userRequest.getPlaceTypesAsList().contains(place.getPlaceType())) {
+						totalPlaces += place.getPlacesAvailable();
+					}
 				}
 			}
 		}

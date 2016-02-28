@@ -1,5 +1,14 @@
 package org.genia.trainchecker.entities;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.TimeZone;
+
 import javax.inject.Named;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +17,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import org.genia.trainchecker.core.PlaceType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,7 +33,6 @@ public class UserRequest {
 	private Boolean active;
 	private String placeTypes;
 	
-//	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "userId")
 	private User user;
@@ -77,5 +87,25 @@ public class UserRequest {
 
 	public void setPlaceTypes(String placeTypes) {
 		this.placeTypes = placeTypes;
+	}
+	
+	public List<PlaceType> getPlaceTypesAsList() {
+		List<PlaceType> typesList = new ArrayList<>();
+		if (placeTypes != null) {
+			String [] types = placeTypes.split(",");
+			for (String string : types) {
+				typesList.add(PlaceType.valueOf(string));
+			}
+		}
+		return typesList;
+	}
+	
+	public Boolean isExpired() {
+		GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("Europe/Kiev"));
+		cal.set(Calendar.HOUR, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		return cal.getTime().after(request.getTripDate());
 	}
 }

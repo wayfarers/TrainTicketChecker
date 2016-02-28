@@ -26,23 +26,22 @@
 					<table >
 						<tr>
 							<td style="padding: 10px">
-								<label><input id="anytype" type="checkbox" name="placetype" value="ANY" checked>Any type</label><br/>
-								<label><input id="p" type="checkbox" name="placetype" value="PLATZ">Platzcard</label><br/>
-			  					<label><input id="c" type="checkbox" name="placetype" value="COUPE">Coupe</label><br/>
-			  					<label><input id="l" type="checkbox" name="placetype" value="LUX">Lux</label><br/>
+								<label><input id="anytype" type="checkbox" name="placetype" value="ANY" ng-model="anyType">Any type</label><br/>
+								<label><input id="p" type="checkbox" name="placetype" value="PLATZ" ng-disabled="anyType">Platzcard</label><br/>
+			  					<label><input id="c" type="checkbox" name="placetype" value="COUPE" ng-disabled="anyType">Coupe</label><br/>
+			  					<label><input id="l" type="checkbox" name="placetype" value="LUX" ng-disabled="anyType">Lux</label><br/>
 			  					
 							</td>
 							<td style="padding: 10px">
-								<label><input id="s" type="checkbox" name="placetype" value="SOFT">Soft</label><br/>
-								<label><input id="s1" type="checkbox" name="placetype" value="SIT1">Sit 1 class</label><br/>
-								<label><input id="s2" type="checkbox" name="placetype" value="SIT2">Sit 2 class</label><br/>
-			  					<label><input id="s3" type="checkbox" name="placetype" value="SIT3">Sit 3 class</label><br/>
+								<label><input id="s" type="checkbox" name="placetype" value="SOFT" ng-disabled="anyType">Soft</label><br/>
+								<label><input id="s1" type="checkbox" name="placetype" value="SIT1" ng-disabled="anyType">Sit 1 class</label><br/>
+								<label><input id="s2" type="checkbox" name="placetype" value="SIT2" ng-disabled="anyType">Sit 2 class</label><br/>
+			  					<label><input id="s3" type="checkbox" name="placetype" value="SIT3" ng-disabled="anyType">Sit 3 class</label><br/>
 							</td>
 						</tr>
 					</table>
 				</div>
 				<br/>
-				<button class="btn btn-info" ng-click="showDetails()">Show</button>
 				<button class="btn btn-info" type="submit">Create alert!</button>
 			</form>
 			<br /> <br />
