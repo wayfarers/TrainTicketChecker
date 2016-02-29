@@ -40,6 +40,7 @@ td {
 		</div>
 		<br />
 		<label><input type="checkbox" ng-model="showExpired"> Show expired</label>
+		<label><input type="checkbox" ng-model="showInactive"> Show in-active</label>
 		</div>
 </div>
 
@@ -59,7 +60,7 @@ td {
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="request in requests" ng-click="showDetails(request)" ng-hide="!showExpired && request.expired">
+					<tr ng-repeat="request in requests" ng-click="showDetails(request)" ng-hide="(!showExpired && request.expired) || (!showInactive && !request.active && !request.expired)">
 						<td style="text-align: center">{{request.request.from.stationName}}
 							- {{request.request.to.stationName}}</td>
 						<td style="text-align: center">{{request.trainNum}}</td>
@@ -102,7 +103,7 @@ td {
 			</div>
 		</div>
 	</div>
-	<div class="col-md-2 bordered" ng-show="requestDetails != null">
+	<div class="col-md-3 bordered" ng-show="requestDetails != null">
 		
 		<table class="table">
 			<tr>
@@ -119,8 +120,8 @@ td {
 			</tr>
 			<tr>
 				<td style="text-align: right;">Last update: </td>
-				<!-- <td>{{requestDetails.lastResponse.time}}</td> -->
-				<td>(...to be done)</td>
+				<td>{{requestDetails.lastResponse.time}}</td>
+				<!-- <td>(...to be done)</td>  -->
 			</tr>
 			<tr>
 				<td style="text-align: right;">Last results: </td>

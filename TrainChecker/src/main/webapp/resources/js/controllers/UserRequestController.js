@@ -5,6 +5,7 @@ angular.module('TrainCheckerApp').controller('UserRequestController', ['$scope',
 	$scope.requests = null;
 	$scope.requestDetails = null;
 	$scope.showExpired = true;
+	$scope.showInactive = true;
 	
 	$scope.getUserRequests = function() {
 		$http.get('userRequests/getUserRequests').success(function(res){
