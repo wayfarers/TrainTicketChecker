@@ -46,9 +46,9 @@ angular.module('TrainCheckerApp').controller('UserRequestController', ['$scope',
 	};
 	
 	$scope.showDetails = function(request) {
-		if ($scope.requestDetails == null) {
+		if ($scope.requestDetails == null || request.id != $scope.requestDetails.id) {
 			$scope.requestDetails = request;
-		} else if (request.id == $scope.requestDetails.id) {
+		} else {
 			//deselect current request
 			$scope.requestDetails = null;
 		}
