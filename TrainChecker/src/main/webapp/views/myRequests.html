@@ -60,7 +60,8 @@ td {
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="request in requests" ng-click="showDetails(request)" ng-hide="(!showExpired && request.expired) || (!showInactive && !request.active && !request.expired)">
+					<tr ng-repeat="request in requests" ng-click="showDetails(request)" ng-hide="(!showExpired && request.expired) || (!showInactive && !request.active && !request.expired)"
+						ng-class="{'highlight': request.id == requestDetails.id}">
 						<td style="text-align: center">{{request.request.from.stationName}}
 							- {{request.request.to.stationName}}</td>
 						<td style="text-align: center">{{request.trainNum}}</td>

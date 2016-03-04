@@ -29,3 +29,7 @@
   top: 20px;
   right: 0px;
 }
+
+tr.highlight {
+	background-color: #b3ffcc;
+}
