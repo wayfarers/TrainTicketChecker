@@ -1,6 +1,8 @@
 package org.genia.trainchecker.entities;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +21,7 @@ import javax.persistence.OneToMany;
 import org.genia.trainchecker.config.JsonOptions;
 import org.genia.trainchecker.core.PlaceType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Named
 @Entity
@@ -41,8 +43,8 @@ public class TicketsRequest {
 	@JoinColumn(name = "toStation")
 	private Station to;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy="ticketsRequest")
+	@JsonManagedReference
 	private List<TicketsResponse> responses = new ArrayList<>();
 	
 	public Integer getId() {
@@ -85,6 +87,7 @@ public class TicketsRequest {
 	}
 	public void setResponses(List<TicketsResponse> responses) {
 		this.responses = responses;
+		sortResponses();
 	}
 	public void setFrom(org.genia.trainchecker.core.Station from) {
 		Station st = new Station();
@@ -100,5 +103,21 @@ public class TicketsRequest {
 		st.setStationIdUz(to.getStationId());
 		st.setSrc_date(to.getSrcDate());
 		this.to = st;
+	}
+	private void sortResponses() {
+		Collections.sort(responses, new Comparator<TicketsResponse>() {
+			@Override
+			public int compare(TicketsResponse o1, TicketsResponse o2) {
+				return o1.getTime().compareTo(o2.getTime()) * (-1);
+			}
+		});
+	}
+	
+	public TicketsResponse getLastResponse() {
+		if (responses.isEmpty()) {
+			return null;
+		}
+		
+		return responses.get(0);
 	}
 }

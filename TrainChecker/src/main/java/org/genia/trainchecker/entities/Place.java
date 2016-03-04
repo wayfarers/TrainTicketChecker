@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 
 import org.genia.trainchecker.core.PlaceType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Named
 @Entity
 public class Place {
@@ -28,6 +30,7 @@ public class Place {
 	
 	@ManyToOne
 	@JoinColumn(name = "responseItemId")
+	@JsonBackReference
 	private TicketsResponseItem ticketsResponseItem;
 
 	public Integer getId() {

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import org.genia.trainchecker.converters.RequestConverter;
 import org.genia.trainchecker.core.TicketsRequest;
@@ -22,8 +23,10 @@ import org.genia.trainchecker.repositories.TicketsRequestRepository;
 import org.genia.trainchecker.repositories.TicketsResponseRepository;
 import org.genia.trainchecker.repositories.UserRepository;
 import org.genia.trainchecker.repositories.UserRequestRepository;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -47,6 +50,8 @@ public class RequestService {
 	public TicketsRequestRepository requestRepository;
 	@Inject
 	private UserService userService;
+	@Inject
+	private TicketsResponseRepository ticketsResponseRepository;
 
 	public TicketsResponse sendRequest(String fromStation, String toStation, String dt) throws ParseException {
 		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dt.substring(0, 10));
@@ -126,10 +131,26 @@ public class RequestService {
 		userRequest.setRequest(request);
 		userRequest.setTrainNum(trainNum);
 		userRequest.setPlaceTypes(placeTypes);
-//		userRequest.setUser(userRepository.findOne(1));		//TODO: hardcoded for now
 		userRequest.setUser(userService.getCurrentLoggedInUser());
 		userRequest.setActive(true);
 		userRequestRepository.save(userRequest);
 		return "Alert created!";
+	}
+	
+	public org.genia.trainchecker.entities.TicketsResponse getLastResponse(Integer ticketRequestId) {
+		List<org.genia.trainchecker.entities.TicketsResponse> response = ticketsResponseRepository.findFirst1ByTicketsRequestIdOrderByTimeDesc(ticketRequestId, new PageRequest(0, 1));
+		if (response.isEmpty()) {
+			return null;
+		}
+		return response.get(0);
+	}
+	
+	@Transactional
+	public List<UserRequest> getUserRequests() {
+		List<UserRequest> requests = userRequestRepository.findByUserId(userService.getCurrentLoggedInUser().getId());
+		for (UserRequest userRequest : requests) {
+			userRequest.getRequest().getLastResponse();
+		}
+		return requests;
 	}
 }

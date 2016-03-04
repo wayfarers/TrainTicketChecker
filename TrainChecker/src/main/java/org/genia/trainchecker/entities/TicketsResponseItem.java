@@ -7,6 +7,7 @@ import javax.inject.Named;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,12 +15,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Named
 @Entity
 public class TicketsResponseItem {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "ticketsResponseItemId")
+	@Column(name = "responseItemId")
 	private Integer id;
 	private String reservationError;
 	
@@ -29,9 +33,11 @@ public class TicketsResponseItem {
 	
 	@ManyToOne
 	@JoinColumn(name = "ticketsResponseId")
+	@JsonBackReference
 	private TicketsResponse ticketsResponse;
 	
-	@OneToMany(mappedBy = "ticketsResponseItem", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "ticketsResponseItem", cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
+	@JsonManagedReference
 	private List<Place> availablePlaces = new ArrayList<>();
 
 	public Integer getId() {

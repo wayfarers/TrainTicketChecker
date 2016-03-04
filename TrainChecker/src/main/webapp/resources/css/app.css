@@ -23,3 +23,9 @@
   position:absolute;
   top: 10em;
 }
+
+#details.fixed {
+  position: fixed;
+  top: 20px;
+  right: 0px;
+}

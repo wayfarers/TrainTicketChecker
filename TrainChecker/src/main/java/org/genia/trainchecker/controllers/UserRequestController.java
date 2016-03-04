@@ -9,11 +9,13 @@ import org.genia.trainchecker.entities.TicketsResponse;
 import org.genia.trainchecker.entities.UserRequest;
 import org.genia.trainchecker.repositories.TicketsResponseRepository;
 import org.genia.trainchecker.repositories.UserRequestRepository;
+import org.genia.trainchecker.services.RequestService;
 import org.genia.trainchecker.services.UserService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/userRequests")
@@ -25,14 +27,15 @@ public class UserRequestController {
 	private UserService userService;
 	@Inject
 	private TicketsResponseRepository ticketsResponseRepository;
+	@Inject 
+	private RequestService requestService;
 	
 	@RequestMapping("/getUserRequests")
 	public @ResponseBody List<UserRequest> getUserRequests() {
-		List<UserRequest> requests = requestRepository.findByUserId(userService.getCurrentLoggedInUser().getId());
-		//TODO: make request list according to current logged in user.
+//		List<UserRequest> requests = requestRepository.findByUserId(userService.getCurrentLoggedInUser().getId());
 		JsonOptions.ignore("needResponses");
 		
-		return requests;
+		return requestService.getUserRequests();
 	}
 	
 	@RequestMapping("/changeRequestStatus")
@@ -45,7 +48,7 @@ public class UserRequestController {
 	
 	@RequestMapping("/lastResponse")
 	public @ResponseBody TicketsResponse getLastResponse(Integer ticketRequestId) {
-		return ticketsResponseRepository.findFirst1ByTicketsRequestIdOrderByTimeDesc(ticketRequestId, new PageRequest(0, 1)).get(0);
+		return requestService.getLastResponse(ticketRequestId);
 	}
 	
 }

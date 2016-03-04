@@ -18,6 +18,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Named
 @Entity
 public class TicketsResponse {
@@ -33,9 +36,11 @@ public class TicketsResponse {
 	
 	@ManyToOne
 	@JoinColumn(name = "ticketsRequestId")
+	@JsonBackReference
 	private TicketsRequest ticketsRequest;
 	
 	@OneToMany(mappedBy = "ticketsResponse", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@JsonManagedReference
 	private List<TicketsResponseItem> items = new ArrayList<>();
 	
 	
