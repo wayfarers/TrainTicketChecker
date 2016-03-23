@@ -29,4 +29,12 @@ angular.module('TrainCheckerApp')
 		this.setDateStr = function(date) {
 			tripDateStr = date;
 		}
+		
+		this.setTrainNum = function(num) {
+			trainNum = num;
+		}
+		
+		this.getTrainNum = function() {
+			return trainNum;
+		}
 	});

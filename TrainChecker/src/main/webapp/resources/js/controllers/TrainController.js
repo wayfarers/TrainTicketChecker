@@ -7,18 +7,6 @@
 
 angular.module('TrainCheckerApp').controller('TrainController', ['$scope', '$http', '$location', 'requestService', function($scope, $http, $location, requestService) {
 	
-//	function checkAuthentication() {
-//		if ($rootScope.authenticated) {
-//			$location.path("/");
-//			$scope.error = false;
-//		} else {
-//			$location.path("/login");
-//			$scope.error = true;
-//		}
-//	}
-//	
-//	checkAuthentication();
-	
 	addDateTo($scope);
 	
 	$scope.trains = [];
@@ -65,5 +53,10 @@ angular.module('TrainCheckerApp').controller('TrainController', ['$scope', '$htt
 	$scope.testStations = function() {
 		$scope.fromStation = 'Київ';
 	    $scope.toStation = 'Львів';
+	}
+	
+	$scope.requestAlertForTrain = function(train) {
+		requestService.setTrainNum(train.num)
+		$scope.requestAlert();
 	}
 }]);

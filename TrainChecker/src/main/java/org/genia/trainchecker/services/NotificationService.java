@@ -69,4 +69,9 @@ public class NotificationService {
 		}
 		return totalPlaces;
 	}
+	
+	public void sendResetPassLink(String token) {
+		String link = "http://localhost:8080/trainchecker/#/newPass?tk=" + token;
+		//TODO: implement email of reset link
+	}
 }

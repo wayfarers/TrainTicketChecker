@@ -39,10 +39,15 @@ app.config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpPr
 		controller : 'navigation'
 	});
     
-//    $routeProvider.when('/', {
-//		templateUrl : 'views/home.html',
-//		controller : 'navigation'
-//	});
+    $routeProvider.when('/resetpass', {
+		templateUrl : 'views/resetpass.html',
+		controller : 'passResetController'
+	});
+    
+    $routeProvider.when('/newPass', {
+		templateUrl : 'views/newPass.html',
+		controller : 'newPassController'
+	});
     
     $routeProvider.when('/registration', {
 		templateUrl : 'views/registration.html',

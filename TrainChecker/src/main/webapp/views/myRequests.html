@@ -32,11 +32,8 @@ td {
 	<div class="col-md-6 col-md-offset-3">
 		<h3 class="text-center">My alerts</h3>
 		<br />
-		<div class="text-center">
-			<p>If your request is active, you will receive notifications at
-					your email, used at registration.</p>
-			<p>Notifications will be send if new free places will appear
-					according to your request details.</p>
+		<div>
+			You will receive notifications about new available tickets to your email<!-- <b><real email></b> -->.
 		</div>
 		<br />
 		<label><input type="checkbox" ng-model="showExpired"> Show expired</label>
@@ -64,14 +61,18 @@ td {
 						ng-class="{'highlight': request.id == requestDetails.id}">
 						<td style="text-align: center">{{request.request.from.stationName}}
 							- {{request.request.to.stationName}}</td>
-						<td style="text-align: center">{{request.trainNum}}</td>
+						<td style="text-align: center">{{request.trainNum | train}}</td>
 						<td style="text-align: center">{{request.request.tripDate | date: 'dd-MM-yyyy'}}</td>
 						<td style="text-align: center;"><span
 							ng-class="{'glyphicon glyphicon-ok green': request.active && !request.expired, 
 										'glyphicon glyphicon-remove red': !request.active && !request.expired, 
 										'glyphicon glyphicon-ban-circle grey': request.expired}"	
 											
-							aria-hidden="true"></span></td>
+							aria-hidden="true"></span><br/>
+							<span ng-show="!request.expired">{{request.status | checkStatus}}</span>
+							<span ng-show="request.expired">Expired</span>
+							
+							</td>
 						<td>
 							<button style="width: 100%" type="button"
 								ng-click="changeStatus(request.id)" class="btn btn-success"
@@ -85,12 +86,6 @@ td {
 								<span class="glyphicon glyphicon-flash" aria-hidden="true"
 									style="margin-right: 10px"></span> Deactivate
 							</button>
-							<div style="width: 100%" 
-								class="bordered pad-6 text-center"
-								ng-show="request.expired">
-								<span class="glyphicon glyphicon-remove-circle" aria-hidden="true"
-									style="margin-right: 10px"></span> Expired
-							</div>
 						</td>
 
 
@@ -114,7 +109,7 @@ td {
 			</tr>
 			<tr>
 				<td style="text-align: right;">Requested train: </td>
-				<td>{{requestDetails.trainNum}}</td>
+				<td>{{requestDetails.trainNum | train}}</td>
 			</tr>
 			<tr>
 				<td style="text-align: right;">Status: </td>

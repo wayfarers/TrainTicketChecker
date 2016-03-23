@@ -21,6 +21,7 @@ public class User {
 	private String email;
 	private String login;
 	private Boolean enabled;
+	private String passResetToken;
 	
 	@Enumerated(EnumType.STRING)
 	private Role role;
@@ -74,5 +75,13 @@ public class User {
 
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getPassResetToken() {
+		return passResetToken;
+	}
+
+	public void setPassResetToken(String passResetToken) {
+		this.passResetToken = passResetToken;
 	}
 }

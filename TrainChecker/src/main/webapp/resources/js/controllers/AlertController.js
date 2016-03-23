@@ -5,7 +5,7 @@ angular.module('TrainCheckerApp').controller('AlertController', ['$scope', '$htt
 	 $scope.toStation = requestService.getTo();
 	 $scope.tripDate = requestService.getTripDate();
 	 $scope.placeTypes = [];
-	 $scope.trainNum = null;
+	 $scope.trainNum = requestService.getTrainNum();
 	 $scope.anyType = true;
 	 
 	 $scope.createAlert = function() {

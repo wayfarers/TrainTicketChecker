@@ -1,5 +1,9 @@
 package org.genia.trainchecker.services;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.UUID;
+
 import javax.inject.Inject;
 
 import org.genia.trainchecker.entities.NewUser;
@@ -14,6 +18,8 @@ public class UserService {
 	
 	@Inject
 	private UserRepository userRepository;
+	@Inject
+	private NotificationService notificationService;
 	
 	public User createUser(NewUser newUser) {
 		User user = new User();
@@ -30,5 +36,24 @@ public class UserService {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		User user = userRepository.findByLogin(username);
 		return user;
+	}
+	
+	/**
+	 * Generates reset-password link and sends in to user's email. 
+	 * @param login
+	 * @return 0 if success, 1 if no such user found, 2 if other error.
+	 */
+	public Integer generateResetLink(String login) {
+		User user = userRepository.findByLogin(login);
+		if (user == null) {
+			return 1;
+		}
+		
+		String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+		user.setPassResetToken(uuid);
+		userRepository.save(user);
+		
+		
+		return 2;
 	}
 }

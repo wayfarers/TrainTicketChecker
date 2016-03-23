@@ -4,6 +4,7 @@ import java.security.Principal;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang.StringUtils;
 import org.genia.trainchecker.entities.NewUser;
 import org.genia.trainchecker.entities.User;
 import org.genia.trainchecker.services.UserService;
@@ -38,6 +39,35 @@ public class IndexController {
     @RequestMapping("/logout")
     public String getOutOfHere() {
         return "logout";
+    }
+    
+    @RequestMapping("/requestReset")
+    public @ResponseBody String generateResetLink(String login) {
+    	if (StringUtils.isEmpty(login)) {
+    		return "no_user";
+    	}
+    	
+    	int code = userService.generateResetLink(login);
+    	
+    	switch (code) {
+		case 0:
+			return "ok";
+		case 1:
+			return "no_user";
+		case 2:
+			return "failed";
+		default:
+			return "failed";
+		}
+    }
+    
+    @RequestMapping("/setNewPass")
+    public Integer setNewPass(String tk) {
+    	
+    	
+    	//TODO: setting new password
+    	
+        return null;
     }
     
     @RequestMapping(value = "/register", method = RequestMethod.POST)

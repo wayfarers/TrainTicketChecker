@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.logout().logoutSuccessUrl("/logout")
 		.and()
 			.authorizeRequests()
-				.antMatchers("/views/stations.html", "/views/registration.html", "/views/index.html", "/views/logout.html", "/login",
+				.antMatchers("/views/stations.html", "/views/resetpass.html", "/views/newPass.html", "/views/registration.html", "/views/index.html", "/views/logout.html", "/login",
 						"/logout", "/register", "/views/home.html", "/", "/resources/**", "/stations/**", "/components/**",
 						"/views/about.html", "/views/wip.html")
 				.permitAll().anyRequest().authenticated()
