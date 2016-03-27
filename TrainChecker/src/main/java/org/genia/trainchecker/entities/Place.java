@@ -25,7 +25,7 @@ public class Place {
 	private String title;
 	
 	@Enumerated(EnumType.STRING)
-	private PlaceType placeType; //TODO: the same question as in TicketsRequestEntity
+	private PlaceType placeType; 
 	private Integer placesAvailable;
 	
 	@ManyToOne

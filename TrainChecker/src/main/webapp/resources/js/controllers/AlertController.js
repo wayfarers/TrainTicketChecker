@@ -7,10 +7,15 @@ angular.module('TrainCheckerApp').controller('AlertController', ['$scope', '$htt
 	 $scope.placeTypes = [];
 	 $scope.trainNum = requestService.getTrainNum();
 	 $scope.anyType = true;
+	 $scope.noCheckbox = false;
 	 
 	 $scope.createAlert = function() {
-		 $scope.alertMsg = 'Sending data...';
 		 $("[type=checkbox]:checked").each(function() {$scope.placeTypes.push($(this).val())})
+		 if ($scope.placeTypes.length < 1) {
+			 $scope.noCheckbox = true;
+			 return;
+		 }
+		 $scope.alertMsg = 'Sending data...';
 		 $http.get('stations/createAlert', 
 				 {params: {fromStation: $scope.fromStation, 
 					 		toStation: $scope.toStation,

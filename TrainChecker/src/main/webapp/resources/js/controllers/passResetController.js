@@ -7,18 +7,21 @@ angular.module('TrainCheckerApp').controller('passResetController', ['$scope', '
 	$scope.login = '';
 	
 	$scope.resetPass = function() {
+		$scope.noSuchUser = false;
+		$scope.done = false;
 		$scope.serverError = false;
 		$http.get('requestReset', 
 				 {params: {login: $scope.login}})
 							.success(function(res) {
+								console.log(res);
 								$scope.serverError = false;
-								if(res === "no_user") {
+								if(res == "no_user") {
 									$scope.noSuchUser = true;
 								} else {
 									$scope.done = true;
 								}
 							})
 							.error(function(res) {$scope.serverError = true});
-	}
+	};
 	
 }]);

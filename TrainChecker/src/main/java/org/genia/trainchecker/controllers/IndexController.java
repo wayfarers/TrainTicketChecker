@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Controller
 @RequestMapping("/")
 public class IndexController {
@@ -42,32 +45,51 @@ public class IndexController {
     }
     
     @RequestMapping("/requestReset")
-    public @ResponseBody String generateResetLink(String login) {
+    public @ResponseBody String generateResetLink(String login) throws JsonProcessingException {
     	if (StringUtils.isEmpty(login)) {
-    		return "no_user";
+    		return new ObjectMapper().writer().writeValueAsString("no_user");
     	}
     	
     	int code = userService.generateResetLink(login);
     	
+    	String msg;
+    	
     	switch (code) {
 		case 0:
-			return "ok";
+			msg = "ok";
+			break;
 		case 1:
-			return "no_user";
+			msg = "no_user";
+			break;
 		case 2:
-			return "failed";
+			msg = "failed";
+			break;
 		default:
-			return "failed";
+			msg = "failed";
 		}
+    	
+    	return new ObjectMapper().writer().writeValueAsString(msg);
+    }
+    
+    @RequestMapping("/checkLink")
+    public @ResponseBody Integer checkLink(String tk) {
+    	User user = userService.findUserByToken(tk);
+    	if(user != null) {
+    		return user.getId();
+    	}
+        return -1;
     }
     
     @RequestMapping("/setNewPass")
-    public Integer setNewPass(String tk) {
-    	
-    	
-    	//TODO: setting new password
-    	
-        return null;
+    public @ResponseBody Integer setNewPass(String tk, String pw) {
+    	User user = userService.findUserByToken(tk);
+    	if(user != null) {
+    		user.setPassword(pw);
+    		user.setPassResetToken(null);
+    		userService.saveUser(user);
+    		return 0;
+    	}
+        return -1;
     }
     
     @RequestMapping(value = "/register", method = RequestMethod.POST)

@@ -13,4 +13,14 @@ angular.module('filters', [])
 			}
 		};
 	})
+	
+	.filter('noUpdate', function() {
+		return function(input) {
+			if (input == null || input == '') {
+				return "no update";
+			} else {
+				return input;
+			}
+		};
+	})
 ;

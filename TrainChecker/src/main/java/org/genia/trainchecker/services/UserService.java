@@ -1,7 +1,5 @@
 package org.genia.trainchecker.services;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -53,7 +51,16 @@ public class UserService {
 		user.setPassResetToken(uuid);
 		userRepository.save(user);
 		
+		notificationService.sendResetPassLink(user);
 		
-		return 2;
+		return 0;
+	}
+	
+	public User findUserByToken(String token) {
+		return userRepository.findByPassResetToken(token);
+	}
+	
+	public User saveUser(User user) {
+		return userRepository.save(user);
 	}
 }

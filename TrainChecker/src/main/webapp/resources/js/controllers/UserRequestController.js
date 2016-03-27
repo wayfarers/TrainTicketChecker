@@ -23,7 +23,11 @@ angular.module('TrainCheckerApp').controller('UserRequestController', ['$scope',
 		      $('#details').removeClass('fixed');
 		    }
 		  });
-		});
+	});
+	
+	$scope.getTypesAsArray = function(str) {
+		return str.split(',');
+	}
 	
 	$scope.getUserRequests = function() {
 		$http.get('userRequests/getUserRequests').success(function(res){

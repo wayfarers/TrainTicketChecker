@@ -1,0 +1,37 @@
+<div class="row">
+	<div class="col-md-4 col-md-offset-4">
+		<span us-spinner="{radius:30, width:8, length: 36}"></span>
+		<div class="alert alert-danger" ng-show="pw_not_match">Passwords doesn't match.</div>
+		<div class="alert alert-danger" ng-show="error">Some
+			error occurred. Please, try again.</div>
+		<div ng-show="pw_ok">
+			<h2>Password successfully changed!!</h2>
+			<p>
+				Now you can <a href="#/login">login</a> using your credentials.
+			</p>
+		</div>
+		<div ng-show="wrongLink">
+			<h2>The link is wrong!</h2>
+			<p>
+				Please, check address again or <a href="#/resetpass">request</a> new one.
+			</p>
+		</div>
+
+
+		<form role="form" ng-submit="setPass()" ng-hide="pw_ok" ng-show="!error && !wrongLink">
+			<h2>Set new password:</h2>
+			<br />
+			<div class="form-group">
+				<label for="password">New password:</label> <input type="password"
+					class="form-control" id="password" name="password"
+					ng-model="pass1" required autocomplete="off" />
+			</div>
+			<div class="form-group">
+				<label for="password_2">Confirm new password:</label> <input type="password"
+					class="form-control" id="password_2" name="password_2"
+					ng-model="pass2" required autocomplete="off" />
+			</div>
+			<button type="submit" class="btn btn-primary">Set new password</button>
+		</form>
+	</div>
+</div>

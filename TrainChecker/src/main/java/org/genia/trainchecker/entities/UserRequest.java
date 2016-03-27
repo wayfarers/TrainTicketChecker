@@ -19,6 +19,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.genia.trainchecker.core.PlaceType;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.tz.DateTimeZoneBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -106,6 +109,9 @@ public class UserRequest {
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		return cal.getTime().after(request.getTripDate());
+		DateTime now = DateTime.now(DateTimeZone.forID("Europe/Kiev"));
+		now = now.withTimeAtStartOfDay();
+		return now.isAfter(new DateTime(request.getTripDate()));
+//		return cal.getTime().after(request.getTripDate());
 	}
 }

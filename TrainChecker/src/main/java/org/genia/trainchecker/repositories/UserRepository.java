@@ -11,4 +11,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	@Query("FROM UserRequest ur where ur.active = true")
 	public List<UserRequest> findActive();
 	public User findByLogin(String login);
+	public User findByPassResetToken(String token);
 }

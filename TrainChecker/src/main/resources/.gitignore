@@ -1,2 +1,4 @@
 /database.properties
 /config.properties
+/mainCredentials.properties
+/mailCredentials.properties

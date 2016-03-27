@@ -52,6 +52,8 @@ td {
 						<th style="text-align: center;">Direction</th>
 						<th style="text-align: center;">Train #</th>
 						<th style="text-align: center;">Trip date</th>
+						<th style="text-align: center;">Selected place types</th>
+						<th style="text-align: center;">Last update</th>
 						<th style="text-align: center;">Status</th>
 						<th style="text-align: center;"></th>
 					</tr>
@@ -63,13 +65,19 @@ td {
 							- {{request.request.to.stationName}}</td>
 						<td style="text-align: center">{{request.trainNum | train}}</td>
 						<td style="text-align: center">{{request.request.tripDate | date: 'dd-MM-yyyy'}}</td>
+						<td>
+							<ul>
+								<li ng-repeat="type in getTypesAsArray(request.placeTypes)">{{type}}</li>
+							</ul>							
+						</td>
+						<td style="text-align: center">{{request.request.lastResponse.time | date: 'dd-MM-yyyy HH:mm:ss' | noUpdate}}</td>
 						<td style="text-align: center;"><span
 							ng-class="{'glyphicon glyphicon-ok green': request.active && !request.expired, 
 										'glyphicon glyphicon-remove red': !request.active && !request.expired, 
 										'glyphicon glyphicon-ban-circle grey': request.expired}"	
 											
 							aria-hidden="true"></span><br/>
-							<span ng-show="!request.expired">{{request.status | checkStatus}}</span>
+							<span ng-show="!request.expired">{{request.active | checkStatus}}</span>
 							<span ng-show="request.expired">Expired</span>
 							
 							</td>
@@ -113,7 +121,7 @@ td {
 			</tr>
 			<tr>
 				<td style="text-align: right;">Status: </td>
-				<td><span ng-hide="!request.expired">{{requestDetails.active | checkStatus}}</span><span ng-show="requestDetails.expired">Expired</span></td>
+				<td><span ng-show="!requestDetails.expired">{{requestDetails.active | checkStatus}}</span><span ng-show="requestDetails.expired">Expired</span></td>
 			</tr>
 			<tr>
 				<td style="text-align: right;">Selected place types: </td>
