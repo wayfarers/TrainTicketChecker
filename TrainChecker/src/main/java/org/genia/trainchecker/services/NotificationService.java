@@ -122,7 +122,7 @@ public class NotificationService {
 	 * @param user
 	 */
 	public void sendResetPassLink(User user) {
-		String link = "http://localhost:8080/trainchecker/#/newPass?tk=" + user.getPassResetToken();
+		String link = "http://http://trainalert.midnighters.net/#/newPass?tk=" + user.getPassResetToken();
 		String emailSubject = "TrainAlert Reset Your Password";
 		String emailBody = "Hello, " + user.getName() + "!\n\n";
 		emailBody += "This email was sent automatically by system in response to your request to reset your password.\n";

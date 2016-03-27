@@ -107,36 +107,4 @@ td {
 			</div>
 		</div>
 	</div>
-	<div id="details" class="col-md-3 bordered follow-scroll" ng-hide="requestDetails == null || (!showExpired && requestDetails.expired) || (!showInactive && !requestDetails.active && !requestDetails.expired)">
-		
-		<table class="table">
-			<tr>
-				<td style="text-align: right;">Direction: </td>
-				<td>{{requestDetails.request.from.stationName}}
-							- {{requestDetails.request.to.stationName}}</td>
-			</tr>
-			<tr>
-				<td style="text-align: right;">Requested train: </td>
-				<td>{{requestDetails.trainNum | train}}</td>
-			</tr>
-			<tr>
-				<td style="text-align: right;">Status: </td>
-				<td><span ng-show="!requestDetails.expired">{{requestDetails.active | checkStatus}}</span><span ng-show="requestDetails.expired">Expired</span></td>
-			</tr>
-			<tr>
-				<td style="text-align: right;">Selected place types: </td>
-				<td>{{requestDetails.placeTypes}}</td>
-			</tr>
-			<tr>
-				<td style="text-align: right;">Last update: </td>
-				<td>{{requestDetails.request.lastResponse.time | date: 'dd-MM-yyyy HH:mm:ss'}}</td>
-				<!-- <td>(...to be done)</td>  -->
-			</tr>
-			<tr>
-				<td style="text-align: right;">Last results: </td>
-				<td>(...to be done)</td>
-			</tr>
-		</table>
-		
-	</div>
 </div>
