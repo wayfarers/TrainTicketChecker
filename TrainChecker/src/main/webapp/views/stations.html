@@ -8,7 +8,7 @@
 	</div>
 	<form class="form-horizontal" name="requestForm" ng-submit="sendRequest()" novalidate>
 		<h4>Origin:</h4>
-		<div class="form-group" ng-class="{ 'has-error' : requestForm.from.$error.required && !requestForm.from.$pristine }">
+		<div ng-class="{ 'has-error' : requestForm.from.$error.required && !requestForm.from.$pristine }">
 			<input id="from" name="from" type="text" ng-model="fromStation" placeholder="From station"
 				uib-typeahead="s for s in getFilteredStations($viewValue)"
 				typeahead-min-length="2" class="form-control" required autocomplete="off" />
@@ -17,7 +17,7 @@
 		</div>
 		<h4>Destination: <a class="btn btn-default" role="button" ng-click="swapStations()" ng-disabled="fromStation == null && toStation == null">Swap stations</a>
 		<a class="btn btn-default" role="button" ng-click="testStations()">Test stations</a></h4>
-		<div class="form-group" ng-class="{ 'has-error' : requestForm.to.$error.required && !requestForm.to.$pristine }">
+		<div ng-class="{ 'has-error' : requestForm.to.$error.required && !requestForm.to.$pristine }">
 			<input id="to" name="to" type="text" ng-model="toStation" placeholder="To station"
 				uib-typeahead="s for s in getFilteredStations($viewValue)"
 				typeahead-min-length="2" class="form-control" required autocomplete="off" />
@@ -26,8 +26,7 @@
 		</div>
 		
 		<h4>Trip date</h4>
-		<div class="row">
-			<div >
+		<div>
 				<p class="input-group">
 					<input id="calendar" type="text" class="form-control"
 						uib-datepicker-popup="dd.MM.yyyy" ng-model="dt"
@@ -41,7 +40,6 @@
 						</button>
 					</span>
 				</p>
-			</div>
 		</div>
 
 		<button class="btn btn-info" type="submit" ng-disabled="requestForm.$invalid">Search!</button>
