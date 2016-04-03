@@ -1,7 +1,7 @@
 angular.module('TrainCheckerApp').controller(
 		'navigation',
 		function($rootScope, $scope, $http, $location, $window, $templateCache, $route) {
-
+			
 			var templatesList = ["wip.html", "stations.html", "myRequests.html", "requestForm.html"];
 			
 			var refreshTemlpates = function() {
@@ -65,4 +65,6 @@ angular.module('TrainCheckerApp').controller(
 				refreshTemlpates();
 				$location.path("/logout");
 			};
+			
+			
 		});

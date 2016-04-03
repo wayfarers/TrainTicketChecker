@@ -33,7 +33,8 @@ td {
 		<h3 class="text-center">My alerts</h3>
 		<br />
 		<div>
-			You will receive notifications about new available tickets to your email<!-- <b><real email></b> -->.
+			You will receive notifications about new available tickets to your email <b>{{userInfo.email}}</b><br />
+			We check for updates every 15 minutes.
 		</div>
 		<br />
 		<label><input type="checkbox" ng-model="showExpired"> Show expired</label>

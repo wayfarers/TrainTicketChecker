@@ -31,7 +31,19 @@ public class IndexController {
     
     @RequestMapping("/user")
     public @ResponseBody Principal user(Principal user) {
-      return user;
+    	return user;
+    }
+    
+    @RequestMapping("/userInfo")
+    public @ResponseBody User getUserInfo() {
+    	User userInfo = new User();
+    	User loggedUser = userService.getCurrentLoggedInUser();
+    	if (loggedUser != null) {
+    		userInfo.setName(loggedUser.getName());
+    		userInfo.setEmail(loggedUser.getEmail());
+    		userInfo.setRole(loggedUser.getRole());
+    	}
+    	return userInfo;
     }
     
     @RequestMapping("/login")

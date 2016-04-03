@@ -17,7 +17,7 @@ angular.module('filters', [])
 	.filter('noUpdate', function() {
 		return function(input) {
 			if (input == null || input == '') {
-				return "no update";
+				return "no updates yet";
 			} else {
 				return input;
 			}

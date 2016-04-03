@@ -2,11 +2,20 @@
 
 angular.module('TrainCheckerApp').controller('UserRequestController', ['$scope', '$http', function($scope, $http) {
 	
+	$scope.userInfo = null;
 	$scope.requests = null;
 	$scope.requestDetails = null;
 	$scope.showExpired = true;
 	$scope.showInactive = true;
 	$scope.lastResponse = {};
+	
+	$scope.getUserInfo = function() {
+		$http.get('userInfo').success(function(res){
+			$scope.userInfo = res;
+		});
+	};
+	
+	$scope.getUserInfo();
 	
 	$scope.getTypesAsArray = function(str) {
 		return str.split(',');
