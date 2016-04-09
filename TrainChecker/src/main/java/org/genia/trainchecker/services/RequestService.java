@@ -33,7 +33,9 @@ import org.springframework.stereotype.Service;
 public class RequestService {
 	
 	final static Logger logger = LoggerFactory.getLogger(RequestService.class);
-
+	
+	@Inject
+	private NotificationService notificationService;
 	@Inject
 	private TrainTicketChecker checker;
 	@Inject
@@ -105,6 +107,7 @@ public class RequestService {
 			responseRepository.save(response);
 		}
 		logger.info("Sending active requests complete.");
+		notificationService.sendNotifications();
 	}
 	
 	public static Date makeMidnight(Date date) {
