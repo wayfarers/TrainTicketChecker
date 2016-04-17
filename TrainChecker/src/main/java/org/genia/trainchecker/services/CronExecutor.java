@@ -21,11 +21,11 @@ import org.springframework.core.env.Environment;
 @Named
 @Scope("singleton")
 public class CronExecutor {
-	public static final int START_DELAY = 10;
 	JobDetail job;
 	Trigger trigger;
 	Scheduler scheduler;
 	Integer interval;
+	Integer startDelay;
 	
 	@Inject
 	Environment env;
@@ -37,6 +37,9 @@ public class CronExecutor {
 	public void postConstruct() throws SchedulerException {
 		if ((interval = env.getProperty("request_interval", Integer.class)) == null) {
 			interval = 900;
+		}
+		if ((startDelay = env.getProperty("cron_delay", Integer.class)) == null) {
+			interval = 90;
 		}
 		// The job itself is not managed by Spring and cannot autowire fields.
 		// Therefore, we pass the service to the job via JobDataMap.
@@ -55,8 +58,8 @@ public class CronExecutor {
 		scheduler = new StdSchedulerFactory().getScheduler();
 		scheduler.clear();
 		scheduler.scheduleJob(job, trigger);
-		scheduler.startDelayed(START_DELAY);
-		scheduler.start();
+		scheduler.startDelayed(startDelay);
+//		scheduler.start();
 		
 	}
 	

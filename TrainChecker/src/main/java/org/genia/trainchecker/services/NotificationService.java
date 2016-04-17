@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import org.apache.commons.lang.StringUtils;
+import org.genia.trainchecker.core.PlaceType;
 import org.genia.trainchecker.entities.Place;
 import org.genia.trainchecker.entities.TicketsResponse;
 import org.genia.trainchecker.entities.TicketsResponseItem;
@@ -56,43 +58,52 @@ public class NotificationService {
 	 * 4. If there are some positive changes - send an email to the user. 
 	 * 
 	 */
+	@Transactional
 	public void sendNotifications() {
 		List<UserRequest> activeRequests = userRepository.findActive();
 		
 		for (UserRequest userRequest : activeRequests) {
-			Collections.sort(userRequest.getRequest().getResponses(), new Comparator<TicketsResponse>() {
-				@Override
-				public int compare(TicketsResponse o1, TicketsResponse o2) {
-					return o1.getTime().compareTo(o2.getTime()) * (-1);
-				}
-			});
-			
-			TicketsResponse previous = userRequest.getRequest().getResponses().get(1);
-			TicketsResponse last = userRequest.getRequest().getResponses().get(0);
-			
-			//TODO: implement compearing according to a filter.
-			
-			
-			if (getPlacesCount(last, userRequest) > getPlacesCount(previous, userRequest)) {
-				//TODO: send appropriate notification
-				String emailSubject = "TrainAlert: New tickets available!";
-				String emailBody = "Here are new tickets for direction " + userRequest.getRequest().getFrom() + " - " + userRequest.getRequest().getTo() + "\n\n";
+			if (userRequest.getRequest().getResponses().size() != 0) {
+				Collections.sort(userRequest.getRequest().getResponses(), new Comparator<TicketsResponse>() {
+					@Override
+					public int compare(TicketsResponse o1, TicketsResponse o2) {
+						return o1.getTime().compareTo(o2.getTime()) * (-1);
+					}
+				});
 				
-				for (TicketsResponseItem item : last.getItems()) {
-					if (StringUtils.isEmpty(userRequest.getTrainNum())
-							|| StringUtils.containsIgnoreCase(item.getTrain().getTrainNum(), userRequest.getTrainNum())) {
-						emailBody += "Train #" + item.getTrain() + "\n\n";
-						for (Place place : item.getAvailablePlaces()) {
-							if (StringUtils.isEmpty(userRequest.getPlaceTypes()) || 
-									userRequest.getPlaceTypesAsList().contains("ANY") || 
-									userRequest.getPlaceTypesAsList().contains(place.getPlaceType())) {
-								emailBody += "Place: " + place.getTitle() + ", available: " + place.getPlacesAvailable() + "\n";
+				TicketsResponse last = null;
+				TicketsResponse previous = null;
+				
+				try {
+					last = userRequest.getRequest().getResponses().get(0);
+					previous = userRequest.getRequest().getResponses().get(1);
+				} catch (IndexOutOfBoundsException e) {
+					//doing nothing, here can be only one response in list.
+				}
+				
+				//TODO: implement compearing according to a filter.
+				
+				if (getPlacesCount(last, userRequest) > getPlacesCount(previous, userRequest)) {
+					//TODO: send appropriate notification
+					String emailSubject = "TrainAlert: New tickets available!";
+					String emailBody = "Here are new tickets for direction " + userRequest.getRequest().getFrom().getStationName() + " - " + userRequest.getRequest().getTo().getStationName() + "\n\n";
+					
+					for (TicketsResponseItem item : last.getItems()) {
+						if (StringUtils.isEmpty(userRequest.getTrainNum())
+								|| StringUtils.containsIgnoreCase(item.getTrain().getTrainNum(), userRequest.getTrainNum())) {
+							emailBody += "Train #" + item.getTrain().getTrainNum() + "\n";
+							for (Place place : item.getAvailablePlaces()) {
+								if (StringUtils.isEmpty(userRequest.getPlaceTypes()) || 
+										userRequest.getPlaceTypesAsList().contains(PlaceType.ANY) || 
+										userRequest.getPlaceTypesAsList().contains(place.getPlaceType())) {
+									emailBody += "Place: " + place.getTitle() + ", available: " + place.getPlacesAvailable() + "\n";
+								}
 							}
 						}
+						emailBody += "\n";
 					}
-					emailBody += "\n";
+					MailUtils.sendEmail(creds, userRequest.getUser().getEmail(), emailSubject, emailBody);
 				}
-				MailUtils.sendEmail(creds, userRequest.getUser().getEmail(), emailSubject, emailBody);
 			}
 		}
 		
@@ -100,15 +111,18 @@ public class NotificationService {
 	
 	private static int getPlacesCount(TicketsResponse response, UserRequest userRequest) {
 		int totalPlaces = 0;
-		if (response.getErrorDescription() != null) {
+		if (response == null || response.getErrorDescription() != null) {
 			return 0;
 		}
 		
+		String requestedTrainNum = userRequest.getTrainNum();
+		
 		for (TicketsResponseItem item : response.getItems()) {
-			if (StringUtils.isEmpty(userRequest.getTrainNum())
-					|| StringUtils.containsIgnoreCase(item.getTrain().getTrainNum(), userRequest.getTrainNum())) {
+			if (StringUtils.isEmpty(requestedTrainNum) || requestedTrainNum.equals("ANY")
+					|| StringUtils.containsIgnoreCase(item.getTrain().getTrainNum(), requestedTrainNum)) {
 				for (Place place : item.getAvailablePlaces()) {
-					if (userRequest.getPlaceTypesAsList().contains(place.getPlaceType())) {
+					if (userRequest.getPlaceTypesAsList().contains(PlaceType.ANY) 
+							|| userRequest.getPlaceTypesAsList().contains(place.getPlaceType())) {
 						totalPlaces += place.getPlacesAvailable();
 					}
 				}
