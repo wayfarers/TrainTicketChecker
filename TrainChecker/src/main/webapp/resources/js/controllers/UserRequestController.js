@@ -5,7 +5,7 @@ angular.module('TrainCheckerApp').controller('UserRequestController', ['$scope',
 	$scope.userInfo = null;
 	$scope.requests = null;
 	$scope.requestDetails = null;
-	$scope.showExpired = true;
+	$scope.showExpired = false;
 	$scope.showInactive = true;
 	$scope.lastResponse = {};
 	

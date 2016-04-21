@@ -108,7 +108,7 @@ public class TicketsRequest {
 		Collections.sort(responses, new Comparator<TicketsResponse>() {
 			@Override
 			public int compare(TicketsResponse o1, TicketsResponse o2) {
-				return o1.getTime().compareTo(o2.getTime()) * (-1);
+				return (-1) * o1.getTime().compareTo(o2.getTime());
 			}
 		});
 	}
@@ -117,7 +117,7 @@ public class TicketsRequest {
 		if (responses.isEmpty()) {
 			return null;
 		}
-		
+		sortResponses();
 		return responses.get(0);
 	}
 }

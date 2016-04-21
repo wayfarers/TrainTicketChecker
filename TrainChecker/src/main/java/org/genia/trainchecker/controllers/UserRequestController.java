@@ -1,5 +1,7 @@
 package org.genia.trainchecker.controllers;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -7,15 +9,11 @@ import javax.inject.Inject;
 import org.genia.trainchecker.config.JsonOptions;
 import org.genia.trainchecker.entities.TicketsResponse;
 import org.genia.trainchecker.entities.UserRequest;
-import org.genia.trainchecker.repositories.TicketsResponseRepository;
 import org.genia.trainchecker.repositories.UserRequestRepository;
 import org.genia.trainchecker.services.RequestService;
-import org.genia.trainchecker.services.UserService;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/userRequests")
@@ -23,19 +21,21 @@ public class UserRequestController {
 	
 	@Inject
 	private UserRequestRepository requestRepository;
-	@Inject
-	private UserService userService;
-	@Inject
-	private TicketsResponseRepository ticketsResponseRepository;
 	@Inject 
 	private RequestService requestService;
 	
 	@RequestMapping("/getUserRequests")
 	public @ResponseBody List<UserRequest> getUserRequests() {
-//		List<UserRequest> requests = requestRepository.findByUserId(userService.getCurrentLoggedInUser().getId());
 		JsonOptions.ignore("needResponses");
+		List<UserRequest> requests =  requestService.getUserRequests();
+		Collections.sort(requests, new Comparator<UserRequest>() {
+			@Override
+			public int compare(UserRequest o1, UserRequest o2) {
+				return (-1) * o1.getRequest().getTripDate().compareTo(o2.getRequest().getTripDate());
+			}
+		});
 		
-		return requestService.getUserRequests();
+		return requests;
 	}
 	
 	@RequestMapping("/changeRequestStatus")

@@ -3,6 +3,8 @@ package org.genia.trainchecker.services;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -61,9 +63,10 @@ public class NotificationService {
 	@Transactional
 	public void sendNotifications() {
 		List<UserRequest> activeRequests = userRepository.findActive();
+		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		
 		for (UserRequest userRequest : activeRequests) {
-			if (userRequest.getRequest().getResponses().size() != 0) {
+			if (!userRequest.isExpired() && userRequest.getRequest().getResponses().size() != 0) {
 				Collections.sort(userRequest.getRequest().getResponses(), new Comparator<TicketsResponse>() {
 					@Override
 					public int compare(TicketsResponse o1, TicketsResponse o2) {
@@ -86,7 +89,8 @@ public class NotificationService {
 				if (getPlacesCount(last, userRequest) > getPlacesCount(previous, userRequest)) {
 					//TODO: send appropriate notification
 					String emailSubject = "TrainAlert: New tickets available!";
-					String emailBody = "Here are new tickets for direction " + userRequest.getRequest().getFrom().getStationName() + " - " + userRequest.getRequest().getTo().getStationName() + "\n\n";
+					String emailBody = "Here are new tickets for direction " + userRequest.getRequest().getFrom().getStationName() + " - " + userRequest.getRequest().getTo().getStationName() 
+							+ ", on " + dateFormat.format(userRequest.getRequest().getTripDate()) + "\n\n";
 					
 					for (TicketsResponseItem item : last.getItems()) {
 						if (StringUtils.isEmpty(userRequest.getTrainNum())

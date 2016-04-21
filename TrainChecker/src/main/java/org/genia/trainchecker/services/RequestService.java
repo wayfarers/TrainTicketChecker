@@ -80,33 +80,35 @@ public class RequestService {
 		for (UserRequest userRequest : userRequests) {
 			ticketsRequests.add(userRequest.getRequest());
 		}
-
+		Date dateNow = Calendar.getInstance(TimeZone.getTimeZone("Europe/Kiev")).getTime();
+		
+		int count = 0;
 		for (org.genia.trainchecker.entities.TicketsRequest ticketsRequest : ticketsRequests) {
-			Date dateNow = Calendar.getInstance(TimeZone.getTimeZone("Europe/Kiev")).getTime();
-			if (ticketsRequest.getTripDate().before(makeMidnight(dateNow))) {
-				continue;
-			}
-			long time = System.currentTimeMillis();
-			org.genia.trainchecker.core.TicketsResponse currentResponse = sendRequest(converter.toCore(ticketsRequest));
-			long latency = System.currentTimeMillis() - time;
-			org.genia.trainchecker.entities.TicketsResponse response = converter.convertToEntity(currentResponse);
-			response.setTicketsRequest(ticketsRequest);
-			logger.info("Response details:");
-			logger.info("Requested direction: {} - {}", ticketsRequest.getFrom().getStationName(),
-					ticketsRequest.getTo().getStationName());
-			if (currentResponse.isError()) {
-				logger.info(currentResponse.getErrorDescription());
-			} else {
-				for (Train train : currentResponse.getTrains()) {
-					logger.info("{}\t{} - {}, {} free places total", train.getNum(), train.getFrom().getName(),
-							train.getTill().getName(), train.getTotalPlaces());
+			if (!ticketsRequest.getTripDate().before(makeMidnight(dateNow))) {
+				count++;
+				long time = System.currentTimeMillis();
+				org.genia.trainchecker.core.TicketsResponse currentResponse = sendRequest(converter.toCore(ticketsRequest));
+				long latency = System.currentTimeMillis() - time;
+				org.genia.trainchecker.entities.TicketsResponse response = converter.convertToEntity(currentResponse);
+				response.setTicketsRequest(ticketsRequest);
+				logger.info("Response details:");
+				logger.info("Requested direction: {} - {}", ticketsRequest.getFrom().getStationName(),
+						ticketsRequest.getTo().getStationName());
+				if (currentResponse.isError()) {
+					logger.info(currentResponse.getErrorDescription());
+				} else {
+					for (Train train : currentResponse.getTrains()) {
+						logger.info("{}\t{} - {}, {} free places total", train.getNum(), train.getFrom().getName(),
+								train.getTill().getName(), train.getTotalPlaces());
+					}
 				}
+				logger.info("\n");
+				response.setRequestLatency(latency);
+				responseRepository.save(response);
 			}
-			logger.info("\n");
-			response.setRequestLatency(latency);
-			responseRepository.save(response);
 		}
-		logger.info("Sending active requests complete.");
+		String countStr = count < 2 ? "was send." : "were send.";
+		logger.info("Sending active requests complete. " + count + " request(s) total " + countStr);
 		notificationService.sendNotifications();
 	}
 	
