@@ -24,7 +24,7 @@ public class IndexController {
 	@Inject
 	private UserService userService;
 
-    @RequestMapping(produces="text/html; charset=UTF-8")
+    @RequestMapping
     public String getIndexPage() {
         return "index";
     }
