@@ -54,6 +54,11 @@ app.config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpPr
 		controller : 'userController'
 	});
     
+    $routeProvider.when('/profile', {
+		templateUrl : 'views/profile.html',
+		controller : 'profileController'
+	});
+    
     $routeProvider.otherwise({redirectTo: '/stations'});
     
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';

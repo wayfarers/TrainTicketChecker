@@ -23,7 +23,6 @@ import org.genia.trainchecker.repositories.TicketsRequestRepository;
 import org.genia.trainchecker.repositories.TicketsResponseRepository;
 import org.genia.trainchecker.repositories.UserRepository;
 import org.genia.trainchecker.repositories.UserRequestRepository;
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
@@ -129,7 +128,7 @@ public class RequestService {
 		request.setTo(stationRepo.getStation(toStation));
 		request.setTripDate(tripDate);
 		if (request.getFrom() == null || request.getTo() == null) {
-			return "Error: wrong stations selected. Please, check it again.";
+			return "Помилка: невірно вибрані станції. Будь ласка, перевірте.";
 		}
 		requestRepository.save(request);
 		UserRequest userRequest = new UserRequest();
@@ -139,7 +138,7 @@ public class RequestService {
 		userRequest.setUser(userService.getCurrentLoggedInUser());
 		userRequest.setActive(true);
 		userRequestRepository.save(userRequest);
-		return "Alert created!";
+		return "Запит створено!";
 	}
 	
 	public org.genia.trainchecker.entities.TicketsResponse getLastResponse(Integer ticketRequestId) {

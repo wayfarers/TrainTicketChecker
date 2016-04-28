@@ -2,7 +2,7 @@ angular.module('TrainCheckerApp').controller(
 		'navigation',
 		function($rootScope, $scope, $http, $location, $window, $templateCache, $route) {
 			
-			var templatesList = ["wip.html", "stations.html", "myRequests.html", "requestForm.html"];
+			var templatesList = ["wip.html", "stations.html", "myRequests.html", "requestForm.html", "profile.html"];
 			
 			var refreshTemlpates = function() {
 				for (i = 0; i < templatesList.length; i++) {
@@ -49,7 +49,7 @@ angular.module('TrainCheckerApp').controller(
 							$route.reload();
 						}
 					} else {
-						$location.path("/login");
+						$location.path("#/login");
 						$scope.error = true;
 					}
 				});

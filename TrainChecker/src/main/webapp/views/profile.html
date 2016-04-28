@@ -1,0 +1,48 @@
+<div class="row">
+	<div class="col-md-4 col-md-offset-4">
+	<span us-spinner="{radius:30, width:8, length: 36}"></span>
+		<div class="col-md-8">
+		<form role="form" ng-submit="updateInfo()">
+			<h2>Персональні дані</h2>
+			<br />
+			<div class="alert alert-info" ng-show="infoUpdated">Дані оновлено!</div>
+			<div class="form-group">
+				<label for="username">Логін:</label> <input type="text"
+					class="form-control" id="username" name="username"
+					ng-model="userInfo.login" disabled autocomplete="off" />
+			</div>
+			<div class="form-group">
+				<label for="email">E-mail:</label> <input type="email"
+					class="form-control" id="email" name="email" ng-model="userInfo.email"
+					required autocomplete="off" />
+			</div>
+			<button type="submit" class="btn btn-primary">Зберегти зміни!</button>
+		</form>
+		
+		<br />
+		
+		<form role="form" ng-submit="updatePass()">
+			<h2>Зміна пароля</h2>
+			<br />
+			<div class="alert alert-danger" ng-show="wrongPass">Поточний пароль невірний.</div>
+			<div class="alert alert-danger" ng-show="confirmFailed">Паролі не співпадають.</div>
+			<div class="alert alert-info" ng-show="passUpdated">Пароль змінено успішно!</div>
+			<div class="form-group">
+				<label for="password">Поточний пароль:</label> <input type="password"
+					class="form-control" id="password" name="password"
+					ng-model="passInfo.currentPassword" required autocomplete="off" />
+			</div><div class="form-group">
+				<label for="password">Новий пароль:</label> <input type="password"
+					class="form-control" id="password" name="password"
+					ng-model="passInfo.newPassword" required autocomplete="off" />
+			</div>
+			<div class="form-group">
+				<label for="password">Підтвердження пароля:</label> <input type="password"
+					class="form-control" id="password" name="password"
+					ng-model="passConfirm" required autocomplete="off" />
+			</div>
+			<button type="submit" class="btn btn-primary">Змінити пароль!</button>
+		</form>
+		</div>
+	</div>
+</div>

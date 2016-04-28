@@ -1,31 +1,31 @@
 <div class="row">
 <div class="col-md-4 col-md-offset-4">
 	<span us-spinner="{radius:30, width:8, length: 36}"></span>
-	<h1 class="text-center">Search for tickets on UzGovUa</h1>
+	<h1 class="text-center">Пошук квитків на Укрзалізниці</h1>
 	<div class="alert alert-info" style="vertical-align: middle;">
 		<!-- <span class=" glyphicon glyphicon-info-sign"  aria-hidden="true"></span> --> 
-		<img alt="Info" src="resources/images/info-sign.png" style="width: 5%; height: 5%; margin-right: 10px"> Please, enter stations names in <span style="color: red; font-weight: bold">Ukrainian</span>.
+		<img alt="Info" src="resources/images/info-sign.png" style="width: 5%; height: 5%; margin-right: 10px"> Будь ласка, вводьте назви станцій <span style="color: red; font-weight: bold">українською</span>.
 	</div>
 	<form class="form-horizontal" name="requestForm" ng-submit="sendRequest()" novalidate>
-		<h4>Origin:</h4>
+		<h4>Станція відправлення:</h4>
 		<div ng-class="{ 'has-error' : requestForm.from.$error.required && !requestForm.from.$pristine }">
-			<input id="from" name="from" type="text" ng-model="fromStation" placeholder="From station"
+			<input id="from" name="from" type="text" ng-model="fromStation" placeholder="Від станції"
 				uib-typeahead="s for s in getFilteredStations($viewValue)"
 				typeahead-min-length="2" class="form-control" required autocomplete="off" />
 			<span ng-show="requestForm.from.$error.required && !requestForm.from.$pristine"
-					class="help-block">Please, select station from dropdown list.</span>
+					class="help-block">Виберіть станцію з випадаючого списку.</span>
 		</div>
-		<h4>Destination: <a class="btn btn-default" role="button" ng-click="swapStations()" ng-disabled="fromStation == null && toStation == null">Swap stations</a>
+		<h4>Станція призначення: <a class="btn btn-default" role="button" ng-click="swapStations()" ng-disabled="fromStation == null && toStation == null">Swap stations</a>
 		<a class="btn btn-default" role="button" ng-click="testStations()">Test stations</a></h4>
 		<div ng-class="{ 'has-error' : requestForm.to.$error.required && !requestForm.to.$pristine }">
-			<input id="to" name="to" type="text" ng-model="toStation" placeholder="To station"
+			<input id="to" name="to" type="text" ng-model="toStation" placeholder="До станції"
 				uib-typeahead="s for s in getFilteredStations($viewValue)"
 				typeahead-min-length="2" class="form-control" required autocomplete="off" />
 			<span ng-show="requestForm.to.$error.required && !requestForm.to.$pristine"
-					class="help-block">Please, select station from dropdown list.</span>
+					class="help-block">Виберіть станцію з випадаючого списку.</span>
 		</div>
 		
-		<h4>Trip date</h4>
+		<h4>Дата подорожі</h4>
 		<div>
 				<p class="input-group">
 					<input id="calendar" type="text" class="form-control"
@@ -42,10 +42,9 @@
 				</p>
 		</div>
 
-		<button class="btn btn-info" type="submit" ng-disabled="requestForm.$invalid">Search!</button>
+		<button class="btn btn-info" type="submit" ng-disabled="requestForm.$invalid">Пошук!</button>
 		
-		<a class="btn btn-default" role="button" ng-click="requestAlert()" ng-disabled="requestForm.$invalid">Create
-			alert for this search</a>
+		<a class="btn btn-default" role="button" ng-click="requestAlert()" ng-disabled="requestForm.$invalid">Створити запит для цього пошуку</a>
 	</form>
 	<br/>
 	<div class="alert alert-info" role="alert" ng-show="errorMsg != null">{{errorMsg}}</div>
@@ -54,9 +53,9 @@
 		ng-show="trains.length > 0">
 		<thead>
 			<tr>
-				<th style="text-align: center; width: 25px;">Train #</th>
-				<th style="text-align: center;">Direction</th>
-				<th style="text-align: center;">Places</th>
+				<th style="text-align: center; width: 25px;">Потяг #</th>
+				<th style="text-align: center;">Напрямок</th>
+				<th style="text-align: center;">Місця</th>
 				<th style="text-align: center;"></th>
 			</tr>
 		</thead>
@@ -72,7 +71,7 @@
 					</ul>
 				</td>
 				<td><button class="btn btn-default"
-						ng-click="requestAlertForTrain(train)">Create alert</button></td>
+						ng-click="requestAlertForTrain(train)">Створити запит</button></td>
 			</tr>
 		</tbody>
 	</table>

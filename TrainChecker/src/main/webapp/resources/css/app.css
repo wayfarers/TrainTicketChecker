@@ -34,3 +34,13 @@
 tr.highlight {
 	background-color: #b3ffcc;
 }
+
+.bordered {
+	border: 1px solid #e1e1e8;
+	border-radius: 4px;
+	padding: 10px;
+}
+
+.bordered.pad-6 {
+	padding: 6px;
+}

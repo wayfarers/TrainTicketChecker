@@ -1,7 +1,7 @@
 <!doctype html>
 <html ng-app="TrainCheckerApp">
 <head>
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>UZ ticket checker</title>
     <link rel="stylesheet" href="resources/css/app.css"/>
 	<link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css" />
@@ -33,14 +33,14 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
       	<!-- <li><a href="#/">Home</a></li>  -->
-      	<li> <a href="#/stations">Search tickets</a></li>
-      	<li ng-if="authenticated"><a href="#/userRequests">My alerts</a></li>
-      	<li><a href="#/about">About</a></li>
+      	<li> <a href="#/stations">Пошук квитків</a></li>
+      	<li ng-if="authenticated"><a href="#/userRequests">Мої запити</a></li>
+      	<li><a href="#/about">Про нас</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-     <!-- <li ng-show="authenticated"><a href="#/wip">Profile</a></li>  --> 
-      <li ng-show="!authenticated"><a href="#/login">Login</a></li>
-      <li ng-show="authenticated"><a href="" ng-click="logout()">Logout</a></li>
+     	<li ng-show="authenticated"><a href="#/profile">Мій профіль</a></li> 
+      	<li ng-show="!authenticated"><a href="#/login">Увійти</a></li>
+      	<li ng-show="authenticated"><a href="" ng-click="logout()">Вийти</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
@@ -65,6 +65,7 @@
 <script src="resources/js/controllers/userController.js"></script>
 <script src="resources/js/controllers/newPassController.js"></script>
 <script src="resources/js/controllers/passResetController.js"></script>
+<script src="resources/js/controllers/profileController.js"></script>
 
 <script src="resources/js/datepicker.js"></script>
 <script src="resources/js/angular-spinner.min.js"></script>

@@ -3,22 +3,22 @@
 		<span us-spinner="{radius:30, width:8, length: 36}"></span>
 		<div class="alert alert-danger" ng-show="error">
 			<!-- There was a problem logging in. Please try again. -->
-			Incorrect username or password. Please, try again.
+			Невірний логін чи пароль. Спробуйте ще раз.
 		</div>
 		<form role="form" ng-submit="login()">
 			<div class="form-group">
-				<label for="username">Username:</label> <input type="text"
+				<label for="username">Логін:</label> <input type="text"
 					class="form-control" id="username" name="username"
 					ng-model="credentials.username" />
 			</div>
 			<div class="form-group">
-				<label for="password">Password:</label> <input type="password"
+				<label for="password">Пароль:</label> <input type="password"
 					class="form-control" id="password" name="password"
 					ng-model="credentials.password" />
 			</div>
-			<button type="submit" class="btn btn-primary">Login</button>
-			or <a href="#/registration">Registration</a>
-			<br /><br /><a href="#/resetpass">Forgot password?</a>
+			<button type="submit" class="btn btn-primary">Увійти</button>
+			or <a href="#/registration">Регістрація</a>
+			<br /><br /><a href="#/resetpass">Забули пароль?</a>
 		</form>
 	</div>
 </div>

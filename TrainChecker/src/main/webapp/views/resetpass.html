@@ -2,17 +2,17 @@
 	<span us-spinner="{radius:30, width:8, length: 36}"></span>
 	<div class="col-md-6 col-md-offset-3">
 		<div class="alert alert-danger" style="vertical-align: middle;" ng-show="noSuchUser">
-			No such user found.
+			Користувач з таким логіном не знайдений.
 		</div>
 		<div class="alert alert-danger" style="vertical-align: middle;" ng-show="serverError">
-			Server error. Please, try again later.
+			Помилка сервера. Спробуйте, будь ласка, пізніше.
 		</div>
 		<div class="alert alert-success" style="vertical-align: middle;" ng-show="done">
-			<b>Success!</b> Reset link was send to your email. 
+			<b>Успішно!</b> Посилання для відновлення пароля було відправлено на Вашу пошту. 
 		</div>
 		<form class="form-horizontal" name="resetForm" ng-submit="resetPass()" novalidate>
-			<label>Please, type your login: <input id="login" class="form-control" type="text" ng-model="login" required" /></label>
-			<button type="submit" class="btn btn-info">Submit</button>
+			<label>Введіть ваш логін: <input id="login" class="form-control" type="text" ng-model="login" required" /></label>
+			<button type="submit" class="btn btn-info">Відновити</button>
 		</form>
 	</div>
 </div>

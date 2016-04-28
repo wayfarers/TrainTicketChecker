@@ -24,7 +24,7 @@ public class IndexController {
 	@Inject
 	private UserService userService;
 
-    @RequestMapping
+    @RequestMapping(produces="text/html; charset=UTF-8")
     public String getIndexPage() {
         return "index";
     }
@@ -39,6 +39,7 @@ public class IndexController {
     	User userInfo = new User();
     	User loggedUser = userService.getCurrentLoggedInUser();
     	if (loggedUser != null) {
+    		userInfo.setLogin(loggedUser.getLogin());
     		userInfo.setName(loggedUser.getName());
     		userInfo.setEmail(loggedUser.getEmail());
     		userInfo.setRole(loggedUser.getRole());

@@ -1,10 +1,4 @@
 <style type="text/css">
-.bordered {
-	border: 1px solid #e1e1e8;
-	border-radius: 4px;
-	padding: 10px;
-}
-
 .red {
 	color: red;
 	font-size: 200%
@@ -19,9 +13,7 @@
 	color: green;
 	font-size: 200%
 }
-.bordered.pad-6 {
-	padding: 6px;
-}
+
 td {
 	vertical-align: middle
 }
@@ -30,15 +22,15 @@ td {
 <div class="row">
 <span us-spinner="{radius:30, width:8, length: 36}"></span>
 	<div class="col-md-6 col-md-offset-3">
-		<h3 class="text-center">My alerts</h3>
+		<h3 class="text-center">Мої запити</h3>
 		<br />
 		<div>
-			You will receive notifications about new available tickets to your email <b>{{userInfo.email}}</b><br />
-			We check for updates every 15 minutes.
+			Ви будете отримувати повідомлення про нові квитки на Вашу пошту <b>{{userInfo.email}}</b><br />
+			Ми перевірятимемо наявність квитків кожні 15 хвилин.
 		</div>
 		<br />
-		<label><input type="checkbox" ng-model="showExpired"> Show expired</label>
-		<label><input type="checkbox" ng-model="showInactive"> Show in-active</label>
+		<label><input type="checkbox" ng-model="showExpired"> Показувати прострочені</label><br />
+		<label><input type="checkbox" ng-model="showInactive"> Показувати неактивні</label>
 		</div>
 </div>
 
@@ -50,12 +42,12 @@ td {
 				ng-show="requests != null && requests.length > 0">
 				<thead>
 					<tr>
-						<th style="text-align: center;">Direction</th>
-						<th style="text-align: center;">Train #</th>
-						<th style="text-align: center;">Trip date</th>
-						<th style="text-align: center;">Selected place types</th>
-						<th style="text-align: center;">Last update</th>
-						<th style="text-align: center;">Status</th>
+						<th style="text-align: center;">Напрямок</th>
+						<th style="text-align: center;">Потяг #</th>
+						<th style="text-align: center;">Дата подорожі</th>
+						<th style="text-align: center;">Вибрані типи місць</th>
+						<th style="text-align: center;">Останнє оновлення</th>
+						<th style="text-align: center;">Статус</th>
 						<th style="text-align: center;"></th>
 					</tr>
 				</thead>
@@ -68,7 +60,7 @@ td {
 						<td style="text-align: center">{{request.request.tripDate | date: 'dd-MM-yyyy'}}</td>
 						<td>
 							<ul>
-								<li ng-repeat="type in getTypesAsArray(request.placeTypes)">{{type}}</li>
+								<li ng-repeat="type in getTypesAsArray(request.placeTypes)">{{type | placeType}}</li>
 							</ul>							
 						</td>
 						<td style="text-align: center">{{request.request.lastResponse.time | date: 'dd-MM-yyyy HH:mm:ss' | noUpdate}}</td>
@@ -79,7 +71,7 @@ td {
 											
 							aria-hidden="true"></span><br/>
 							<span ng-show="!request.expired">{{request.active | checkStatus}}</span>
-							<span ng-show="request.expired">Expired</span>
+							<span ng-show="request.expired">Прострочений</span>
 							
 							</td>
 						<td>
@@ -87,13 +79,13 @@ td {
 								ng-click="changeStatus(request.id)" class="btn btn-success"
 								ng-show="!request.active && !request.expired">
 								<span class="glyphicon glyphicon-refresh" aria-hidden="true"
-									style="margin-right: 10px"></span>Activate
+									style="margin-right: 10px"></span>Активувати
 							</button>
 							<button style="width: 100%" type="button"
 								ng-click="changeStatus(request.id)" class="btn btn-danger"
 								ng-show="request.active && !request.expired">
 								<span class="glyphicon glyphicon-flash" aria-hidden="true"
-									style="margin-right: 10px"></span> Deactivate
+									style="margin-right: 10px"></span> Деактивувати
 							</button>
 						</td>
 
@@ -103,8 +95,7 @@ td {
 			</table>
 			<div style="text-align: center"
 				ng-hide="requests != null && requests.length > 0">
-				You have no requests yet. <a href="#/stations">Click here to
-					search for trains and create an alert</a>
+				У Вас поки немає запитів. <a href="#/stations">Натисніть сюди для пошуку потягів та створення запиту</a>
 			</div>
 		</div>
 	</div>

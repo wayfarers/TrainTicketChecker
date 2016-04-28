@@ -5,8 +5,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -63,54 +67,69 @@ public class NotificationService {
 	@Transactional
 	public void sendNotifications() {
 		List<UserRequest> activeRequests = userRepository.findActive();
+		HashMap<User, List<UserRequest>> requestGroups = new HashMap<>();
 		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		
 		for (UserRequest userRequest : activeRequests) {
 			if (!userRequest.isExpired() && userRequest.getRequest().getResponses().size() != 0) {
+				if (!requestGroups.containsKey(userRequest.getUser())) {
+					requestGroups.put(userRequest.getUser(), new ArrayList<>(Arrays.asList(userRequest)));
+				} else {
+					requestGroups.get(userRequest.getUser()).add(userRequest);
+				}
+			}
+		}
+		
+		for (User user : requestGroups.keySet()) {
+			String emailSubject = "TrainAlert: Доступні нові квитки!";
+			String emailBody = "";
+			for (UserRequest userRequest : requestGroups.get(user)) {
 				Collections.sort(userRequest.getRequest().getResponses(), new Comparator<TicketsResponse>() {
 					@Override
 					public int compare(TicketsResponse o1, TicketsResponse o2) {
 						return o1.getTime().compareTo(o2.getTime()) * (-1);
 					}
 				});
-				
+
 				TicketsResponse last = null;
 				TicketsResponse previous = null;
-				
+
 				try {
 					last = userRequest.getRequest().getResponses().get(0);
 					previous = userRequest.getRequest().getResponses().get(1);
 				} catch (IndexOutOfBoundsException e) {
 					//doing nothing, here can be only one response in list.
 				}
-				
+
 				//TODO: implement compearing according to a filter.
-				
+
 				if (getPlacesCount(last, userRequest) > getPlacesCount(previous, userRequest)) {
 					//TODO: send appropriate notification
-					String emailSubject = "TrainAlert: New tickets available!";
-					String emailBody = "Here are new tickets for direction " + userRequest.getRequest().getFrom().getStationName() + " - " + userRequest.getRequest().getTo().getStationName() 
-							+ ", on " + dateFormat.format(userRequest.getRequest().getTripDate()) + "\n\n";
-					
+					emailBody += "<b>З'явилися нові квитки за напрямком " + userRequest.getRequest().getFrom().getStationName() + " - " + userRequest.getRequest().getTo().getStationName() 
+							+ ", на " + dateFormat.format(userRequest.getRequest().getTripDate()) + "</b><br /><ul>";
+
 					for (TicketsResponseItem item : last.getItems()) {
 						if (StringUtils.isEmpty(userRequest.getTrainNum())
 								|| StringUtils.containsIgnoreCase(item.getTrain().getTrainNum(), userRequest.getTrainNum())) {
-							emailBody += "Train #" + item.getTrain().getTrainNum() + "\n";
+							emailBody += "<li>Потяг № " + item.getTrain().getTrainNum() + "</li><ul>";
 							for (Place place : item.getAvailablePlaces()) {
 								if (StringUtils.isEmpty(userRequest.getPlaceTypes()) || 
 										userRequest.getPlaceTypesAsList().contains(PlaceType.ANY) || 
 										userRequest.getPlaceTypesAsList().contains(place.getPlaceType())) {
-									emailBody += "Place: " + place.getTitle() + ", available: " + place.getPlacesAvailable() + "\n";
+									emailBody += "<li>Місця: " + place.getTitle() + ", доступно: " + place.getPlacesAvailable() + "</li>";
 								}
 							}
+							emailBody += "</ul>";
 						}
-						emailBody += "\n";
 					}
-					MailUtils.sendEmail(creds, userRequest.getUser().getEmail(), emailSubject, emailBody);
+					emailBody += "</ul><br />";
 				}
 			}
+			if (StringUtils.isNotBlank(emailBody)) {
+				emailBody = "<html><body>" + emailBody + "</body></html>";
+				MailUtils.sendEmail(creds, user.getEmail(), emailSubject, emailBody, true);
+			}
 		}
-		
 	}
 	
 	private static int getPlacesCount(TicketsResponse response, UserRequest userRequest) {
@@ -146,7 +165,7 @@ public class NotificationService {
 		emailBody += "This email was sent automatically by system in response to your request to reset your password.\n";
 		emailBody += "To reset your password and access your account, use the following link:\n";
 		emailBody += link + "\n";
-		emailBody += "\nThak you,\nTrainAlert team";
+		emailBody += "\nThank you,\nTrainAlert team";
 		
 		MailUtils.sendEmail(creds, user.getEmail(), emailSubject, emailBody);
 	}

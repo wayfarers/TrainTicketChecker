@@ -39,7 +39,7 @@ public class CronExecutor {
 			interval = 900;
 		}
 		if ((startDelay = env.getProperty("cron_delay", Integer.class)) == null) {
-			interval = 90;
+			startDelay = 90;
 		}
 		// The job itself is not managed by Spring and cannot autowire fields.
 		// Therefore, we pass the service to the job via JobDataMap.
@@ -58,8 +58,7 @@ public class CronExecutor {
 		scheduler = new StdSchedulerFactory().getScheduler();
 		scheduler.clear();
 		scheduler.scheduleJob(job, trigger);
-		scheduler.startDelayed(startDelay);
-		
+//		scheduler.startDelayed(startDelay);
 	}
 	
 	public void startJob() throws SchedulerException {
