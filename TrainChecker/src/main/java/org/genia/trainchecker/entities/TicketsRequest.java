@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.genia.trainchecker.config.JsonOptions;
 import org.genia.trainchecker.core.PlaceType;
@@ -31,6 +32,9 @@ public class TicketsRequest {
 	@Column(name = "ticketsRequestId")
 	private Integer id;
 	private Date tripDate;
+	
+	@Transient
+	private TicketsResponse lastResponse;
 	
 	@Enumerated(EnumType.STRING)
 	private PlaceType placeType;
@@ -113,11 +117,23 @@ public class TicketsRequest {
 		});
 	}
 	
+//	public TicketsResponse getLastResponse() {
+//		if (responses.isEmpty()) {
+//			return null;
+//		}
+//		sortResponses();
+//		return responses.get(0);
+//	}
+	
+//	@Transient
 	public TicketsResponse getLastResponse() {
-		if (responses.isEmpty()) {
-			return null;
-		}
-		sortResponses();
-		return responses.get(0);
+		return lastResponse;
 	}
+	
+//	@Transient
+	public void setLastResponse(TicketsResponse lastResponse) {
+		this.lastResponse = lastResponse;
+	}
+	
+	
 }

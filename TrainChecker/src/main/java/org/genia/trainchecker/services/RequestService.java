@@ -153,7 +153,7 @@ public class RequestService {
 	public List<UserRequest> getUserRequests() {
 		List<UserRequest> requests = userRequestRepository.findByUserId(userService.getCurrentLoggedInUser().getId());
 		for (UserRequest userRequest : requests) {
-			userRequest.getRequest().getLastResponse();
+			userRequest.getRequest().setLastResponse(getLastResponse(userRequest.getRequest().getId()));
 		}
 		return requests;
 	}
