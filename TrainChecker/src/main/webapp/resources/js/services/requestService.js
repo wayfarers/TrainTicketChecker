@@ -7,6 +7,7 @@ angular.module('TrainCheckerApp')
 		var trainNum = null;
 		var tripDate = null;
 		var tripDateStr = null;
+		var search = false;
 		
 		this.setStations = function(from, to, date){
 			fromStation = from;
@@ -36,5 +37,22 @@ angular.module('TrainCheckerApp')
 		
 		this.getTrainNum = function() {
 			return trainNum;
+		}
+		
+		this.isSearch = function() {
+			return search;
+		}
+		
+		this.setSearch = function(searchFlag) {
+			search = searchFlag;
+		}
+		
+		this.clear = function () {
+			fromStation = null;
+			toStation = null;
+			trainNum = null;
+			tripDate = null;
+			tripDateStr = null;
+			search = false;
 		}
 	});

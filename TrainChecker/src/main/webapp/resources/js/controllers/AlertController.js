@@ -15,7 +15,7 @@ angular.module('TrainCheckerApp').controller('AlertController', ['$scope', '$htt
 			 $scope.noCheckbox = true;
 			 return;
 		 }
-		 $scope.alertMsg = 'Відправка даний...';
+		 $scope.alertMsg = 'Відправка даних...';
 		 $http.get('stations/createAlert', 
 				 {params: {fromStation: $scope.fromStation, 
 					 		toStation: $scope.toStation,

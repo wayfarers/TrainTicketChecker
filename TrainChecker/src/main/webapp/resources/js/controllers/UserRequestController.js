@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('TrainCheckerApp').controller('UserRequestController', ['$scope', '$http', function($scope, $http) {
+angular.module('TrainCheckerApp').controller('UserRequestController', ['$scope', '$http', '$location','requestService', '$filter', function($scope, $http, $location, requestService, $filter) {
 	
 	$scope.userInfo = null;
 	$scope.requests = null;
@@ -42,12 +42,19 @@ angular.module('TrainCheckerApp').controller('UserRequestController', ['$scope',
 	};
 	
 	$scope.showDetails = function(request) {
-		if ($scope.requestDetails == null || request.id != $scope.requestDetails.id) {
-			$scope.requestDetails = request;
-		} else {
-			//deselect current request
-			$scope.requestDetails = null;
-		}
+		requestService.setStations(
+				request.request.from.stationName, 
+				request.request.to.stationName, 
+				request.request.tripDate);
+		requestService.setSearch(true);
+		$location.path('/stations');
+		
+//		if ($scope.requestDetails == null || request.id != $scope.requestDetails.id) {
+//			$scope.requestDetails = request;
+//		} else {
+//			//deselect current request
+//			$scope.requestDetails = null;
+//		}
 		
 	}
 }]);

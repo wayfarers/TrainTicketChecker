@@ -5,7 +5,7 @@
  * @constructor
  */
 
-angular.module('TrainCheckerApp').controller('TrainController', ['$scope', '$http', '$location', 'requestService', function($scope, $http, $location, requestService) {
+angular.module('TrainCheckerApp').controller('TrainController', ['$scope', '$http', '$location', 'requestService', '$filter', function($scope, $http, $location, requestService, $filter) {
 	
 	addDateTo($scope);
 	
@@ -16,8 +16,12 @@ angular.module('TrainCheckerApp').controller('TrainController', ['$scope', '$htt
     
     $scope.fromStation = requestService.getFrom();
     $scope.toStation = requestService.getTo();
-    $scope.tripDate = requestService.getTripDate();
+    if (requestService.getTripDate() != null) {
+    	$scope.dt = requestService.getTripDate();
+    }
+    $scope.isSearch = requestService.isSearch();
     
+    requestService.clear();
     
     $scope.fetchStationList = function() {
         $http.get('stations/stationlist.json').success(function(stationList){
@@ -35,7 +39,9 @@ angular.module('TrainCheckerApp').controller('TrainController', ['$scope', '$htt
 		$http.get('stations/sendRequest', 
 				{params: {fromStation: $scope.fromStation, 
 							toStation: $scope.toStation, 
-							dt: $("#calendar").val()}}).success(function(res) {$scope.trains = res.value; $scope.errorMsg = res.errorDescription});
+							dt: $filter('date')($scope.dt, 'dd.MM.yyyy')}}
+//							dt: $("#calendar").val()}}
+		).success(function(res) {$scope.trains = res.value; $scope.errorMsg = res.errorDescription});
 	};
 	
 	$scope.requestAlert = function() {
@@ -59,4 +65,9 @@ angular.module('TrainCheckerApp').controller('TrainController', ['$scope', '$htt
 		requestService.setTrainNum(train.num)
 		$scope.requestAlert();
 	}
+	
+	if ($scope.isSearch) {
+    	$scope.sendRequest();
+    }
+	
 }]);

@@ -1,6 +1,7 @@
 angular.module('TrainCheckerApp').controller(
 		'navigation',
 		function($rootScope, $scope, $http, $location, $window, $templateCache, $route) {
+			$scope.error = false;
 			
 			var templatesList = ["wip.html", "stations.html", "myRequests.html", "requestForm.html", "profile.html"];
 			
@@ -44,12 +45,11 @@ angular.module('TrainCheckerApp').controller(
 						$scope.error = false;
 						refreshTemlpates();
 						if ($location.path() == '/login') {
-							$location.path("/");
+							$location.path("#/userRequests");
 						} else {
 							$route.reload();
 						}
 					} else {
-						$location.path("#/login");
 						$scope.error = true;
 					}
 				});
