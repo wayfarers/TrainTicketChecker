@@ -75,13 +75,13 @@ td {
 							</td>
 						<td>
 							<button style="width: 100%" type="button"
-								ng-click="changeStatus(request.id)" class="btn btn-success"
+								ng-click="changeStatus(request.id); $event.stopPropagation();" class="btn btn-success"
 								ng-show="!request.active && !request.expired">
 								<span class="glyphicon glyphicon-refresh" aria-hidden="true"
 									style="margin-right: 10px"></span>Активувати
 							</button>
 							<button style="width: 100%" type="button"
-								ng-click="changeStatus(request.id)" class="btn btn-danger"
+								ng-click="changeStatus(request.id); $event.stopPropagation();" class="btn btn-danger"
 								ng-show="request.active && !request.expired">
 								<span class="glyphicon glyphicon-flash" aria-hidden="true"
 									style="margin-right: 10px"></span> Деактивувати
