@@ -42,12 +42,15 @@ angular.module('TrainCheckerApp').controller('UserRequestController', ['$scope',
 	};
 	
 	$scope.showDetails = function(request) {
-		requestService.setStations(
-				request.request.from.stationName, 
-				request.request.to.stationName, 
-				request.request.tripDate);
-		requestService.setSearch(true);
-		$location.path('/stations');
+		if (!request.expired) {
+			requestService.setStations(
+					request.request.from.stationName, 
+					request.request.to.stationName, 
+					request.request.tripDate);
+			requestService.setSearch(true);
+			$location.path('/stations');
+		}
+		
 		
 //		if ($scope.requestDetails == null || request.id != $scope.requestDetails.id) {
 //			$scope.requestDetails = request;
