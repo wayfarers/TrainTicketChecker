@@ -2,6 +2,7 @@
 	<div class="col-md-4 col-md-offset-4">
 		<span us-spinner="{radius:30, width:8, length: 36}"></span>
 		<div class="alert alert-danger" ng-show="formError">Всі поля є необхідними. Заповніть всі, будь ласка.</div>
+		<div class="alert alert-danger" ng-show="usernameBusy">Вказаний логін зайнятий. Спробуйте, будь ласка, інший.</div>
 		<div class="alert alert-danger" ng-show="registerFailed">Сталася помилка. Спробуйте ще раз.</div>
 		<div ng-show="registerSuccess">
 			<h2>Регістрація успішна!!</h2>

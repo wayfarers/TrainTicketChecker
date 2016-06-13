@@ -106,13 +106,19 @@ public class IndexController {
     }
     
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public @ResponseBody boolean registerUser(@RequestBody NewUser newUser) {
-    	System.out.println(newUser.toString());
+    public @ResponseBody int registerUser(@RequestBody NewUser newUser) {
+    	if (!checkUsername(newUser.getUsername())) {
+    		return 1;
+    	}
     	User user = userService.createUser(newUser);
     	if (user != null && user.getId() != null && user.getId() != 0) {
-    		return true;
+    		return 0;
     	} else {
-    		return false;
+    		return -1;
     	}
+    }
+    
+    private boolean checkUsername(String username) {
+    	return userService.checkUsernameAvailability(username);
     }
 }

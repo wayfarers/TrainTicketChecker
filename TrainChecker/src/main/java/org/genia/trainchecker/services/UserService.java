@@ -26,6 +26,7 @@ public class UserService {
 		user.setEmail(newUser.getEmail());
 		user.setPassword(newUser.getPassword());
 		user.setRole(Role.USER);
+		user.setEnabled(true);
 		user = userRepository.save(user);
 		return user;
 	}
@@ -62,5 +63,14 @@ public class UserService {
 	
 	public User saveUser(User user) {
 		return userRepository.save(user);
+	}
+	
+	public boolean checkUsernameAvailability(String username) {
+		User user = userRepository.findByLogin(username);
+		if (user == null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
