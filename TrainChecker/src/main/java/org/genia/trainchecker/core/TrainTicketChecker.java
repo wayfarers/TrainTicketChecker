@@ -140,7 +140,7 @@ public class TrainTicketChecker {
 			return null;
 		}
 
-		return post.getResponseBodyAsString();
+		return IOUtils.toString(post.getResponseBodyAsStream(), "UTF-8");
 	}
 
 	/**
