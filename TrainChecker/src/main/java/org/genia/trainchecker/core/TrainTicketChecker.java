@@ -112,7 +112,7 @@ public class TrainTicketChecker {
 //		post.addRequestHeader("Cache-Control", "no-cache");
 		post.addRequestHeader("Connection", "keep-alive");
 //		post.addRequestHeader("Content-Length", "288"); //202. 196
-		post.addRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+		post.addRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		post.addRequestHeader("GV-Ajax", "1");
 		post.addRequestHeader("GV-Referer", "http://booking.uz.gov.ua/");
 		post.addRequestHeader("GV-Screen", "1920x1080");
