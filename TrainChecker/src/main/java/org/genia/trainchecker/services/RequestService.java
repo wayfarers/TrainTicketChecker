@@ -13,9 +13,9 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import org.genia.trainchecker.converters.RequestConverter;
-import org.genia.trainchecker.core.TicketsRequest;
-import org.genia.trainchecker.core.TicketsResponse;
-import org.genia.trainchecker.core.Train;
+import org.genia.trainchecker.core.UzTicketsRequest;
+import org.genia.trainchecker.core.UzTicketsResponse;
+import org.genia.trainchecker.core.UzTrain;
 import org.genia.trainchecker.core.TrainTicketChecker;
 import org.genia.trainchecker.entities.UserRequest;
 import org.genia.trainchecker.repositories.StationRepositoryCustom;
@@ -54,21 +54,21 @@ public class RequestService {
 	@Inject
 	private TicketsResponseRepository ticketsResponseRepository;
 
-	public TicketsResponse sendRequest(String fromStation, String toStation, String dt) throws ParseException {
+	public UzTicketsResponse sendRequest(String fromStation, String toStation, String dt) throws ParseException {
 		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dt.substring(0, 10));
-		TicketsRequest request = new TicketsRequest();
+		UzTicketsRequest request = new UzTicketsRequest();
 		request.setFrom(checker.getStationsAsMap().get(fromStation));
 		request.setTill(checker.getStationsAsMap().get(toStation));
 		request.setDate(date);
-		TicketsResponse response = checker.checkTickets(request);
-		for (Train train : response.getTrains()) {
+		UzTicketsResponse response = checker.checkTickets(request);
+		for (UzTrain train : response.getTrains()) {
 			System.out.printf("%s\t%s - %s, %d free places total%n", train.getNum(), train.getFrom().getName(),
 					train.getTill().getName(), train.getTotalPlaces());
 		}
 		return response;
 	}
 
-	public TicketsResponse sendRequest(TicketsRequest request) {
+	public UzTicketsResponse sendRequest(UzTicketsRequest request) {
 		return checker.checkTickets(request);
 	}
 
@@ -86,7 +86,7 @@ public class RequestService {
 			if (!ticketsRequest.getTripDate().before(makeMidnight(dateNow))) {
 				count++;
 				long time = System.currentTimeMillis();
-				org.genia.trainchecker.core.TicketsResponse currentResponse = sendRequest(converter.toCore(ticketsRequest));
+				UzTicketsResponse currentResponse = sendRequest(converter.toCore(ticketsRequest));
 				long latency = System.currentTimeMillis() - time;
 				org.genia.trainchecker.entities.TicketsResponse response = converter.convertToEntity(currentResponse);
 				response.setTicketsRequest(ticketsRequest);
@@ -96,7 +96,7 @@ public class RequestService {
 				if (currentResponse.isError()) {
 					logger.info(currentResponse.getErrorDescription());
 				} else {
-					for (Train train : currentResponse.getTrains()) {
+					for (UzTrain train : currentResponse.getTrains()) {
 						logger.info("{}\t{} - {}, {} free places total", train.getNum(), train.getFrom().getName(),
 								train.getTill().getName(), train.getTotalPlaces());
 					}

@@ -15,7 +15,7 @@ public class App
 //			System.out.println(station.getStation() + " - id: " + station.getStationId());
 //		}
     	
-    	TicketsRequest request = new TicketsRequest();
+    	UzTicketsRequest request = new UzTicketsRequest();
 //    	request.from.setName("Київ"); 
 //    	request.from.setStationId("2200001"); 
 //    	request.till.setName("Кам'янець-Подільський");
@@ -26,9 +26,9 @@ public class App
     	request.till.setStationId("2218000");
     	request.date = new SimpleDateFormat("dd.MM.yyyy").parse("30.12.2015");
     	
-    	TicketsResponse response = checker.checkTickets(request);
+    	UzTicketsResponse response = checker.checkTickets(request);
     	
-    	for (Train train : response.trains) {
+    	for (UzTrain train : response.trains) {
 			System.out.printf("%s\t%s - %s, %d free places total%n", train.num, train.from.getName(), train.till.getName(), train.getTotalPlaces());
 		}
     	

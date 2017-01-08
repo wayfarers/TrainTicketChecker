@@ -23,6 +23,7 @@ import org.genia.trainchecker.config.JsonOptions;
 import org.genia.trainchecker.core.PlaceType;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.genia.trainchecker.core.UzStation;
 
 @Named
 @Entity
@@ -93,7 +94,7 @@ public class TicketsRequest {
 		this.responses = responses;
 		sortResponses();
 	}
-	public void setFrom(org.genia.trainchecker.core.Station from) {
+	public void setFrom(UzStation from) {
 		Station st = new Station();
 		st.setStationName(from.getName());
 		st.setStationIdUz(from.getStationId());
@@ -101,7 +102,7 @@ public class TicketsRequest {
 		this.from = st;
 	}
 	
-	public void setTo(org.genia.trainchecker.core.Station to) {
+	public void setTo(UzStation to) {
 		Station st = new Station();
 		st.setStationName(to.getName());
 		st.setStationIdUz(to.getStationId());

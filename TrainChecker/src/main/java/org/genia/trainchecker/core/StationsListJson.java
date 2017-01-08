@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class StationsListJson {
 	boolean error;
 	@JsonProperty("value")
-	List<Station> stations = new ArrayList<>();
+	List<UzStation> stations = new ArrayList<>();
 	
 	public boolean isError() {
 		return error;
@@ -19,10 +19,10 @@ public class StationsListJson {
 	public void setError(boolean error) {
 		this.error = error;
 	}
-	public List<Station> getStations() {
+	public List<UzStation> getStations() {
 		return stations;
 	}
-	public void setStations(List<Station> stations) {
+	public void setStations(List<UzStation> stations) {
 		this.stations = stations;
 	}
 }

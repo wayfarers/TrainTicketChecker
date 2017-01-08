@@ -4,12 +4,8 @@ import java.util.Calendar;
 
 import javax.inject.Named;
 
-import org.genia.trainchecker.core.Place;
-import org.genia.trainchecker.core.Station;
-import org.genia.trainchecker.core.Train;
-import org.genia.trainchecker.entities.TicketsRequest;
-import org.genia.trainchecker.entities.TicketsResponse;
-import org.genia.trainchecker.entities.TicketsResponseItem;
+import org.genia.trainchecker.core.*;
+import org.genia.trainchecker.entities.*;
 import org.genia.trainchecker.repositories.StationRepositoryCustom;
 import org.genia.trainchecker.repositories.TrainRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +19,7 @@ public class RequestConverter {
 	@Autowired
 	public TrainRepositoryCustom trainRepo;
 	
-	public TicketsRequest convertToEntity(org.genia.trainchecker.core.TicketsRequest coreRequest) {
+	public TicketsRequest convertToEntity(UzTicketsRequest coreRequest) {
 		TicketsRequest request = new TicketsRequest();
 		request.setFrom(coreRequest.getFrom());
 		request.setTo(coreRequest.getTill());
@@ -32,8 +28,8 @@ public class RequestConverter {
 		return request;
 	}
 	
-	public org.genia.trainchecker.core.TicketsRequest toCore(TicketsRequest request) {
-		org.genia.trainchecker.core.TicketsRequest coreRequest = new org.genia.trainchecker.core.TicketsRequest();
+	public UzTicketsRequest toCore(TicketsRequest request) {
+		UzTicketsRequest coreRequest = new UzTicketsRequest();
 		coreRequest.setFrom(convertToCore(request.getFrom()));
 		coreRequest.setTill(convertToCore(request.getTo()));
 		coreRequest.setDate(request.getTripDate());
@@ -41,31 +37,31 @@ public class RequestConverter {
 		return coreRequest;
 	}
 	
-	public Station convertToCore(org.genia.trainchecker.entities.Station station) {
-		Station coreStation = new Station();
+	public UzStation convertToCore(Station station) {
+		UzStation coreStation = new UzStation();
 		coreStation.setName(station.getStationName());
 		coreStation.setStationId(station.getStationIdUz());
 		return coreStation;
 	}
 	
-	public org.genia.trainchecker.entities.Station toEntity(Station coreStation) {
+	public Station toEntity(UzStation coreStation) {
 		return stationRepo.getStation(coreStation);
 	}
 	
-	public TicketsResponse convertToEntity(org.genia.trainchecker.core.TicketsResponse coreResponse) {
+	public TicketsResponse convertToEntity(UzTicketsResponse coreResponse) {
 		TicketsResponse response = new TicketsResponse();
 		response.setData(coreResponse.getData());
 		response.setErrorDescription(coreResponse.getErrorDescription());
 		response.setTime(Calendar.getInstance().getTime());
 //		response.setTicketsRequest(ticketsRequest);
 		
-		for (Train train : coreResponse.getTrains()) {
+		for (UzTrain train : coreResponse.getTrains()) {
 			TicketsResponseItem item = new TicketsResponseItem();
 			item.setTicketsResponse(response);
 			item.setTrain(trainRepo.getTrain(train));
 			item.setReservationError(train.getReserveError());
-			for (Place corePlace : train.getPlaces()) {
-				org.genia.trainchecker.entities.Place place = new org.genia.trainchecker.entities.Place();
+			for (UzPlace corePlace : train.getPlaces()) {
+				Place place = new Place();
 				place.setPlaceType(corePlace.getPlaceType());
 				place.setTicketsResponseItem(item);
 				place.setPlacesAvailable(corePlace.getPlaces());

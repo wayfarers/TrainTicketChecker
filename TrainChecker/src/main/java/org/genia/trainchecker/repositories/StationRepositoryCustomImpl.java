@@ -3,6 +3,7 @@ package org.genia.trainchecker.repositories;
 import javax.inject.Inject;
 
 import org.genia.trainchecker.core.TrainTicketChecker;
+import org.genia.trainchecker.core.UzStation;
 import org.genia.trainchecker.entities.Station;
 import org.springframework.stereotype.Repository;
 
@@ -15,14 +16,14 @@ public class StationRepositoryCustomImpl implements StationRepositoryCustom {
 	private TrainTicketChecker checker;
 
 	@Override
-	public Station getStation(org.genia.trainchecker.core.Station coreStation) {
+	public Station getStation(UzStation coreStation) {
 		// Station station =
 		// repository.getByStationIdUz(coreStation.getStationId()); //TODO:
 		// different stations can have same UzId, f.e. in different lang.
 		Station station = repository.getByStationName(coreStation.getName());
 		if (station == null) {
 			station = new Station();
-			org.genia.trainchecker.core.Station coreStationCorrect = checker.getStationsAsMap()
+			UzStation coreStationCorrect = checker.getStationsAsMap()
 					.get(coreStation.getName());
 			if (coreStationCorrect == null) {
 				station.setStationIdUz("invaild"); // station name from request
@@ -45,7 +46,7 @@ public class StationRepositoryCustomImpl implements StationRepositoryCustom {
 		if (station == null) {
 			station = new Station();
 			station.setStationName(stationName);
-			org.genia.trainchecker.core.Station coreStationCorrect = checker.getStationsAsMap()
+			UzStation coreStationCorrect = checker.getStationsAsMap()
 					.get(stationName);
 			if (coreStationCorrect != null) {
 				station.setStationIdUz(coreStationCorrect.getStationId());

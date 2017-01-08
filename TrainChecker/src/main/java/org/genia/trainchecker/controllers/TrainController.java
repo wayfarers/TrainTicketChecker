@@ -10,9 +10,9 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.genia.trainchecker.core.TicketsRequest;
-import org.genia.trainchecker.core.TicketsResponse;
-import org.genia.trainchecker.core.Train;
+import org.genia.trainchecker.core.UzTicketsRequest;
+import org.genia.trainchecker.core.UzTicketsResponse;
+import org.genia.trainchecker.core.UzTrain;
 import org.genia.trainchecker.core.TrainTicketChecker;
 import org.genia.trainchecker.services.CronExecutor;
 import org.genia.trainchecker.services.RequestService;
@@ -76,14 +76,15 @@ public class TrainController {
 	}
 	
 	@RequestMapping("/sendRequest")
-	public @ResponseBody TicketsResponse sendRequest(String fromStation, String toStation, String dt) throws ParseException {
+	public @ResponseBody
+	UzTicketsResponse sendRequest(String fromStation, String toStation, String dt) throws ParseException {
 		Date date = new SimpleDateFormat("dd.MM.yyyy").parse(dt);
-		TicketsRequest request = new TicketsRequest();
+		UzTicketsRequest request = new UzTicketsRequest();
 		request.setFrom(checker.getStationsAsMap().get(fromStation));
 		request.setTill(checker.getStationsAsMap().get(toStation));
 		request.setDate(date);
-		TicketsResponse response = checker.checkTickets(request);
-		for (Train train : response.getTrains()) {
+		UzTicketsResponse response = checker.checkTickets(request);
+		for (UzTrain train : response.getTrains()) {
 			System.out.printf("%s\t%s - %s, %d free places total%n", train.getNum(), 
 					train.getFrom().getName(), train.getTill().getName(), train.getTotalPlaces());
 		}

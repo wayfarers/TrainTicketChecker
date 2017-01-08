@@ -17,6 +17,7 @@ import javax.script.ScriptException;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.HttpVersion;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.util.URIUtil;
@@ -33,26 +34,28 @@ public class TrainTicketChecker {
 	private String url2 = "http://booking.uz.gov.ua/";
 	private String token;
 	private HttpClient client = new HttpClient();
-	private List<Station> stations = null;
+	private List<UzStation> stations = null;
 
 	public TrainTicketChecker() {
+        client.getParams().setParameter("http.protocol.version", HttpVersion.HTTP_1_1);
+        client.getParams().setParameter("http.protocol.content-charset", "UTF-8");
 		getAllStations();
 	}
 
-	public TicketsResponse checkTickets(TicketsRequest request) {
+	public UzTicketsResponse checkTickets(UzTicketsRequest request) {
 		String jsonResp = null;
-		TicketsResponse response = null;
-		TicketsResponseError responseError = null;
+		UzTicketsResponse response = null;
+		UzTicketsResponseError responseError = null;
 		try {
 			jsonResp = sendRequest(request);
 			try {
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-				response = mapper.readValue(jsonResp, TicketsResponse.class);
+				response = mapper.readValue(jsonResp, UzTicketsResponse.class);
 			} catch (JsonMappingException e) {
 //				logger.error("Could not parse JSON, trying to parse an error. Original exception: ", e);
-				responseError = new ObjectMapper().readValue(jsonResp, TicketsResponseError.class);
-				TicketsResponse invaildResponse = new TicketsResponse();
+				responseError = new ObjectMapper().readValue(jsonResp, UzTicketsResponseError.class);
+				UzTicketsResponse invaildResponse = new UzTicketsResponse();
 				invaildResponse.setError(true);
 				invaildResponse.setErrorDescription(responseError.getErrorDescription());
 				logger.error("UzGovUa error description: " + responseError.getErrorDescription());
@@ -60,8 +63,6 @@ public class TrainTicketChecker {
 			}
 		} catch (HttpException e) {
 			e.printStackTrace();
-			logger.error(e.getMessage(), e);
-		} catch (SocketTimeoutException e) {
 			logger.error(e.getMessage(), e);
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
@@ -88,7 +89,7 @@ public class TrainTicketChecker {
 		}
 	}
 
-	private String sendRequest(TicketsRequest request) throws HttpException, IOException {
+	private String sendRequest(UzTicketsRequest request) throws IOException {
 
 		String html = "";
 		GetMethod get = new GetMethod(url2);
@@ -150,7 +151,7 @@ public class TrainTicketChecker {
 	 * @throws HttpException
 	 * @throws IOException
 	 */
-	public List<Station> getAllStations() {
+	public List<UzStation> getAllStations() {
 		if (stations != null && !stations.isEmpty()) {
 			return stations;
 		}
@@ -159,7 +160,7 @@ public class TrainTicketChecker {
 		char letter;
 		GetMethod get = null;
 		String jsonResp = null;
-		List<Station> myStations = new ArrayList<>();
+		List<UzStation> myStations = new ArrayList<>();
 		
 		try {
 			for (int i = 0; i < 32; i++) {
@@ -175,9 +176,6 @@ public class TrainTicketChecker {
 				StationsListJson resp = new ObjectMapper().readValue(jsonResp, StationsListJson.class);
 				myStations.addAll(resp.getStations());
 			}
-		} catch (HttpException e) {
-			logger.error("Could not retrieve stations." + e.getMessage(), e);
-			throw new RuntimeException("Could not retrieve stations", e);
 		} catch (IOException e) {
 			logger.error("Could not retrieve stations." + e.getMessage(), e);
 			throw new RuntimeException("Could not retrieve stations", e);
@@ -186,15 +184,15 @@ public class TrainTicketChecker {
 		return stations = myStations;
 	}
 	
-	public Map<String, Station> getStationsAsMap() {
-		return Station.listToMap(getAllStations());
+	public Map<String, UzStation> getStationsAsMap() {
+		return UzStation.listToMap(getAllStations());
 	}
 	
 	/**
 	 * Force update of station list from UzGovUa server.
 	 * @return List
 	 */
-	public List<Station> updateStationsList() {
+	public List<UzStation> updateStationsList() {
 		stations = null;
 		stations = getAllStations();
 		return stations;
@@ -203,7 +201,7 @@ public class TrainTicketChecker {
 	public void init() {
 		stations = new ArrayList<>();
 		for(int i = 0; i < 10; i++) {
-			Station station = new Station();
+			UzStation station = new UzStation();
 			station.setName("station " + i);
 			stations.add(station);
 		}
