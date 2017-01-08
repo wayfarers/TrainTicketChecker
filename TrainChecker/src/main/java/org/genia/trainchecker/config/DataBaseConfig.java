@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories("org.genia.trainchecker.repositories")	//add spring-data
 @ComponentScan(basePackages = {"org.genia.trainchecker"})
 @PropertySource(value = "classpath:database.properties")
-public class DataBaseConfig {
+class DataBaseConfig {
 
     @Inject
     Environment env;
@@ -78,13 +78,13 @@ public class DataBaseConfig {
         return entityManagerFactory().createEntityManager();
     }
 
-    Properties additionalProperties() {
+    private Properties additionalProperties() {
         Properties properties = new Properties();
 //        properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
         properties.setProperty("hibernate.archive.autodetection", "class");
         properties.setProperty("hibernate.show_sql", "false");
-        properties.setProperty("hibernate.ejb.naming_strategy", "org.hibernate.cfg.ImprovedNamingStrategy");
+        properties.setProperty("hibernate.ejb.naming_strategy", "org.genia.trainchecker.config.CustomNamingStrategy");
         return properties;
      }
 }
