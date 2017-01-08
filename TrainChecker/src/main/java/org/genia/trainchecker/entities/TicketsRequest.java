@@ -118,23 +118,11 @@ public class TicketsRequest {
         });
     }
 
-//	public TicketsResponse getLastResponse() {
-//		if (responses.isEmpty()) {
-//			return null;
-//		}
-//		sortResponses();
-//		return responses.get(0);
-//	}
-
-//	@Transient
     public TicketsResponse getLastResponse() {
         return lastResponse;
     }
 
-//	@Transient
     public void setLastResponse(TicketsResponse lastResponse) {
         this.lastResponse = lastResponse;
     }
-
-
 }

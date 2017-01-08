@@ -8,10 +8,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class StationsListJson {
-    boolean error;
+class StationsListJson {
+    private boolean error;
     @JsonProperty("value")
-    List<UzStation> stations = new ArrayList<>();
+    private List<UzStation> stations = new ArrayList<>();
 
     public boolean isError() {
         return error;

@@ -33,8 +33,7 @@ public class UserService {
 
     public User getCurrentLoggedInUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByLogin(username);
-        return user;
+        return userRepository.findByLogin(username);
     }
 
     /**
@@ -67,10 +66,6 @@ public class UserService {
 
     public boolean checkUsernameAvailability(String username) {
         User user = userRepository.findByLogin(username);
-        if (user == null) {
-            return true;
-        } else {
-            return false;
-        }
+        return user == null;
     }
 }

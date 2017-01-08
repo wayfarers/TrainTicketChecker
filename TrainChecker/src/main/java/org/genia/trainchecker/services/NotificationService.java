@@ -32,12 +32,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class NotificationService {
 
-    final static Logger logger = LoggerFactory.getLogger(NotificationService.class);
+    private final static Logger logger = LoggerFactory.getLogger(NotificationService.class);
 
     @Inject
     private UserRepository userRepository;
 
-    Properties creds;
+    private Properties creds;
 
     public NotificationService() {
         loadMailCredentials();

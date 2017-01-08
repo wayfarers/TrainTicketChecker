@@ -1,19 +1,7 @@
 package org.genia.trainchecker.core;
 
-import java.io.IOException;
-import java.net.SocketTimeoutException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
@@ -25,12 +13,21 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TrainTicketChecker {
-    final static Logger logger = LoggerFactory.getLogger(TrainTicketChecker.class);
-    public static final String URL = "http://booking.uz.gov.ua/purchase/search/";
+    private final static Logger logger = LoggerFactory.getLogger(TrainTicketChecker.class);
+    private static final String URL = "http://booking.uz.gov.ua/purchase/search/";
     private String url2 = "http://booking.uz.gov.ua/";
     private String token;
     private HttpClient client = new HttpClient();
@@ -43,9 +40,9 @@ public class TrainTicketChecker {
     }
 
     public UzTicketsResponse checkTickets(UzTicketsRequest request) {
-        String jsonResp = null;
+        String jsonResp;
         UzTicketsResponse response = null;
-        UzTicketsResponseError responseError = null;
+        UzTicketsResponseError responseError;
         try {
             jsonResp = sendRequest(request);
             try {
@@ -53,7 +50,6 @@ public class TrainTicketChecker {
                 mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
                 response = mapper.readValue(jsonResp, UzTicketsResponse.class);
             } catch (JsonMappingException e) {
-//				logger.error("Could not parse JSON, trying to parse an error. Original exception: ", e);
                 responseError = new ObjectMapper().readValue(jsonResp, UzTicketsResponseError.class);
                 UzTicketsResponse invaildResponse = new UzTicketsResponse();
                 invaildResponse.setError(true);
@@ -77,7 +73,6 @@ public class TrainTicketChecker {
         Matcher matcher = pattern.matcher(html);
         if (matcher.find()) {
             String obfuscated = matcher.group(0);
-            //logger.info(obfuscated);
             ScriptEngineManager factory = new ScriptEngineManager(null);
             ScriptEngine engine = factory.getEngineByName("JavaScript");
             try {
@@ -91,7 +86,7 @@ public class TrainTicketChecker {
 
     private String sendRequest(UzTicketsRequest request) throws IOException {
 
-        String html = "";
+        String html;
         GetMethod get = new GetMethod(url2);
         client.executeMethod(get);
 
@@ -107,33 +102,8 @@ public class TrainTicketChecker {
         client.getHttpConnectionManager().getParams().setSoTimeout(10000);
         PostMethod post = new PostMethod(URL);
 
-        post.addRequestHeader("Accept", "*/*");
-        post.addRequestHeader("Accept-Encoding", "gzip, deflate");
-        post.addRequestHeader("Accept-Language", "uk,ru;q=0.8,en-US;q=0.5,en;q=0.3");
-//		post.addRequestHeader("Cache-Control", "no-cache");
-        post.addRequestHeader("Connection", "keep-alive");
-//		post.addRequestHeader("Content-Length", "288"); //202. 196
-        post.addRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        post.addRequestHeader("GV-Ajax", "1");
-        post.addRequestHeader("GV-Referer", "http://booking.uz.gov.ua/");
-        post.addRequestHeader("GV-Screen", "1920x1080");
-        post.addRequestHeader("GV-Token", token);
-        post.addRequestHeader("GV-Unique-Host", "1");
-        post.addRequestHeader("Host", "booking.uz.gov.ua");
-//		post.addRequestHeader("Pragma", "no-cache");
-        post.addRequestHeader("Origin", "http://booking.uz.gov.ua");
-        post.addRequestHeader("Referer", "http://booking.uz.gov.ua/");
-        post.addRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:43.0) Gecko/20100101 Firefox/39.0");
-
-        post.addParameter("another_ec", "0");
-        post.addParameter("date_dep", new SimpleDateFormat("dd.MM.yyyy").format(request.date));
-        post.addParameter("search", "");
-        post.addParameter("station_from", request.from.getName());
-        post.addParameter("station_id_from", request.from.getStationId());
-        post.addParameter("station_id_till", request.till.getStationId());
-        post.addParameter("station_till", request.till.getName());
-        post.addParameter("time_dep", "00:00");
-        post.addParameter("time_dep_till", "");
+        addRequestHeaders(post);
+        addRequestParameters(request, post);
 
         int statusCode = client.executeMethod(post);
         if (statusCode != HttpStatus.SC_OK) {
@@ -144,12 +114,40 @@ public class TrainTicketChecker {
         return IOUtils.toString(post.getResponseBodyAsStream(), "UTF-8");
     }
 
+    private void addRequestHeaders(PostMethod post) {
+        post.addRequestHeader("Accept", "*/*");
+        post.addRequestHeader("Accept-Encoding", "gzip, deflate");
+        post.addRequestHeader("Accept-Language", "uk,ru;q=0.8,en-US;q=0.5,en;q=0.3");
+        post.addRequestHeader("Connection", "keep-alive");
+        post.addRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        post.addRequestHeader("GV-Ajax", "1");
+        post.addRequestHeader("GV-Referer", "http://booking.uz.gov.ua/");
+        post.addRequestHeader("GV-Screen", "1920x1080");
+        post.addRequestHeader("GV-Token", token);
+        post.addRequestHeader("GV-Unique-Host", "1");
+        post.addRequestHeader("Host", "booking.uz.gov.ua");
+        post.addRequestHeader("Origin", "http://booking.uz.gov.ua");
+        post.addRequestHeader("Referer", "http://booking.uz.gov.ua/");
+        post.addRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:43.0) Gecko/20100101 Firefox/39.0");
+    }
+
+    private void addRequestParameters(UzTicketsRequest request, PostMethod post) {
+        post.addParameter("another_ec", "0");
+        post.addParameter("date_dep", new SimpleDateFormat("dd.MM.yyyy").format(request.getDate()));
+        post.addParameter("search", "");
+        post.addParameter("station_from", request.getFrom().getName());
+        post.addParameter("station_id_from", request.getFrom().getStationId());
+        post.addParameter("station_id_till", request.getTill().getStationId());
+        post.addParameter("station_till", request.getTill().getName());
+        post.addParameter("time_dep", "00:00");
+        post.addParameter("time_dep_till", "");
+    }
+
+
     /**
      * Returns list with all stations with their ID's from the server.
      *
      * @return List<Station>
-     * @throws HttpException
-     * @throws IOException
      */
     public List<UzStation> getAllStations() {
         if (stations != null && !stations.isEmpty()) {
@@ -158,8 +156,8 @@ public class TrainTicketChecker {
 
         String url = "http://booking.uz.gov.ua/purchase/station/";
         char letter;
-        GetMethod get = null;
-        String jsonResp = null;
+        GetMethod get;
+        String jsonResp;
         List<UzStation> myStations = new ArrayList<>();
 
         try {

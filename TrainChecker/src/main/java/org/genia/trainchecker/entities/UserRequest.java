@@ -112,6 +112,5 @@ public class UserRequest {
         DateTime now = DateTime.now(DateTimeZone.forID("Europe/Kiev"));
         now = now.withTimeAtStartOfDay();
         return now.isAfter(new DateTime(request.getTripDate()));
-//		return cal.getTime().after(request.getTripDate());
     }
 }

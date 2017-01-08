@@ -21,11 +21,8 @@ import org.springframework.core.env.Environment;
 @Named
 @Scope("singleton")
 public class CronExecutor {
-    JobDetail job;
-    Trigger trigger;
-    Scheduler scheduler;
-    Integer interval;
-    Integer startDelay;
+    private JobDetail job;
+    private Scheduler scheduler;
 
     @Inject
     Environment env;
@@ -35,6 +32,9 @@ public class CronExecutor {
 
     @PostConstruct
     public void postConstruct() throws SchedulerException {
+        Integer interval;
+        Integer startDelay;
+
         if ((interval = env.getProperty("request_interval", Integer.class)) == null) {
             interval = 900;
         }
@@ -48,12 +48,12 @@ public class CronExecutor {
         job = JobBuilder.newJob(RequestCronJob.class).withIdentity("TicketsRequestJob")
                 .usingJobData(map)
                 .build();
-        trigger = TriggerBuilder
+        Trigger trigger = TriggerBuilder
                 .newTrigger()
                 .withIdentity("requestTrigger")
                 .withSchedule(
-                    SimpleScheduleBuilder.simpleSchedule()
-                        .withIntervalInSeconds(interval).repeatForever())
+                        SimpleScheduleBuilder.simpleSchedule()
+                                .withIntervalInSeconds(interval).repeatForever())
                 .build();
         scheduler = new StdSchedulerFactory().getScheduler();
         scheduler.clear();

@@ -3,11 +3,11 @@ package org.genia.trainchecker.core;
 import java.util.Date;
 
 public class UzTicketsRequest {
-    UzStation from;
-    UzStation till;
-    Date date;
-    String train;
-    PlaceType placeType;
+    private UzStation from;
+    private UzStation till;
+    private Date date;
+    private String train;
+    private PlaceType placeType;
 
     public UzTicketsRequest() {
         placeType = PlaceType.ANY;

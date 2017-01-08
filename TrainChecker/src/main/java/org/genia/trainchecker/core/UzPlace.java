@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class UzPlace {
-    String title;
+    private String title;
 
     @JsonProperty("letter")
-    PlaceType placeType;
+    private PlaceType placeType;
     int places;
 
     public String getTitle() {

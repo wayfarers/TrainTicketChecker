@@ -4,34 +4,21 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import org.apache.commons.httpclient.HttpException;
-
-public class App 
-{
-    public static void main( String[] args ) throws ParseException, HttpException, IOException {
+public class App {
+    public static void main( String[] args ) throws ParseException, IOException {
         TrainTicketChecker checker = new TrainTicketChecker();
-//    	List<Station> list = checker.getAllStations();
-//    	for (Station station : list) {
-//			System.out.println(station.getStation() + " - id: " + station.getStationId());
-//		}
 
         UzTicketsRequest request = new UzTicketsRequest();
-//    	request.from.setName("Київ"); 
-//    	request.from.setStationId("2200001"); 
-//    	request.till.setName("Кам'янець-Подільський");
-//    	request.till.setStationId("2200260");
-        request.from.setName("Київ");
-        request.from.setStationId("2200001");
-        request.till.setName("Львів");
-        request.till.setStationId("2218000");
-        request.date = new SimpleDateFormat("dd.MM.yyyy").parse("30.12.2015");
+        request.getFrom().setName("Київ");
+        request.getFrom().setStationId("2200001");
+        request.getTill().setName("Львів");
+        request.getTill().setStationId("2218000");
+        request.setDate(new SimpleDateFormat("dd.MM.yyyy").parse("30.12.2015"));
 
         UzTicketsResponse response = checker.checkTickets(request);
 
-        for (UzTrain train : response.trains) {
-            System.out.printf("%s\t%s - %s, %d free places total%n", train.num, train.from.getName(), train.till.getName(), train.getTotalPlaces());
+        for (UzTrain train : response.getTrains()) {
+            System.out.printf("%s\t%s - %s, %d free places total%n", train.getNum(), train.getFrom().getName(), train.getTill().getName(), train.getTotalPlaces());
         }
-
-
     }
 }

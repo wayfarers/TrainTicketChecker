@@ -14,12 +14,12 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-public class MailUtils {
-    public static void sendEmail(final Properties credentials, String to, String subject, String body) {
+class MailUtils {
+    static void sendEmail(final Properties credentials, String to, String subject, String body) {
         sendEmail(credentials, to, subject, body, false);
     }
 
-    public static void sendEmail(final Properties credentials, String to, String subject, String body, boolean isHtml) {
+    static void sendEmail(final Properties credentials, String to, String subject, String body, boolean isHtml) {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");

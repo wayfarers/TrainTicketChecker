@@ -7,20 +7,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class UzTrain {
-    String num;
-    int model;
-    int category;
+    private String num;
+    private int model;
+    private int category;
     @JsonProperty("reserve_error")
-    String reserveError;
+    private String reserveError;
 
     // Provided by UZ, but ignored so far.
     @JsonProperty("travel_time")
     String travelTime;
 
-    UzStation from;
-    UzStation till;
+    private UzStation from;
+    private UzStation till;
     @JsonProperty("types")
-    List<UzPlace> places = new ArrayList<>();
+    private List<UzPlace> places = new ArrayList<>();
 
     public int getTotalPlaces() {
         int total = 0;

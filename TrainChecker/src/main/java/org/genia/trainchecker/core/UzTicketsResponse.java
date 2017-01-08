@@ -8,11 +8,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UzTicketsResponse {
-    boolean error;
-    String data;
+    private boolean error;
+    private String data;
     @JsonProperty("value")
-    List<UzTrain> trains = new ArrayList<>();
-    String errorDescription;
+    private List<UzTrain> trains = new ArrayList<>();
+    private String errorDescription;
 
     public boolean isError() {
         return error;
@@ -35,7 +35,7 @@ public class UzTicketsResponse {
     public String getErrorDescription() {
         return errorDescription;
     }
-    public void setErrorDescription(String errorDescription) {
+    void setErrorDescription(String errorDescription) {
         this.errorDescription = errorDescription;
     }
 }
