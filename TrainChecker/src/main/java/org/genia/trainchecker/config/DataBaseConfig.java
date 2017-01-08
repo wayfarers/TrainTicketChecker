@@ -84,6 +84,7 @@ public class DataBaseConfig {
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLInnoDBDialect");
         properties.setProperty("hibernate.archive.autodetection", "class");
         properties.setProperty("hibernate.show_sql", "false");
+        properties.setProperty("hibernate.ejb.naming_strategy", "org.hibernate.cfg.EJB3NamingStrategy");
         return properties;
      }
 }
