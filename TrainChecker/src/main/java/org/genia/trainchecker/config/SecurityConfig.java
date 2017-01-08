@@ -29,9 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.jdbcAuthentication().dataSource(dataSource)
         /// Select name, password and 'enabled' flag
         .usersByUsernameQuery(
-            "select name, password, 1 from User where name=?")
+            "select name, password, 1 from user where name=?")
         .authoritiesByUsernameQuery(
-            "select name, role from User where name=?");
+            "select name, role from user where name=?");
     }
 
     @Override
