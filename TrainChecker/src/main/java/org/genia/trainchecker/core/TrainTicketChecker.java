@@ -26,9 +26,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TrainTicketChecker {
-    private final static Logger logger = LoggerFactory.getLogger(TrainTicketChecker.class);
-    private static final String URL = "http://booking.uz.gov.ua/purchase/search/";
-    private String url2 = "http://booking.uz.gov.ua/";
+    private static final Logger logger = LoggerFactory.getLogger(TrainTicketChecker.class);
+    private static final String INIT_URL = "http://booking.uz.gov.ua/";
+    private static final String SEARCH_URL = "http://booking.uz.gov.ua/purchase/search/";
     private String token;
     private HttpClient client = new HttpClient();
     private List<UzStation> stations = null;
@@ -37,6 +37,44 @@ public class TrainTicketChecker {
         client.getParams().setParameter("http.protocol.version", HttpVersion.HTTP_1_1);
         client.getParams().setParameter("http.protocol.content-charset", "UTF-8");
         getAllStations();
+    }
+
+    /**
+     * Returns list with all stations with their ID's from the server.
+     *
+     * @return List<Station>
+     */
+    public List<UzStation> getAllStations() {
+        if (stations != null && !stations.isEmpty()) {
+            return stations;
+        }
+
+        String url = "http://booking.uz.gov.ua/purchase/station/";
+        char letter;
+        GetMethod get;
+        String jsonResp;
+        List<UzStation> myStations = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < 32; i++) {
+                letter = (char) (1072 + i);		//1072 - rus 'a' in ASCII
+                String currentUrl = URIUtil.encodeQuery(url + letter);
+                get = new GetMethod(currentUrl);
+                int statusCode = client.executeMethod(get);
+                if (statusCode != HttpStatus.SC_OK) {
+                    logger.error("getAllStations method failed. Get method failed: " + get.getStatusLine());
+                    return null;
+                }
+                jsonResp = IOUtils.toString(get.getResponseBodyAsStream(), "UTF-8"); //get.getResponseBodyAsString();
+                StationsListJson resp = new ObjectMapper().readValue(jsonResp, StationsListJson.class);
+                myStations.addAll(resp.getStations());
+            }
+        } catch (IOException e) {
+            logger.error("Could not retrieve stations." + e.getMessage(), e);
+            throw new RuntimeException("Could not retrieve stations", e);
+        }
+        Collections.sort(myStations);
+        return stations = myStations;
     }
 
     public UzTicketsResponse checkTickets(UzTicketsRequest request) {
@@ -87,7 +125,7 @@ public class TrainTicketChecker {
     private String sendRequest(UzTicketsRequest request) throws IOException {
 
         String html;
-        GetMethod get = new GetMethod(url2);
+        GetMethod get = new GetMethod(INIT_URL);
         client.executeMethod(get);
 
         int statusCodeInit = client.executeMethod(get);
@@ -100,7 +138,7 @@ public class TrainTicketChecker {
         parseToken(html);
 
         client.getHttpConnectionManager().getParams().setSoTimeout(10000);
-        PostMethod post = new PostMethod(URL);
+        PostMethod post = new PostMethod(SEARCH_URL);
 
         addRequestHeaders(post);
         addRequestParameters(request, post);
@@ -141,45 +179,6 @@ public class TrainTicketChecker {
         post.addParameter("station_till", request.getTill().getName());
         post.addParameter("time_dep", "00:00");
         post.addParameter("time_dep_till", "");
-    }
-
-
-    /**
-     * Returns list with all stations with their ID's from the server.
-     *
-     * @return List<Station>
-     */
-    public List<UzStation> getAllStations() {
-        if (stations != null && !stations.isEmpty()) {
-            return stations;
-        }
-
-        String url = "http://booking.uz.gov.ua/purchase/station/";
-        char letter;
-        GetMethod get;
-        String jsonResp;
-        List<UzStation> myStations = new ArrayList<>();
-
-        try {
-            for (int i = 0; i < 32; i++) {
-                letter = (char) (1072 + i);		//1072 - rus 'a' in ASCII
-                String currentUrl = URIUtil.encodeQuery(url + letter);
-                get = new GetMethod(currentUrl);
-                int statusCode = client.executeMethod(get);
-                if (statusCode != HttpStatus.SC_OK) {
-                    logger.error("getAllStations method failed. Get method failed: " + get.getStatusLine());
-                    return null;
-                }
-                jsonResp = IOUtils.toString(get.getResponseBodyAsStream(), "UTF-8"); //get.getResponseBodyAsString();
-                StationsListJson resp = new ObjectMapper().readValue(jsonResp, StationsListJson.class);
-                myStations.addAll(resp.getStations());
-            }
-        } catch (IOException e) {
-            logger.error("Could not retrieve stations." + e.getMessage(), e);
-            throw new RuntimeException("Could not retrieve stations", e);
-        }
-        Collections.sort(myStations);
-        return stations = myStations;
     }
 
     public Map<String, UzStation> getStationsAsMap() {
