@@ -20,9 +20,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 @RequestMapping("/")
 public class IndexController {
-	
-	@Inject
-	private UserService userService;
+
+    @Inject
+    private UserService userService;
 
     @RequestMapping
     public String getIndexPage() {
@@ -31,20 +31,20 @@ public class IndexController {
     
     @RequestMapping("/user")
     public @ResponseBody Principal user(Principal user) {
-    	return user;
+        return user;
     }
     
     @RequestMapping("/userInfo")
     public @ResponseBody User getUserInfo() {
-    	User userInfo = new User();
-    	User loggedUser = userService.getCurrentLoggedInUser();
-    	if (loggedUser != null) {
-    		userInfo.setLogin(loggedUser.getLogin());
-    		userInfo.setName(loggedUser.getName());
-    		userInfo.setEmail(loggedUser.getEmail());
-    		userInfo.setRole(loggedUser.getRole());
-    	}
-    	return userInfo;
+        User userInfo = new User();
+        User loggedUser = userService.getCurrentLoggedInUser();
+        if (loggedUser != null) {
+            userInfo.setLogin(loggedUser.getLogin());
+            userInfo.setName(loggedUser.getName());
+            userInfo.setEmail(loggedUser.getEmail());
+            userInfo.setRole(loggedUser.getRole());
+        }
+        return userInfo;
     }
     
     @RequestMapping("/login")
@@ -59,66 +59,66 @@ public class IndexController {
     
     @RequestMapping("/requestReset")
     public @ResponseBody String generateResetLink(String login) throws JsonProcessingException {
-    	if (StringUtils.isEmpty(login)) {
-    		return new ObjectMapper().writer().writeValueAsString("no_user");
-    	}
-    	
-    	int code = userService.generateResetLink(login);
-    	
-    	String msg;
-    	
-    	switch (code) {
-		case 0:
-			msg = "ok";
-			break;
-		case 1:
-			msg = "no_user";
-			break;
-		case 2:
-			msg = "failed";
-			break;
-		default:
-			msg = "failed";
-		}
-    	
-    	return new ObjectMapper().writer().writeValueAsString(msg);
+        if (StringUtils.isEmpty(login)) {
+            return new ObjectMapper().writer().writeValueAsString("no_user");
+        }
+
+        int code = userService.generateResetLink(login);
+
+        String msg;
+
+        switch (code) {
+        case 0:
+            msg = "ok";
+            break;
+        case 1:
+            msg = "no_user";
+            break;
+        case 2:
+            msg = "failed";
+            break;
+        default:
+            msg = "failed";
+        }
+
+        return new ObjectMapper().writer().writeValueAsString(msg);
     }
     
     @RequestMapping("/checkLink")
     public @ResponseBody Integer checkLink(String tk) {
-    	User user = userService.findUserByToken(tk);
-    	if(user != null) {
-    		return user.getId();
-    	}
+        User user = userService.findUserByToken(tk);
+        if(user != null) {
+            return user.getId();
+        }
         return -1;
     }
     
     @RequestMapping("/setNewPass")
     public @ResponseBody Integer setNewPass(String tk, String pw) {
-    	User user = userService.findUserByToken(tk);
-    	if(user != null) {
-    		user.setPassword(pw);
-    		user.setPassResetToken(null);
-    		userService.saveUser(user);
-    		return 0;
-    	}
+        User user = userService.findUserByToken(tk);
+        if(user != null) {
+            user.setPassword(pw);
+            user.setPassResetToken(null);
+            userService.saveUser(user);
+            return 0;
+        }
         return -1;
     }
     
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public @ResponseBody int registerUser(@RequestBody NewUser newUser) {
-    	if (!checkUsername(newUser.getUsername())) {
-    		return 1;
-    	}
-    	User user = userService.createUser(newUser);
-    	if (user != null && user.getId() != null && user.getId() != 0) {
-    		return 0;
-    	} else {
-    		return -1;
-    	}
+        if (!checkUsername(newUser.getUsername())) {
+            return 1;
+        }
+        User user = userService.createUser(newUser);
+        if (user != null && user.getId() != null && user.getId() != 0) {
+            return 0;
+        } else {
+            return -1;
+        }
     }
     
     private boolean checkUsername(String username) {
-    	return userService.checkUsernameAvailability(username);
+        return userService.checkUsernameAvailability(username);
     }
 }

@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 public interface StationRepository extends JpaRepository<Station, Integer>{
-	public Station getByStationName(String stationName);
-	public Station getByStationIdUz(String stationIdUz);
+    public Station getByStationName(String stationName);
+    public Station getByStationIdUz(String stationIdUz);
 }

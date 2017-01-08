@@ -27,58 +27,58 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackages = {"org.genia.trainchecker"})
 @PropertySource(value = "classpath:database.properties")
 public class DataBaseConfig {
-	
-	@Inject
-	Environment env;
 
-	// TODO: Add c3p0 connection pool
-	@Bean
-	public DataSource getDataSource() {
-		BasicDataSource ds = new BasicDataSource();
-		ds.setDriverClassName("com.mysql.jdbc.Driver");
-		
-		String url = env.getProperty("jdbc.url");
-		url += (url.contains("?") ? "&" : "?") + "useUnicode=yes&characterEncoding=UTF-8";
-		
-		ds.setUrl(url);
-		ds.setUsername(env.getProperty("jdbc.username"));
-		ds.setPassword(env.getProperty("jdbc.password"));
-		return ds;
-	}
-	
-	@Bean
-	public EntityManagerFactory entityManagerFactory() {
-		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+    @Inject
+    Environment env;
+
+    // TODO: Add c3p0 connection pool
+    @Bean
+    public DataSource getDataSource() {
+        BasicDataSource ds = new BasicDataSource();
+        ds.setDriverClassName("com.mysql.jdbc.Driver");
+
+        String url = env.getProperty("jdbc.url");
+        url += (url.contains("?") ? "&" : "?") + "useUnicode=yes&characterEncoding=UTF-8";
+
+        ds.setUrl(url);
+        ds.setUsername(env.getProperty("jdbc.username"));
+        ds.setPassword(env.getProperty("jdbc.password"));
+        return ds;
+    }
+
+    @Bean
+    public EntityManagerFactory entityManagerFactory() {
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 //		vendorAdapter.setShowSql(true);
 //		vendorAdapter.setDatabase(Database.MYSQL);
 //		vendorAdapter.setGenerateDdl(true);
 //		vendorAdapter.setDatabasePlatform("mysql");
-		
-		LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
-		emf.setPackagesToScan("org.genia.trainchecker.entities");
-		emf.setDataSource(getDataSource());
-		emf.setJpaDialect(new HibernateJpaDialect());
-		emf.setJpaVendorAdapter(vendorAdapter);
-		emf.setJpaProperties(additionalProperties());
-		emf.afterPropertiesSet();
-		return emf.getObject();
-	}
-	
-	@Bean
-	public PlatformTransactionManager transactionManager() throws Exception {
-		EntityManagerFactory factory = entityManagerFactory();
-		JpaTransactionManager tm = new JpaTransactionManager();
-		tm.setEntityManagerFactory(factory);
-		return tm;
+
+        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+        emf.setPackagesToScan("org.genia.trainchecker.entities");
+        emf.setDataSource(getDataSource());
+        emf.setJpaDialect(new HibernateJpaDialect());
+        emf.setJpaVendorAdapter(vendorAdapter);
+        emf.setJpaProperties(additionalProperties());
+        emf.afterPropertiesSet();
+        return emf.getObject();
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager() throws Exception {
+        EntityManagerFactory factory = entityManagerFactory();
+        JpaTransactionManager tm = new JpaTransactionManager();
+        tm.setEntityManagerFactory(factory);
+        return tm;
 //		return new JpaTransactionManager( factory );
-	}
-	
-	@Bean
+    }
+
+    @Bean
     public EntityManager entityManager() throws Exception {
         return entityManagerFactory().createEntityManager();
     }
-	
-	Properties additionalProperties() {
+
+    Properties additionalProperties() {
         Properties properties = new Properties();
 //        properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");

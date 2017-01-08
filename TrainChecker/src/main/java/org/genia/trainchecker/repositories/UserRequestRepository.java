@@ -6,5 +6,5 @@ import org.genia.trainchecker.entities.UserRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRequestRepository extends JpaRepository<UserRequest, Integer> {
-	public List<UserRequest> findByUserId(Integer id);
+    public List<UserRequest> findByUserId(Integer id);
 }

@@ -20,36 +20,36 @@ import org.springframework.web.servlet.view.velocity.VelocityViewResolver;
 @ComponentScan(basePackages = { "org.genia.trainchecker" })
 public class WebConfig extends WebMvcConfigurerAdapter{
 
-	@Bean
-	public VelocityConfigurer velocityConfig() {
-		VelocityConfigurer conf = new VelocityConfigurer();
-		conf.setResourceLoader(new FileSystemResourceLoader());
-		conf.setResourceLoaderPath("/views/");
-		
-		Properties props = new Properties();
-	    props.setProperty( "input.encoding", "UTF-8" );
-	    props.setProperty( "output.encoding", "UTF-8" );
-	 
-	    conf.setVelocityProperties(props);
-		  
-		return conf;
-	}
+    @Bean
+    public VelocityConfigurer velocityConfig() {
+        VelocityConfigurer conf = new VelocityConfigurer();
+        conf.setResourceLoader(new FileSystemResourceLoader());
+        conf.setResourceLoaderPath("/views/");
 
-	@Bean
-	public AbstractTemplateViewResolver velocityViewResolver() {
-		AbstractTemplateViewResolver resolver = new VelocityViewResolver();
-		resolver.setCache(true);
-		resolver.setContentType("text/html; charset=utf-8");
-		resolver.setPrefix("");
-		resolver.setSuffix(".html");
-		resolver.setExposeSpringMacroHelpers(true);
-		return resolver;
-	}
+        Properties props = new Properties();
+        props.setProperty( "input.encoding", "UTF-8" );
+        props.setProperty( "output.encoding", "UTF-8" );
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31556926);
-		registry.addResourceHandler("/views/**").addResourceLocations("/views/");
-		registry.addResourceHandler("/components/**").addResourceLocations("/resources/bower_components/");
-	}
+        conf.setVelocityProperties(props);
+
+        return conf;
+    }
+
+    @Bean
+    public AbstractTemplateViewResolver velocityViewResolver() {
+        AbstractTemplateViewResolver resolver = new VelocityViewResolver();
+        resolver.setCache(true);
+        resolver.setContentType("text/html; charset=utf-8");
+        resolver.setPrefix("");
+        resolver.setSuffix(".html");
+        resolver.setExposeSpringMacroHelpers(true);
+        return resolver;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31556926);
+        registry.addResourceHandler("/views/**").addResourceLocations("/views/");
+        registry.addResourceHandler("/components/**").addResourceLocations("/resources/bower_components/");
+    }
 }

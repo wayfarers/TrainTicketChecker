@@ -14,25 +14,25 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/profile")
 public class ProfileController {
-	@Inject
-	UserService userService;
-	
-	@RequestMapping(value = "updateUser", method = RequestMethod.POST)
-	public @ResponseBody void updateUser(@RequestBody User userInfo) {
-		User currentUser = userService.getCurrentLoggedInUser();
-		currentUser.setEmail(userInfo.getEmail());
-		userService.saveUser(currentUser);
-	}
-	
-	@RequestMapping(value = "updatePass", method = RequestMethod.POST)
-	public @ResponseBody Integer updatePassword(@RequestBody PasswordUpdate userInfo) {
-		User currentUser = userService.getCurrentLoggedInUser();
-		if (userInfo.getCurrentPassword().equals(currentUser.getPassword())) {
-			currentUser.setPassword(userInfo.getNewPassword());
-			userService.saveUser(currentUser);
-			return 0;
-		} else {
-			return -1;
-		}
-	}
+    @Inject
+    UserService userService;
+
+    @RequestMapping(value = "updateUser", method = RequestMethod.POST)
+    public @ResponseBody void updateUser(@RequestBody User userInfo) {
+        User currentUser = userService.getCurrentLoggedInUser();
+        currentUser.setEmail(userInfo.getEmail());
+        userService.saveUser(currentUser);
+    }
+
+    @RequestMapping(value = "updatePass", method = RequestMethod.POST)
+    public @ResponseBody Integer updatePassword(@RequestBody PasswordUpdate userInfo) {
+        User currentUser = userService.getCurrentLoggedInUser();
+        if (userInfo.getCurrentPassword().equals(currentUser.getPassword())) {
+            currentUser.setPassword(userInfo.getNewPassword());
+            userService.saveUser(currentUser);
+            return 0;
+        } else {
+            return -1;
+        }
+    }
 }

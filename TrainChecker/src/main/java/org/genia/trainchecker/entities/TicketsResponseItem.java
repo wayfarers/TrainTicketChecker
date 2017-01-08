@@ -21,62 +21,62 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Named
 @Entity
 public class TicketsResponseItem {
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "responseItemId")
-	private Integer id;
-	private String reservationError;
-	
-	@ManyToOne
-	@JoinColumn(name = "trainId")
-	private Train train;
-	
-	@ManyToOne
-	@JoinColumn(name = "ticketsResponseId")
-	@JsonBackReference
-	private TicketsResponse ticketsResponse;
-	
-	@OneToMany(mappedBy = "ticketsResponseItem", cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
-	@JsonManagedReference
-	private List<Place> availablePlaces = new ArrayList<>();
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "responseItemId")
+    private Integer id;
+    private String reservationError;
 
-	public Integer getId() {
-		return id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "trainId")
+    private Train train;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "ticketsResponseId")
+    @JsonBackReference
+    private TicketsResponse ticketsResponse;
 
-	public String getReservationError() {
-		return reservationError;
-	}
+    @OneToMany(mappedBy = "ticketsResponseItem", cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
+    @JsonManagedReference
+    private List<Place> availablePlaces = new ArrayList<>();
 
-	public void setReservationError(String reservationError) {
-		this.reservationError = reservationError;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Train getTrain() {
-		return train;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setTrain(Train train) {
-		this.train = train;
-	}
+    public String getReservationError() {
+        return reservationError;
+    }
 
-	public TicketsResponse getTicketsResponse() {
-		return ticketsResponse;
-	}
+    public void setReservationError(String reservationError) {
+        this.reservationError = reservationError;
+    }
 
-	public void setTicketsResponse(TicketsResponse ticketsResponse) {
-		this.ticketsResponse = ticketsResponse;
-	}
+    public Train getTrain() {
+        return train;
+    }
 
-	public List<Place> getAvailablePlaces() {
-		return availablePlaces;
-	}
+    public void setTrain(Train train) {
+        this.train = train;
+    }
 
-	public void setAvailablePlaces(List<Place> availablePlaces) {
-		this.availablePlaces = availablePlaces;
-	}
+    public TicketsResponse getTicketsResponse() {
+        return ticketsResponse;
+    }
+
+    public void setTicketsResponse(TicketsResponse ticketsResponse) {
+        this.ticketsResponse = ticketsResponse;
+    }
+
+    public List<Place> getAvailablePlaces() {
+        return availablePlaces;
+    }
+
+    public void setAvailablePlaces(List<Place> availablePlaces) {
+        this.availablePlaces = availablePlaces;
+    }
 }

@@ -29,84 +29,84 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 @RequestMapping("/stations")
 public class TrainController {
-	
-	final static Logger logger = LoggerFactory.getLogger(TrainController.class);
-	
-	@Inject
-	private TrainTicketChecker checker;
-	@Inject
-	private CronExecutor cronExecotor;
-	@Inject
-	public RequestService requestService;
-	
-	@RequestMapping("/stationlist.json")
-	public @ResponseBody List<String> getAllStations() {
-		if (checker.getAllStations() == null || checker.getAllStations().isEmpty()) {
-			checker.init();
-			System.out.println("Initiated");
-		}
-		 Set<String> set = checker.getStationsAsMap().keySet();
-		 return new ArrayList<>(set);
-	}
-	
-	@RequestMapping("/getStations")
-	public @ResponseBody List<String> getStations(String rq) {
-		List<String> majorStations = new ArrayList<>();
-		majorStations.add("Київ");
-		majorStations.add("Одеса");
-		majorStations.add("Львів");
-		majorStations.add("Харків");
-		Locale russian = new Locale("RU");
-		List<String> list = new ArrayList<>();
-		
-		for (String majorStation : majorStations) {
-			if (majorStation.toLowerCase(russian).startsWith(rq.toLowerCase(russian))) {
-				list.add(majorStation);
-			}
-		}
-		
-		for (String string : checker.getStationsAsMap().keySet()) {
-			if (string.toLowerCase(russian).startsWith(rq.toLowerCase(russian)) && !list.contains(string)) {
-				list.add(string);
-				if(list.size() == 10)
-					return list;
-			}
-		}
-		return list;
-	}
-	
-	@RequestMapping("/sendRequest")
-	public @ResponseBody
-	UzTicketsResponse sendRequest(String fromStation, String toStation, String dt) throws ParseException {
-		Date date = new SimpleDateFormat("dd.MM.yyyy").parse(dt);
-		UzTicketsRequest request = new UzTicketsRequest();
-		request.setFrom(checker.getStationsAsMap().get(fromStation));
-		request.setTill(checker.getStationsAsMap().get(toStation));
-		request.setDate(date);
-		UzTicketsResponse response = checker.checkTickets(request);
-		for (UzTrain train : response.getTrains()) {
-			System.out.printf("%s\t%s - %s, %d free places total%n", train.getNum(), 
-					train.getFrom().getName(), train.getTill().getName(), train.getTotalPlaces());
-		}
-		return response;
-	}
-	
-	@RequestMapping("/createAlert")
-	public @ResponseBody String createAlert(String fromStation, String toStation, String tripDate, String placeTypes, String trainNum) throws ParseException, JsonProcessingException {
-		Date date = new SimpleDateFormat("dd.MM.yyyy").parse(tripDate);
-		String msg = requestService.createAlert(fromStation, toStation, trainNum, date, placeTypes);
-		return new ObjectMapper().writer().writeValueAsString(msg);
-	}
-	
-	@RequestMapping("/startJob")
-	public @ResponseBody void startJob() throws SchedulerException {
-		System.out.println("start");
-		cronExecotor.startJob();
-	}
-	
-	@RequestMapping("/stopJob")
-	public @ResponseBody void stopJob() throws SchedulerException {
-		System.out.println("stopped");
-		cronExecotor.stopJob();
-	}
+
+    final static Logger logger = LoggerFactory.getLogger(TrainController.class);
+
+    @Inject
+    private TrainTicketChecker checker;
+    @Inject
+    private CronExecutor cronExecotor;
+    @Inject
+    public RequestService requestService;
+
+    @RequestMapping("/stationlist.json")
+    public @ResponseBody List<String> getAllStations() {
+        if (checker.getAllStations() == null || checker.getAllStations().isEmpty()) {
+            checker.init();
+            System.out.println("Initiated");
+        }
+         Set<String> set = checker.getStationsAsMap().keySet();
+         return new ArrayList<>(set);
+    }
+
+    @RequestMapping("/getStations")
+    public @ResponseBody List<String> getStations(String rq) {
+        List<String> majorStations = new ArrayList<>();
+        majorStations.add("Київ");
+        majorStations.add("Одеса");
+        majorStations.add("Львів");
+        majorStations.add("Харків");
+        Locale russian = new Locale("RU");
+        List<String> list = new ArrayList<>();
+
+        for (String majorStation : majorStations) {
+            if (majorStation.toLowerCase(russian).startsWith(rq.toLowerCase(russian))) {
+                list.add(majorStation);
+            }
+        }
+
+        for (String string : checker.getStationsAsMap().keySet()) {
+            if (string.toLowerCase(russian).startsWith(rq.toLowerCase(russian)) && !list.contains(string)) {
+                list.add(string);
+                if(list.size() == 10)
+                    return list;
+            }
+        }
+        return list;
+    }
+
+    @RequestMapping("/sendRequest")
+    public @ResponseBody
+    UzTicketsResponse sendRequest(String fromStation, String toStation, String dt) throws ParseException {
+        Date date = new SimpleDateFormat("dd.MM.yyyy").parse(dt);
+        UzTicketsRequest request = new UzTicketsRequest();
+        request.setFrom(checker.getStationsAsMap().get(fromStation));
+        request.setTill(checker.getStationsAsMap().get(toStation));
+        request.setDate(date);
+        UzTicketsResponse response = checker.checkTickets(request);
+        for (UzTrain train : response.getTrains()) {
+            System.out.printf("%s\t%s - %s, %d free places total%n", train.getNum(),
+                    train.getFrom().getName(), train.getTill().getName(), train.getTotalPlaces());
+        }
+        return response;
+    }
+
+    @RequestMapping("/createAlert")
+    public @ResponseBody String createAlert(String fromStation, String toStation, String tripDate, String placeTypes, String trainNum) throws ParseException, JsonProcessingException {
+        Date date = new SimpleDateFormat("dd.MM.yyyy").parse(tripDate);
+        String msg = requestService.createAlert(fromStation, toStation, trainNum, date, placeTypes);
+        return new ObjectMapper().writer().writeValueAsString(msg);
+    }
+
+    @RequestMapping("/startJob")
+    public @ResponseBody void startJob() throws SchedulerException {
+        System.out.println("start");
+        cronExecotor.startJob();
+    }
+
+    @RequestMapping("/stopJob")
+    public @ResponseBody void stopJob() throws SchedulerException {
+        System.out.println("stopped");
+        cronExecotor.stopJob();
+    }
 }

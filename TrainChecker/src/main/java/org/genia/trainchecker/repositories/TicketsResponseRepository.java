@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface TicketsResponseRepository extends JpaRepository<TicketsResponse, Integer> {
-	@Query("select r from TicketsResponse r where r.ticketsRequest.id = ?1 order by time desc")
-	public List<TicketsResponse> findFirst1ByTicketsRequestIdOrderByTimeDesc(Integer ticketRequestId,  Pageable pageable);
+    @Query("select r from TicketsResponse r where r.ticketsRequest.id = ?1 order by time desc")
+    public List<TicketsResponse> findFirst1ByTicketsRequestIdOrderByTimeDesc(Integer ticketRequestId,  Pageable pageable);
 }

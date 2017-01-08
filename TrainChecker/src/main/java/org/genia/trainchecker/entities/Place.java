@@ -18,58 +18,58 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Named
 @Entity
 public class Place {
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "placeId")
-	private Integer id;
-	private String title;
-	
-	@Enumerated(EnumType.STRING)
-	private PlaceType placeType; 
-	private Integer placesAvailable;
-	
-	@ManyToOne
-	@JoinColumn(name = "responseItemId")
-	@JsonBackReference
-	private TicketsResponseItem ticketsResponseItem;
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "placeId")
+    private Integer id;
+    private String title;
 
-	public Integer getId() {
-		return id;
-	}
+    @Enumerated(EnumType.STRING)
+    private PlaceType placeType;
+    private Integer placesAvailable;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "responseItemId")
+    @JsonBackReference
+    private TicketsResponseItem ticketsResponseItem;
 
-	public String getTitle() {
-		return title;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Integer getPlacesAvailable() {
-		return placesAvailable;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setPlacesAvailable(Integer placesAvailable) {
-		this.placesAvailable = placesAvailable;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public TicketsResponseItem getTicketsResponseItem() {
-		return ticketsResponseItem;
-	}
+    public Integer getPlacesAvailable() {
+        return placesAvailable;
+    }
 
-	public void setTicketsResponseItem(TicketsResponseItem ticketsResponse) {
-		this.ticketsResponseItem = ticketsResponse;
-	}
+    public void setPlacesAvailable(Integer placesAvailable) {
+        this.placesAvailable = placesAvailable;
+    }
 
-	public PlaceType getPlaceType() {
-		return placeType;
-	}
+    public TicketsResponseItem getTicketsResponseItem() {
+        return ticketsResponseItem;
+    }
 
-	public void setPlaceType(PlaceType placeType) {
-		this.placeType = placeType;
-	}
+    public void setTicketsResponseItem(TicketsResponseItem ticketsResponse) {
+        this.ticketsResponseItem = ticketsResponse;
+    }
+
+    public PlaceType getPlaceType() {
+        return placeType;
+    }
+
+    public void setPlaceType(PlaceType placeType) {
+        this.placeType = placeType;
+    }
 }

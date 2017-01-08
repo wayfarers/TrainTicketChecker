@@ -28,90 +28,90 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Named
 @Entity
 public class UserRequest {
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "userRequestId")
-	private Integer id;
-	private String trainNum;
-	private Boolean active;
-	private String placeTypes;
-	
-	@ManyToOne
-	@JoinColumn(name = "userId")
-	private User user;
-	
-	@ManyToOne
-	@JoinColumn(name = "ticketsRequestId")
-	private TicketsRequest request;
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "userRequestId")
+    private Integer id;
+    private String trainNum;
+    private Boolean active;
+    private String placeTypes;
 
-	public Integer getId() {
-		return id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "ticketsRequestId")
+    private TicketsRequest request;
 
-	public String getTrainNum() {
-		return trainNum;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setTrainNum(String trainNum) {
-		this.trainNum = trainNum;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public String getTrainNum() {
+        return trainNum;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setTrainNum(String trainNum) {
+        this.trainNum = trainNum;
+    }
 
-	public TicketsRequest getRequest() {
-		return request;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setRequest(TicketsRequest request) {
-		this.request = request;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public Boolean getActive() {
-		return active;
-	}
+    public TicketsRequest getRequest() {
+        return request;
+    }
 
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
+    public void setRequest(TicketsRequest request) {
+        this.request = request;
+    }
 
-	public String getPlaceTypes() {
-		return placeTypes;
-	}
+    public Boolean getActive() {
+        return active;
+    }
 
-	public void setPlaceTypes(String placeTypes) {
-		this.placeTypes = placeTypes;
-	}
-	
-	public List<PlaceType> getPlaceTypesAsList() {
-		List<PlaceType> typesList = new ArrayList<>();
-		if (placeTypes != null) {
-			String [] types = placeTypes.split(",");
-			for (String string : types) {
-				typesList.add(PlaceType.valueOf(string));
-			}
-		}
-		return typesList;
-	}
-	
-	public Boolean isExpired() {
-		GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("Europe/Kiev"));
-		cal.set(Calendar.HOUR, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
-		DateTime now = DateTime.now(DateTimeZone.forID("Europe/Kiev"));
-		now = now.withTimeAtStartOfDay();
-		return now.isAfter(new DateTime(request.getTripDate()));
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public String getPlaceTypes() {
+        return placeTypes;
+    }
+
+    public void setPlaceTypes(String placeTypes) {
+        this.placeTypes = placeTypes;
+    }
+
+    public List<PlaceType> getPlaceTypesAsList() {
+        List<PlaceType> typesList = new ArrayList<>();
+        if (placeTypes != null) {
+            String [] types = placeTypes.split(",");
+            for (String string : types) {
+                typesList.add(PlaceType.valueOf(string));
+            }
+        }
+        return typesList;
+    }
+
+    public Boolean isExpired() {
+        GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("Europe/Kiev"));
+        cal.set(Calendar.HOUR, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        DateTime now = DateTime.now(DateTimeZone.forID("Europe/Kiev"));
+        now = now.withTimeAtStartOfDay();
+        return now.isAfter(new DateTime(request.getTripDate()));
 //		return cal.getTime().after(request.getTripDate());
-	}
+    }
 }

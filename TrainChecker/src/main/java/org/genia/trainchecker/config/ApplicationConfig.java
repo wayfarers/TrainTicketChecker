@@ -12,9 +12,9 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource(value = "classpath:config.properties")
 @Import({DataBaseConfig.class, SecurityConfig.class})
 public class ApplicationConfig {
-	
-	@Bean
-	public TrainTicketChecker trainTicketChecker() {
-		return new TrainTicketChecker();
-	}
+
+    @Bean
+    public TrainTicketChecker trainTicketChecker() {
+        return new TrainTicketChecker();
+    }
 }
