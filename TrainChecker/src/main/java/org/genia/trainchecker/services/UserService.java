@@ -38,7 +38,7 @@ public class UserService {
 
     /**
      * Generates reset-password link and sends in to user's email.
-     * @param login
+     * @param login user's login for password resetting
      * @return 0 if success, 1 if no such user found, 2 if other error.
      */
     public Integer generateResetLink(String login) {

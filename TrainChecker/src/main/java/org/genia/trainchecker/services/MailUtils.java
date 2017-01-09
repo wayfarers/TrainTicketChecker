@@ -15,20 +15,24 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 class MailUtils {
+    private static final Properties smtpProperties = new Properties();
+
+    static {
+        smtpProperties.put("mail.smtp.host", "smtp.gmail.com");
+        smtpProperties.put("mail.smtp.socketFactory.port", "465");
+        smtpProperties.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        smtpProperties.put("mail.smtp.auth", "true");
+        smtpProperties.put("mail.smtp.port", "465");
+    }
+
     static void sendEmail(final Properties credentials, String to, String subject, String body) {
         sendEmail(credentials, to, subject, body, false);
     }
 
     static void sendEmail(final Properties credentials, String to, String subject, String body, boolean isHtml) {
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
 
-        Session session = Session.getDefaultInstance(props,
+        Session session = Session.getDefaultInstance(smtpProperties,
             new javax.mail.Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(credentials.getProperty("username"),
@@ -37,7 +41,6 @@ class MailUtils {
             });
 
         try {
-
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("es.terminchecker@gmail.com"));
             message.setRecipients(Message.RecipientType.TO,

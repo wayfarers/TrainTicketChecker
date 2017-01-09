@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RequestService {
 
-    final static Logger logger = LoggerFactory.getLogger(RequestService.class);
+    private final static Logger logger = LoggerFactory.getLogger(RequestService.class);
 
     @Inject
     private NotificationService notificationService;
@@ -42,7 +42,7 @@ public class RequestService {
     @Inject
     private UserRequestRepository userRequestRepository;
     @Inject
-    RequestConverter converter;
+    private RequestConverter converter;
     @Inject
     private TicketsResponseRepository responseRepository;
     @Inject
@@ -68,11 +68,11 @@ public class RequestService {
         return response;
     }
 
-    public UzTicketsResponse sendRequest(UzTicketsRequest request) {
+    private UzTicketsResponse sendRequest(UzTicketsRequest request) {
         return checker.checkTickets(request);
     }
 
-    public void sendActiveRequests() {
+    void sendActiveRequests() {
         logger.info("Sending active requests...");
         List<UserRequest> userRequests = userRepository.findActive();
         HashSet<org.genia.trainchecker.entities.TicketsRequest> ticketsRequests = new HashSet<>();
@@ -111,7 +111,7 @@ public class RequestService {
         notificationService.sendNotifications();
     }
 
-    public static Date makeMidnight(Date date) {
+    private static Date makeMidnight(Date date) {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(date);
         cal.set(Calendar.HOUR, 0);

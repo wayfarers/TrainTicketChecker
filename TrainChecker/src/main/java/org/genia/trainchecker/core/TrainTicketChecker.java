@@ -57,7 +57,7 @@ public class TrainTicketChecker {
 
         try {
             for (int i = 0; i < 32; i++) {
-                letter = (char) (1072 + i);		//1072 - rus 'a' in ASCII
+                letter = (char) (1072 + i);     //1072 - rus 'a' in ASCII
                 String currentUrl = URIUtil.encodeQuery(url + letter);
                 get = new GetMethod(currentUrl);
                 int statusCode = client.executeMethod(get);
@@ -89,11 +89,11 @@ public class TrainTicketChecker {
                 response = mapper.readValue(jsonResp, UzTicketsResponse.class);
             } catch (JsonMappingException e) {
                 responseError = new ObjectMapper().readValue(jsonResp, UzTicketsResponseError.class);
-                UzTicketsResponse invaildResponse = new UzTicketsResponse();
-                invaildResponse.setError(true);
-                invaildResponse.setErrorDescription(responseError.getErrorDescription());
+                UzTicketsResponse invalidResponse = new UzTicketsResponse();
+                invalidResponse.setError(true);
+                invalidResponse.setErrorDescription(responseError.getErrorDescription());
                 logger.error("UzGovUa error description: " + responseError.getErrorDescription());
-                return invaildResponse;
+                return invalidResponse;
             }
         } catch (HttpException e) {
             e.printStackTrace();

@@ -62,7 +62,6 @@ public class CronExecutor {
     }
 
     public void startJob() throws SchedulerException {
-
         if (scheduler.isInStandbyMode())
             scheduler.resumeJob(job.getKey());
         else
