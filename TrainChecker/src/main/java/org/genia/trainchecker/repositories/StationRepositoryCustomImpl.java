@@ -26,7 +26,7 @@ public class StationRepositoryCustomImpl implements StationRepositoryCustom {
             UzStation coreStationCorrect = checker.getStationsAsMap()
                     .get(coreStation.getName());
             if (coreStationCorrect == null) {
-                station.setStationIdUz("invaild"); // station name from request
+                station.setStationIdUz("invalid"); // station name from request
                                                     // can be absent in the
                                                     // station list. So it don't
                                                     // have UzId.
