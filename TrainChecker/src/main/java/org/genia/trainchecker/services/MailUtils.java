@@ -1,6 +1,9 @@
 package org.genia.trainchecker.services;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -15,6 +18,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 class MailUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(MailUtils.class);
     private static final Properties smtpProperties = new Properties();
 
     static {
@@ -56,14 +61,12 @@ class MailUtils {
                 message.setText(body);
             }
 
-
             Transport.send(message);
 
-            System.out.println("Email was sent to " + to);
+            logger.debug("Email was sent to " + to);
 
         } catch (MessagingException e) {
-//			LoggerUtil.logError("Error while sending email. " + e.getMessage());
-//			throw new RuntimeException(e);
+            logger.error("Error while sending email. " + e);
         }
     }
 }

@@ -56,6 +56,7 @@ public class NotificationService {
      */
     @Transactional
     void sendNotifications() {
+        // TODO: 17.01.2017 Divide into a few smaller methods
         List<UserRequest> activeRequests = userRepository.findActive();
         HashMap<User, List<UserRequest>> requestGroups = new HashMap<>();
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -91,7 +92,7 @@ public class NotificationService {
                     //doing nothing, as here can be case when only one response in list is present.
                 }
 
-                //TODO: implement compearing according to a filter.
+                //TODO: implement comparing according to a filter.
 
                 if (getPlacesCount(last, userRequest) > getPlacesCount(previous, userRequest)) {
                     //TODO: send appropriate notification
@@ -151,7 +152,7 @@ public class NotificationService {
      * @param user user to whom you want to send a link
      */
     void sendResetPassLink(User user) {
-        // TODO: 09.01.2017 check, if email really won't be sent when resetPassToken is not specified
+        // TODO: 09.01.2017 check, if email really won't be sent when resetPassToken is not specified as javadoc says
         String link = PROJECT_SERVICE_URL + "#/newPass?tk=" + user.getPassResetToken();
         String emailSubject = "TrainAlert: Reset Your Password";
         String emailBody = "Hello, " + user.getName() + "!\n\n";
