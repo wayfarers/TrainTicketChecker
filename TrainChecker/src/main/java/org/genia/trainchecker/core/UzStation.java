@@ -9,8 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class UzStation implements Comparable<UzStation>{
+    // changed to long as UZ made station_id as long instead of String
     @JsonProperty("station_id")
-    private String stationId;
+    private long stationId;
 
     @JsonProperty("station")
     private String name;
@@ -19,10 +20,10 @@ public class UzStation implements Comparable<UzStation>{
     @JsonProperty("src_date")
     private Date srcDate;
 
-    public String getStationId() {
+    public long getStationId() {
         return stationId;
     }
-    public void setStationId(String stationId) {
+    public void setStationId(long stationId) {
         this.stationId = stationId;
     }
     public String getName() {
@@ -59,6 +60,15 @@ public class UzStation implements Comparable<UzStation>{
     public void setTitle(String title) {
         this.name = title;
     }
+
+    public void setLabel(String label) {
+        this.name = label;
+    }
+
+    public void setValue(long value) {
+        this.stationId = value;
+    }
+
 
     @Override
     public int compareTo(UzStation o) {

@@ -1,8 +1,11 @@
 package org.genia.trainchecker.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
+// TODO: 22.03.2017 ignore new "id" field for now
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UzPlace {
     private String title;
 

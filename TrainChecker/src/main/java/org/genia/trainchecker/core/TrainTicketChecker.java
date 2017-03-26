@@ -1,5 +1,6 @@
 package org.genia.trainchecker.core;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.httpclient.HttpClient;
@@ -49,28 +50,35 @@ public class TrainTicketChecker {
             return stations;
         }
 
-        String url = "http://booking.uz.gov.ua/purchase/station/";
-        char letter;
+        String url = "http://booking.uz.gov.ua/purchase/station/?term=";
+        char firstLetter;
+        char secondLetter;
         GetMethod get;
         String jsonResp;
         List<UzStation> myStations = new ArrayList<>();
 
+        ObjectMapper mapper = new ObjectMapper();
+        JavaType jsonCollectionType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, UzStation.class);
+
         try {
             for (int i = 0; i < 32; i++) {
-                letter = (char) (1072 + i);     //1072 - rus 'a' in ASCII
-                String currentUrl = URIUtil.encodeQuery(url + letter);
-                get = new GetMethod(currentUrl);
-                int statusCode = client.executeMethod(get);
-                if (statusCode != HttpStatus.SC_OK) {
-                    logger.error("getAllStations method failed. Get method failed: " + get.getStatusLine());
-                    return null;
+                firstLetter = (char) (1072 + i);     //1072 - rus 'a' in ASCII
+                for (int j = 0; j < 32; j++) {
+                    secondLetter = (char) (1072 + j);     //1072 - rus 'a' in ASCII
+                    String currentUrl = URIUtil.encodeQuery(url + firstLetter + secondLetter);
+                    get = new GetMethod(currentUrl);
+                    int statusCode = client.executeMethod(get);
+                    if (statusCode != HttpStatus.SC_OK) {
+                        logger.error("getAllStations method failed. Get method failed: " + get.getStatusLine());
+                        return null;
+                    }
+                    jsonResp = IOUtils.toString(get.getResponseBodyAsStream(), "UTF-8"); //get.getResponseBodyAsString();
+                    ArrayList<UzStation> resp = mapper.readValue(jsonResp, jsonCollectionType);
+                    myStations.addAll(resp);
                 }
-                jsonResp = IOUtils.toString(get.getResponseBodyAsStream(), "UTF-8"); //get.getResponseBodyAsString();
-                StationsListJson resp = new ObjectMapper().readValue(jsonResp, StationsListJson.class);
-                myStations.addAll(resp.getStations());
             }
         } catch (IOException e) {
-            logger.error("Could not retrieve stations." + e.getMessage(), e);
+            logger.error("Could not retrieve stations. " + e.getMessage(), e);
             throw new RuntimeException("Could not retrieve stations", e);
         }
         Collections.sort(myStations);
@@ -174,8 +182,8 @@ public class TrainTicketChecker {
         post.addParameter("date_dep", new SimpleDateFormat("dd.MM.yyyy").format(request.getDate()));
         post.addParameter("search", "");
         post.addParameter("station_from", request.getFrom().getName());
-        post.addParameter("station_id_from", request.getFrom().getStationId());
-        post.addParameter("station_id_till", request.getTill().getStationId());
+        post.addParameter("station_id_from", "" + request.getFrom().getStationId());
+        post.addParameter("station_id_till", "" + request.getTill().getStationId());
         post.addParameter("station_till", request.getTill().getName());
         post.addParameter("time_dep", "00:00");
         post.addParameter("time_dep_till", "");

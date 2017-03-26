@@ -26,7 +26,7 @@ public class StationRepositoryCustomImpl implements StationRepositoryCustom {
             station = new Station();
             UzStation coreStationCorrect = checker.getStationsAsMap().get(coreStation.getName());
             if (coreStationCorrect != null) {
-                station.setStationIdUz(coreStationCorrect.getStationId());
+                station.setStationIdUz("" + coreStationCorrect.getStationId());
             } else {
                 // station name from request can be absent in the station list. So it don't have UzId.
                 station.setStationIdUz("invalid");
@@ -48,7 +48,7 @@ public class StationRepositoryCustomImpl implements StationRepositoryCustom {
             station.setStationName(stationName);
             UzStation coreStationCorrect = checker.getStationsAsMap().get(stationName);
             if (coreStationCorrect != null) {
-                station.setStationIdUz(coreStationCorrect.getStationId());
+                station.setStationIdUz("" + coreStationCorrect.getStationId());
             }
             repository.save(station);
         }

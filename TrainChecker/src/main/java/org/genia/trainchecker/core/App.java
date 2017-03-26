@@ -10,9 +10,9 @@ public class App {
 
         UzTicketsRequest request = new UzTicketsRequest();
         request.getFrom().setName("Київ");
-        request.getFrom().setStationId("2200001");
+        request.getFrom().setStationId(2200001);
         request.getTill().setName("Львів");
-        request.getTill().setStationId("2218000");
+        request.getTill().setStationId(2218000);
         request.setDate(new SimpleDateFormat("dd.MM.yyyy").parse("30.12.2015"));
 
         UzTicketsResponse response = checker.checkTickets(request);

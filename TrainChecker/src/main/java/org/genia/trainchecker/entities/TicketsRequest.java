@@ -97,7 +97,7 @@ public class TicketsRequest {
     public void setFrom(UzStation from) {
         Station st = new Station();
         st.setStationName(from.getName());
-        st.setStationIdUz(from.getStationId());
+        st.setStationIdUz("" + from.getStationId());
         st.setSrc_date(from.getSrcDate());
         this.from = st;
     }
@@ -105,7 +105,7 @@ public class TicketsRequest {
     public void setTo(UzStation to) {
         Station st = new Station();
         st.setStationName(to.getName());
-        st.setStationIdUz(to.getStationId());
+        st.setStationIdUz("" + to.getStationId());
         st.setSrc_date(to.getSrcDate());
         this.to = st;
     }

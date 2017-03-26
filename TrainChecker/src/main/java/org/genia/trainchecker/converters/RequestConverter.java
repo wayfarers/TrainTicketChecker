@@ -1,14 +1,13 @@
 package org.genia.trainchecker.converters;
 
-import java.util.Calendar;
-
-import javax.inject.Named;
-
 import org.genia.trainchecker.core.*;
 import org.genia.trainchecker.entities.*;
 import org.genia.trainchecker.repositories.StationRepositoryCustom;
 import org.genia.trainchecker.repositories.TrainRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.inject.Named;
+import java.util.Calendar;
 
 @Named
 public class RequestConverter {
@@ -40,7 +39,7 @@ public class RequestConverter {
     public UzStation convertToCore(Station station) {
         UzStation coreStation = new UzStation();
         coreStation.setName(station.getStationName());
-        coreStation.setStationId(station.getStationIdUz());
+        coreStation.setStationId(Long.parseLong(station.getStationIdUz()));
         return coreStation;
     }
 

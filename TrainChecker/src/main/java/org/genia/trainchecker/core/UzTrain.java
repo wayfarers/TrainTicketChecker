@@ -12,6 +12,7 @@ public class UzTrain {
     private int category;
     @JsonProperty("reserve_error")
     private String reserveError;
+    private boolean transformer;
 
     // Provided by UZ, but ignored so far.
     @JsonProperty("travel_time")
@@ -72,4 +73,12 @@ public class UzTrain {
     public void setReserveError(String reserveError) {
         this.reserveError = reserveError;
     }
+    public boolean isTransformer() {
+        return transformer;
+    }
+
+    public void setTransformer(boolean transformer) {
+        this.transformer = transformer;
+    }
+
 }
