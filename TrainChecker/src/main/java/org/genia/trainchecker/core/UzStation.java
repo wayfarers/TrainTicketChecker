@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UzStation implements Comparable<UzStation>{
     // changed to long as UZ made station_id as long instead of String
     @JsonProperty("station_id")
